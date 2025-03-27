@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация перечисления RefBookEditorType</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 2rem;
+            color: #2d3436;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        pre {
+            background-color: #2d3436;
+            color: #ffffff;
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .code-keyword {
+            color: #55efc4;
+        }
+
+        .code-comment {
+            color: #81ecec;
+        }
+
+        .note {
+            background-color: #fff1e6;
+            border-left: 4px solid #ff9900;
+            padding: 1rem;
+            margin: 2rem 0;
+            border-radius: 3px;
+        }
+
+        .diagram {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 2rem 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Перечисление RefBookEditorType</h1>
+        
+        <h2>Описание</h2>
+        <p>Определяет тип элемента управления для редактирования ссылок на справочники в карточке объекта.</p>
+
+        <h2>Значения перечисления</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Значение</th>
+                    <th>Описание</th>
+                    <th>Визуальное представление</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Dialog</td>
+                    <td>Отображает кнопку для выбора значений через диалоговое окно справочника</td>
+                    <td>Кнопка с эллипсом (…)</td>
+                </tr>
+                <tr>
+                    <td>ComboBox</td>
+                    <td>Отображает выпадающий список для выбора значения</td>
+                    <td>Поле со стрелкой раскрытия списка</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="diagram">
+            <strong>Схема выбора типа:</strong><br>
+            <code>Dialog</code> → Для больших справочников<br>
+            <code>ComboBox</code> → Для справочников с небольшим количеством элементов
+        </div>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Настройка поля в карточке объекта</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> field = card.AddField("Country");
+field.RefBookEditorType = RefBookEditorType.ComboBox;
+field.DataSource = countryDictionary;
+</code>
+        </pre>
+
+        <h3>Динамическая настройка</h3>
+        <pre>
+<code>
+<span class="code-keyword">if</span> (itemsCount > 20)
+{
+    editorType = RefBookEditorType.Dialog;
+}
+<span class="code-keyword">else</span>
+{
+    editorType = RefBookEditorType.ComboBox;
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li><code>ComboBox</code> подходит для справочников до 50 элементов</li>
+                <li><code>Dialog</code> обеспечивает поиск по большим справочникам</li>
+                <li>Выбор типа влияет на UX-дизайн карточки объекта</li>
+            </ul>
+        </div>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Используйте <code>Dialog</code> для иерархических справочников</li>
+                <li>Для обязательных полей с малым набором значений предпочтителен <code>ComboBox</code></li>
+                <li>Тип редактора можно комбинировать с атрибутом <code>Required</code></li>
+            </ul>
+        </div>
+
+        <h2>Связанные компоненты</h2>
+        <ul>
+            <li><a href="IObjectCard.html">Интерфейс IObjectCard</a></li>
+            <li><a href="IDataSource.html">Интерфейс IDataSource</a></li>
+            <li><a href="FieldConfiguration.html">Класс FieldConfiguration</a></li>
+        </ul>
+    </div>
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация Stage SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .obsolete {
+            color: #dc3545;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс Stage <span class="obsolete">[Устаревший]</span></h1>
+        
+        <h2>Описание</h2>
+        <p>Представляет этап в шаблоне задачи. <strong>Класс признан устаревшим</strong> - рекомендуется использовать современные альтернативы для новых разработок.</p>
+        <p>Содержит список исполнителей и метаданные этапа.</p>
+
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Свойство</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Executors</td>
+                    <td>List<Executor></td>
+                    <td>Список исполнителей этапа (инициализируется в конструкторе)</td>
+                </tr>
+                <tr>
+                    <td>Kind</td>
+                    <td>TaskKind</td>
+                    <td>Тип задачи этапа</td>
+                </tr>
+                <tr>
+                    <td>Version</td>
+                    <td>int</td>
+                    <td>Версия этапа</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Методы</h2>
+        <h3>Переопределенные методы</h3>
+        <table>
+            <tr>
+                <td>Equals(Stage)</td>
+                <td>Сравнивает текущий объект с другим этапом</td>
+            </tr>
+            <tr>
+                <td>Equals(object)</td>
+                <td>Сравнивает с произвольным объектом</td>
+            </tr>
+            <tr>
+                <td>GetHashCode()</td>
+                <td>Возвращает хеш-код объекта</td>
+            </tr>
+        </table>
+
+        <h2>Примеры использования</h2>
+        <pre>
+<code>
+<span class="code-comment">// Создание этапа</span>
+<span class="code-keyword">var</span> stage = <span class="code-keyword">new</span> Stage
+{
+    Kind = TaskKind.Approval,
+    Version = 1,
+    Executors = 
+    {
+        <span class="code-keyword">new</span> Executor { Role = "manager", IsDeadlineSet = true }
+    }
+};
+
+<span class="code-comment">// Сравнение этапов</span>
+Stage anotherStage = GetStage();
+bool areEqual = stage.Equals(anotherStage);
+
+<span class="code-comment">// Добавление исполнителя</span>
+stage.Executors.Add(<span class="code-keyword">new</span> Executor { Role = "auditor" });
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Класс помечен как <code>[Obsolete]</code> - использование в новых проектах не рекомендуется</li>
+                <li>Сравнение этапов происходит по всем исполнителям</li>
+                <li>Хеш-код зависит от всех элементов списка Executors</li>
+                <li>Используемые классы Executor и Participant также устаревшие</li>
+            </ul>
+        </div>
+
+        <h2>Особенности реализации</h2>
+        <ul>
+            <li>Сравнение списков исполнителей выполняется через <code>SequenceEqual</code></li>
+            <li>Хеш-код вычисляется агрегацией хешей всех исполнителей</li>
+            <li>Реализация требует корректного переопределения Equals/GetHashCode в Executor</li>
+        </ul>
+    </div>
+</body>
+</html>

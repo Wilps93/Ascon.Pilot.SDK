@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация TaskKind SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .warning {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Перечисление TaskKind</h1>
+        
+        <h2>Описание</h2>
+        <p>Определяет типы задач в системе Pilot.SDK. Используется для классификации и фильтрации задач по их назначению.</p>
+        
+        <h2>Значения</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Тип задачи</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Task</td>
+                    <td>Обычная задача (по умолчанию)</td>
+                </tr>
+                <tr>
+                    <td>Agreement</td>
+                    <td>Задача на согласование</td>
+                </tr>
+                <tr>
+                    <td>Acquaintance</td>
+                    <td>Задача на ознакомление</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Особенности</h2>
+        <ul>
+            <li>Используется в связке с <code>SystemTaskAttributes.KIND</code> для фильтрации задач</li>
+            <li>Значение <code>Task</code> является значением по умолчанию при создании новых задач</li>
+            <li>Типы задач влияют на доступные действия и этапы выполнения</li>
+        </ul>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Определение типа задачи</h3>
+        <pre>
+<code>
+<span class="code-keyword">TaskKind</span> taskType = GetTaskKind();
+<span class="code-keyword">switch</span> (taskType)
+{
+    <span class="code-keyword">case</span> TaskKind.Task:
+        ProcessRegularTask();
+        break;
+    <span class="code-keyword">case</span> TaskKind.Agreement:
+        StartApprovalProcess();
+        break;
+    <span class="code-keyword">case</span> TaskKind.Acquaintance:
+        NotifyUsers();
+        break;
+}
+</code>
+        </pre>
+
+        <h3>Фильтрация задач по типу</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> agreementTasks = SearchQueryBuilder.Create()
+    .Where(SystemTaskAttributes.Kind.EqualTo(TaskKind.Agreement))
+    .ToList();
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Используйте <code>TaskKind</code> вместо строковых литералов для повышения type safety</li>
+                <li>Проверяйте тип задачи перед выполнением специфичных операций</li>
+                <li>Учитывайте, что <code>Acquaintance</code> задачи могут иметь ограниченный набор статусов</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

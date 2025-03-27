@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация IStorageContextMenu SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background-color: #f8d7da;
+            border-left: 4px solid #f5c6cb;
+            padding: 10px;
+            margin: 20px 0;
+            color: #721c24;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IStorageContextMenu</h1>
+        
+        <h2>Описание</h2>
+        <p>Расширение для добавления пользовательских пунктов в контекстное меню Pilot-Storage. 
+        Наследует базовый функционал из <code>IBaseContextMenu</code> и добавляет специфичные методы для работы со списком объектов.</p>
+
+        <h2>Методы</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Параметры</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>BuildContextMenu</td>
+                    <td>
+                        IMenuHost menuHost<br>
+                        IEnumerable<IStorageDataObject> selection
+                    </td>
+                    <td>
+                        Вызывается перед отображением меню. Позволяет динамически формировать пункты меню 
+                        на основе выбранных объектов хранилища.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Параметры BuildContextMenu</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Параметр</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>menuHost</td>
+                    <td>IMenuHost</td>
+                    <td>Хост меню для добавления новых пунктов</td>
+                </tr>
+                <tr>
+                    <td>selection</td>
+                    <td>IEnumerable<IStorageDataObject></td>
+                    <td>Список временных объектов, представляющих выбранные элементы в хранилище</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Пример реализации</h2>
+        <pre>
+<code>
+<span class="code-keyword">public class</span> CustomStorageMenu : IStorageContextMenu 
+{
+    <span class="code-keyword">public void</span> BuildContextMenu(IMenuHost menuHost, IEnumerable<IStorageDataObject> selection)
+    {
+        <span class="code-comment">// Проверяем наличие выбранных объектов</span>
+        <span class="code-keyword">if</span> (selection?.Any() != <span class="code-keyword">true</span>)
+            <span class="code-keyword">return</span>;
+
+        <span class="code-comment">// Добавляем пользовательский пункт меню</span>
+        menuHost.AddItem(
+            "custom_action", 
+            "Экспорт в Excel", 
+            <span class="code-keyword">async</span> (cancellationToken) => 
+            {
+                <span class="code-keyword">var</span> data = selection.Select(s => s.Id).ToList();
+                <span class="code-keyword">await</span> ExportService.ExportToExcel(data, cancellationToken);
+            },
+            icon: "excel-icon"
+        );
+    }
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Проверяйте типы объектов в selection перед выполнением действий</li>
+                <li>Используйте асинхронные операции для длительных задач</li>
+                <li>Добавляйте иконки через систему именования иконок Pilot</li>
+                <li>Учитывайте права доступа текущего пользователя</li>
+            </ul>
+        </div>
+
+        <div class="warning">
+            <strong>Важно:</strong> Объекты IStorageDataObject доступны только в течение 
+            текущей операции построения меню. Не сохраняйте ссылки на них!
+        </div>
+    </div>
+</body>
+</html>

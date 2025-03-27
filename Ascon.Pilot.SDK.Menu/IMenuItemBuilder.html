@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация интерфейса IMenuItemBuilder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IMenuItemBuilder</h1>
+        
+        <h2>Назначение</h2>
+        <p>Предоставляет методы для конфигурации параметров пункта меню. Используется в связке с <code>IMenuBuilder</code> для построения иерархических структур меню.</p>
+
+        <h2>Методы</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>WithHeader(string header)</td>
+                    <td>
+                        Устанавливает отображаемый текст пункта меню<br>
+                        <strong>Параметры:</strong> header - Локализуемый заголовок<br>
+                        <strong>Возвращает:</strong> Текущий билдер для цепочки вызовов
+                    </td>
+                </tr>
+                <tr>
+                    <td>WithIcon(byte[] icon)</td>
+                    <td>
+                        Устанавливает иконку пункта меню<br>
+                        <strong>Параметры:</strong> icon - Массив байт с изображением (SVG для объектных меню, PNG для файлового хранилища)<br>
+                        <strong>Возвращает:</strong> Текущий билдер
+                    </td>
+                </tr>
+                <tr>
+                    <td>WithIsEnabled(bool value)</td>
+                    <td>
+                        Включает/отключает пункт меню<br>
+                        <strong>Параметры:</strong> value - true для доступного состояния<br>
+                        <strong>Возвращает:</strong> Текущий билдер
+                    </td>
+                </tr>
+                <tr>
+                    <td>WithSubmenu()</td>
+                    <td>
+                        Создает подменю для текущего пункта<br>
+                        <strong>Возвращает:</strong> Новый экземпляр <code>IMenuBuilder</code> для построения вложенных элементов
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Пример использования</h2>
+        <pre>
+<code>
+<span class="code-keyword">var</span> menuBuilder = ... ; <span class="code-comment">// Получение IMenuBuilder</span>
+
+menuBuilder.AddItem("file.export", 0)
+    .WithHeader("Экспорт данных")
+    .WithIcon(svgIconBytes)
+    .WithIsEnabled(hasExportRights)
+    .WithSubmenu()
+        .AddItem("export.csv", 0)
+            .WithHeader("CSV")
+            .WithIcon(csvIcon)
+            .WithCommand("export.csv")
+        .AddItem("export.xml", 1)
+            .WithHeader("XML")
+            .WithIcon(xmlIcon)
+            .WithCommand("export.xml");
+</code>
+        </pre>
+
+        <h2>Особенности</h2>
+        <ul>
+            <li>Поддерживает fluent-интерфейс для цепочки вызовов</li>
+            <li>Подменю создаются в контексте текущего пункта</li>
+            <li>Иконки кэшируются системой после первого использования</li>
+        </ul>
+
+        <h2>Рекомендации</h2>
+        <ul>
+            <li>Используйте осмысленные заголовки с поддержкой локализации</li>
+            <li>Для веток меню с подменю устанавливайте <code>WithIsEnabled(true)</code></li>
+            <li>Проверяйте права доступа перед установкой состояния через <code>WithIsEnabled()</code></li>
+            <li>Используйте SVG для масштабируемых иконок в объектных меню</li>
+        </ul>
+
+        <div class="note">
+            <strong>Важно:</strong> 
+            <ul>
+                <li>Изменения применяются немедленно и влияют на UI</li>
+                <li>Для динамического обновления состояний используйте <code>IMenuService.Refresh()</code></li>
+                <li>Максимальная глубина вложенности меню - 3 уровня</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

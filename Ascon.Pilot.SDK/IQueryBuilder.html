@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация IQueryBuilder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IQueryBuilder</h1>
+        
+        <h2>Описание</h2>
+        <p>Fluent-интерфейс для построения сложных поисковых запросов с использованием паттерна "Строитель". Позволяет комбинировать условия поиска, сортировку и ограничения результатов.</p>
+
+        <h2>Методы</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Параметры</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Must</td>
+                    <td>ISearchTerm term</td>
+                    <td>Добавляет обязательное условие для вхождения термина</td>
+                </tr>
+                <tr>
+                    <td>MustAnyOf</td>
+                    <td>params ISearchTerm[] terms</td>
+                    <td>Добавляет условие "ИЛИ" между несколькими терминами</td>
+                </tr>
+                <tr>
+                    <td>MustNot</td>
+                    <td>ISearchTerm term</td>
+                    <td>Исключает документы, содержащие указанный термин</td>
+                </tr>
+                <tr>
+                    <td>SortBy</td>
+                    <td>INamedField field, ListSortDirection direction</td>
+                    <td>Устанавливает поле и направление сортировки</td>
+                </tr>
+                <tr>
+                    <td>MaxResults</td>
+                    <td>int result</td>
+                    <td>Ограничивает количество возвращаемых результатов</td>
+                </tr>
+                <tr>
+                    <td>InContext</td>
+                    <td>Guid id</td>
+                    <td>Задает контекст поиска (например, проекта)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Простой поиск с условиями</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> query = queryBuilder
+    .Must(ObjectFields.Name.Be("Договор*"))
+    .MustNot(ObjectFields.Type.Be("Черновик"))
+    .SortBy(ObjectFields.CreatedDate, ListSortDirection.Descending)
+    .MaxResults(50);
+</code>
+        </pre>
+
+        <h3>Комбинированный поиск с ИЛИ</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> query = queryBuilder
+    .MustAnyOf(
+        ObjectFields.Tags.Contain("Срочный"),
+        ObjectFields.Priority.Be("Высокий")
+    )
+    .InContext(projectId);
+</code>
+        </pre>
+
+        <h3>Сложная фильтрация</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> query = queryBuilder
+    .Must(ObjectFields.AllText.Be("Отчет*"))
+    .MustNot(
+        ObjectFields.Status.Be("Удален"),
+        ObjectFields.Author.Be("ivanov")
+    )
+    .SortBy(TaskFields.DueDate, ListSortDirection.Ascending);
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Методы возвращают <code>this</code>, позволяя строить цепочки вызовов</li>
+                <li>Для сортировки используйте поля из классов <code>ObjectFields</code>, <code>TaskFields</code> и т.д.</li>
+                <li>MaxResults рекомендуется указывать после всех условий поиска</li>
+                <li>Контекст поиска (InContext) должен быть задан до выполнения запроса</li>
+            </ul>
+        </div>
+
+        <h2>Рекомендации</h2>
+        <ul>
+            <li>Для частичного совпадения используйте символ <code>*</code> в терминах</li>
+            <li>Сочетайте Must и MustAnyOf для сложной логики условий</li>
+            <li>Проверяйте наличие контекста через <code>InContext</code> при работе с проектами</li>
+            <li>Для сортировки по нескольким полям вызывайте SortBy несколько раз</li>
+        </ul>
+    </div>
+</body>
+</html>

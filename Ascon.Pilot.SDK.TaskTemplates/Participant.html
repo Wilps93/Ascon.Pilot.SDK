@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация Participant SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .obsolete {
+            color: #dc3545;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс Participant <span class="obsolete">[Устаревший]</span></h1>
+        
+        <h2>Описание</h2>
+        <p>Базовый класс для участников задач. <strong>Класс признан устаревшим</strong> - рекомендуется использовать современные альтернативы для новых разработок.</p>
+        <p>Содержит базовые свойства и методы для идентификации участников в системе.</p>
+
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Свойство</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>PositionId</td>
+                    <td>int</td>
+                    <td>Идентификатор позиции участника в системе</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Методы</h2>
+        <h3>Переопределенные методы</h3>
+        <table>
+            <tr>
+                <td>Equals(Participant)</td>
+                <td>Сравнивает текущий объект с другим участником</td>
+            </tr>
+            <tr>
+                <td>Equals(object)</td>
+                <td>Сравнивает с произвольным объектом</td>
+            </tr>
+            <tr>
+                <td>GetHashCode()</td>
+                <td>Возвращает хеш-код объекта</td>
+            </tr>
+        </table>
+
+        <h2>Примеры использования</h2>
+        <pre>
+<code>
+<span class="code-comment">// Создание участника</span>
+<span class="code-keyword">var</span> participant = <span class="code-keyword">new</span> Participant
+{
+    PositionId = 101
+};
+
+<span class="code-comment">// Сравнение участников</span>
+Participant another = GetParticipant();
+bool areEqual = participant.Equals(another);
+
+<span class="code-comment">// Использование в словаре</span>
+Dictionary<Participant, string> participants = <span class="code-keyword">new</span> Dictionary<Participant, string>();
+participants.Add(participant, "Main participant");
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Класс помечен как <code>[Obsolete]</code> - использование в новых проектах не рекомендуется</li>
+                <li>Сравнение и хеширование основаны исключительно на PositionId</li>
+                <li>Производные классы (например, Executor) также считаются устаревшими</li>
+                <li>Рекомендуется использовать <code>IParticipantReference</code> в новых разработках</li>
+            </ul>
+        </div>
+
+        <h2>Особенности реализации</h2>
+        <ul>
+            <li>Хеш-код напрямую возвращает значение PositionId</li>
+            <li>Реализация Equals требует строгого совпадения типов</li>
+            <li>Отсутствует виртуальный метод Equals для наследников</li>
+        </ul>
+    </div>
+</body>
+</html>

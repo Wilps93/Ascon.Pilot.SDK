@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация TaskTemplate SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .obsolete {
+            color: #dc3545;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс TaskTemplate <span class="obsolete">[Устаревший]</span></h1>
+        
+        <h2>Описание</h2>
+        <p>Представляет шаблон задачи с метаданными и рабочим процессом. <strong>Класс признан устаревшим</strong> - рекомендуется использовать современные альтернативы для новых разработок.</p>
+        <p>Содержит неизменяемые данные о шаблоне задачи.</p>
+
+        <h2>Конструктор</h2>
+        <pre>
+<code>
+<span class="code-keyword">public</span> TaskTemplate(
+    Guid id,
+    string name,
+    Workflow workflow,
+    TaskTemplateKind kind
+)
+</code>
+        </pre>
+        <h3>Параметры</h3>
+        <table>
+            <tr>
+                <td>id</td>
+                <td>Уникальный идентификатор шаблона</td>
+            </tr>
+            <tr>
+                <td>name</td>
+                <td>Название шаблона</td>
+            </tr>
+            <tr>
+                <td>workflow</td>
+                <td>Рабочий процесс шаблона (тип <code>Workflow</code>)</td>
+            </tr>
+            <tr>
+                <td>kind</td>
+                <td>Тип шаблона задачи</td>
+            </tr>
+        </table>
+
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Свойство</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Id</td>
+                    <td>Guid</td>
+                    <td>Уникальный идентификатор шаблона (только для чтения)</td>
+                </tr>
+                <tr>
+                    <td>Name</td>
+                    <td>string</td>
+                    <td>Название шаблона (только для чтения)</td>
+                </tr>
+                <tr>
+                    <td>Workflow</td>
+                    <td>Workflow</td>
+                    <td>Рабочий процесс шаблона (только для чтения)</td>
+                </tr>
+                <tr>
+                    <td>Kind</td>
+                    <td>TaskTemplateKind</td>
+                    <td>Тип шаблона задачи (только для чтения)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        <pre>
+<code>
+<span class="code-comment">// Создание шаблона задачи</span>
+<span class="code-keyword">var</span> workflow = <span class="code-keyword">new</span> Workflow(...);
+<span class="code-keyword">var</span> template = <span class="code-keyword">new</span> TaskTemplate(
+    Guid.NewGuid(),
+    "Document approval",
+    workflow,
+    TaskTemplateKind.BusinessProcess
+);
+
+<span class="code-comment">// Получение информации о шаблоне</span>
+Console.WriteLine($"Template ID: {template.Id}");
+Console.WriteLine($"Workflow steps: {template.Workflow.Steps.Count()}");
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Класс помечен как <code>[Obsolete]</code> - использование в новых проектах не рекомендуется</li>
+                <li>Все свойства доступны только для чтения после создания</li>
+                <li>Используемый класс <code>Workflow</code> также считается устаревшим</li>
+                <li>Рекомендуется использовать <code>ITaskTemplateV2</code> в новых реализациях</li>
+            </ul>
+        </div>
+
+        <h2>Особенности реализации</h2>
+        <ul>
+            <li>Объект становится неизменяемым после создания</li>
+            <li>Не содержит методов для модификации состояния</li>
+            <li>Зависит от устаревших компонентов (<code>Workflow</code>, <code>Stage</code>)</li>
+        </ul>
+    </div>
+</body>
+</html>

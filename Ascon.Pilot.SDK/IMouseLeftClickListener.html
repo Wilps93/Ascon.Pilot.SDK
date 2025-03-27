@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация интерфейса IMouseLeftClickListener</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IMouseLeftClickListener</h1>
+        
+        <h2>Описание</h2>
+        <p>Предоставляет механизм обработки событий клика левой кнопкой мыши в графических компонентах системы. 
+        Используется для реализации пользовательских действий при взаимодействии с визуальными элементами.</p>
+
+        <h2>Методы</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Параметры</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>OnLeftMouseButtonClick</td>
+                    <td>pointContext: XpsRenderClickPointContext</td>
+                    <td>Вызывается при клике левой кнопкой мыши. Содержит контекст события с информацией о позиции и состоянии</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Пример реализации</h2>
+        <pre>
+<code>
+<span class="code-keyword">public class</span> CustomClickListener : IMouseLeftClickListener 
+{
+    <span class="code-keyword">public void</span> OnLeftMouseButtonClick(XpsRenderClickPointContext pointContext)
+    {
+        <span class="code-comment">// Получение координат клика</span>
+        <span class="code-keyword">var</span> position = pointContext.Position;
+        
+        <span class="code-comment">// Проверка наличия элемента под курсором</span>
+        <span class="code-keyword">if</span> (pointContext.HitTestResult != <span class="code-keyword">null</span>)
+        {
+            <span class="code-comment">// Реакция на клик по визуальному элементу</span>
+            Console.WriteLine($"Клик на элемент: {pointContext.HitTestResult.Visual.Name}");
+        }
+    }
+}
+</code>
+        </pre>
+
+        <h2>Ключевые особенности</h2>
+        <ul>
+            <li>Контекст <code>XpsRenderClickPointContext</code> содержит:</li>
+            <ul>
+                <li>Координаты клика (Position)</li>
+                <li>Результат хит-теста (HitTestResult)</li>
+                <li>Состояние модификаторов клавиатуры</li>
+            </ul>
+            <li>Должен быть подписан на события соответствующего визуального компонента</li>
+            <li>Реализация должна учитывать многопоточность при работе с UI</li>
+        </ul>
+
+        <div class="note">
+            <strong>Важно:</strong> Убедитесь, что объект реализующий интерфейс, 
+            правильно подписан на события целевого компонента и своевременно 
+            удаляется при уничтожении элемента
+        </div>
+    </div>
+</body>
+</html>

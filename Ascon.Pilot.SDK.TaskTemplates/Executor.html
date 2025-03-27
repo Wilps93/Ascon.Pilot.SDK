@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация Executor SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .obsolete {
+            color: #dc3545;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс Executor <span class="obsolete">[Устаревший]</span></h1>
+        
+        <h2>Описание</h2>
+        <p>Представляет исполнителя задачи с настройками дедлайнов. <strong>Класс признан устаревшим</strong> - рекомендуется использовать современные альтернативы для новых разработок.</p>
+        <p>Наследуется от <code>Participant</code>, расширяя функционал управления сроками.</p>
+
+        <h2>Наследование</h2>
+        <pre>Participant → Executor</pre>
+
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Свойство</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Role</td>
+                    <td>string</td>
+                    <td>Роль исполнителя в задаче</td>
+                </tr>
+                <tr>
+                    <td>IsDeadlineSet</td>
+                    <td>bool</td>
+                    <td>Установлен ли дедлайн для исполнителя</td>
+                </tr>
+                <tr>
+                    <td>DeadlineDays</td>
+                    <td>int</td>
+                    <td>Количество дней на выполнение задачи (для относительных дедлайнов)</td>
+                </tr>
+                <tr>
+                    <td>DeadlineTime</td>
+                    <td>DateTime</td>
+                    <td>Фиксированная дата дедлайна</td>
+                </tr>
+                <tr>
+                    <td>IsRelativeDeadline</td>
+                    <td>bool</td>
+                    <td>Тип дедлайна: относительный (от даты начала) или фиксированный</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Методы</h2>
+        <h3>Переопределенные методы</h3>
+        <table>
+            <tr>
+                <td>Equals(Executor)</td>
+                <td>Сравнивает текущий объект с другим исполнителем</td>
+            </tr>
+            <tr>
+                <td>Equals(object)</td>
+                <td>Сравнивает с произвольным объектом</td>
+            </tr>
+            <tr>
+                <td>GetHashCode()</td>
+                <td>Возвращает хеш-код объекта</td>
+            </tr>
+        </table>
+
+        <h2>Примеры использования</h2>
+        <pre>
+<code>
+<span class="code-comment">// Создание исполнителя</span>
+<span class="code-keyword">var</span> executor = <span class="code-keyword">new</span> Executor
+{
+    Role = "developer",
+    IsDeadlineSet = true,
+    DeadlineDays = 5,
+    IsRelativeDeadline = true
+};
+
+<span class="code-comment">// Сравнение исполнителей</span>
+Executor another = GetExecutor();
+bool areEqual = executor.Equals(another);
+
+<span class="code-comment">// Проверка дедлайна</span>
+<span class="code-keyword">if</span> (executor.IsRelativeDeadline)
+{
+    DateTime deadline = DateTime.Now.AddDays(executor.DeadlineDays);
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Класс помечен как <code>[Obsolete]</code> - использование в новых проектах не рекомендуется</li>
+                <li>Сравнение учитывает все свойства, включая базовый класс Participant</li>
+                <li>Хеш-код зависит от всех полей, включая наследуемые</li>
+                <li>Для фиксированных дедлайнов используйте DeadlineTime вместо DeadlineDays</li>
+            </ul>
+        </div>
+
+        <h2>Особенности реализации</h2>
+        <ul>
+            <li>Сравнение объектов включает проверку базового класса Participant</li>
+            <li>Хеш-код вычисляется комбинацией всех свойств</li>
+            <li>Реализация учитывает возможное наследование через проверку GetType()</li>
+        </ul>
+    </div>
+</body>
+</html>

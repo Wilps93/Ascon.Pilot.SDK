@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация IStageChangeBuilder SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background-color: #f8d7da;
+            border-left: 4px solid #f5c6cb;
+            padding: 10px;
+            margin: 20px 0;
+            color: #721c24;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .obsolete {
+            text-decoration: line-through;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IStageChangeBuilder</h1>
+        
+        <div class="warning">
+            <strong>Внимание!</strong> Этот интерфейс и все его методы помечены как устаревшие (Obsolete). 
+            Использование может привести к ошибкам в будущих версиях SDK.
+        </div>
+
+        <h2>Описание</h2>
+        <p>Флюент-интерфейс для модификации этапов (stage) в системе. <strong>Не рекомендуется к использованию</strong> - 
+        данный функционал сохраняется только для обратной совместимости.</p>
+
+        <h2>Устаревшие методы</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод/Свойство</th>
+                    <th>Описание</th>
+                    <th>Статус</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="obsolete">SetStageOrder(int order)</td>
+                    <td>Метод для изменения порядка этапа</td>
+                    <td>Obsolete</td>
+                </tr>
+                <tr>
+                    <td class="obsolete">IStageObject StageObject { get; }</td>
+                    <td>Свойство для получения связанного этапа</td>
+                    <td>Obsolete</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры (только для legacy-кода)</h2>
+        <pre>
+<code>
+<span class="code-comment">// Пример устаревшего кода (не рекомендуется)</span>
+<span class="code-keyword">var</span> builder = stageChangeBuilderFactory.Create();
+builder.SetStageOrder(5);
+IStageObject stage = builder.StageObject;
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Избегайте использования этого интерфейса в новом коде</li>
+                <li>Проверьте документацию SDK на наличие современных альтернатив</li>
+                <li>Планируйте миграцию legacy-кода, использующего эти методы</li>
+            </ul>
+        </div>
+
+        <div class="warning">
+            <strong>Важно:</strong> Все методы и свойства этого интерфейса будут удалены 
+            в будущих версиях SDK без обратной совместимости.
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация IFileProvider SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background-color: #f8d7da;
+            border-left: 4px solid #f5c6cb;
+            padding: 10px;
+            margin: 20px 0;
+            color: #721c24;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IFileProvider</h1>
+        
+        <div class="warning">
+            <strong>Важно!</strong> Реализует <code>IDisposable</code> - всегда освобождайте ресурсы после использования
+        </div>
+
+        <h2>Описание</h2>
+        <p>Провайдер для доступа к файлам с поддержкой локального кеша и удаленных источников. 
+        Позволяет проверять наличие файлов, их доступность в offline-режиме и получать потоки для чтения.</p>
+
+        <h2>Методы</h2>
+        
+        <h3>Exists</h3>
+        <p>Проверяет существование файла по идентификатору</p>
+        <table>
+            <tr>
+                <th>Параметр</th>
+                <th>Тип</th>
+                <th>Описание</th>
+            </tr>
+            <tr>
+                <td>fileId</td>
+                <td>Guid</td>
+                <td>Уникальный идентификатор файла</td>
+            </tr>
+        </table>
+        <p><strong>Возвращает:</strong> true - файл существует, false - не найден</p>
+
+        <h3>IsFull</h3>
+        <p>Проверяет полную доступность файла в локальном кеше</p>
+        <table>
+            <tr>
+                <th>Параметр</th>
+                <th>Тип</th>
+                <th>Описание</th>
+            </tr>
+            <tr>
+                <td>fileId</td>
+                <td>Guid</td>
+                <td>Уникальный идентификатор файла</td>
+            </tr>
+        </table>
+        <p><strong>Возвращает:</strong> true - файл полностью загружен и доступен без подключения к серверу</p>
+
+        <h3>OpenRead</h3>
+        <p>Открывает файл для чтения с автоматической загрузкой данных при необходимости</p>
+        <table>
+            <tr>
+                <th>Параметр</th>
+                <th>Тип</th>
+                <th>Описание</th>
+            </tr>
+            <tr>
+                <td>file</td>
+                <td>IFile</td>
+                <td>Файл для открытия (содержит метаданные)</td>
+            </tr>
+        </table>
+        <p><strong>Возвращает:</strong> Поток для чтения содержимого файла</p>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Безопасное чтение файла</h3>
+        <pre>
+<code>
+<span class="code-keyword">using</span> (var provider = GetFileProvider())
+{
+    <span class="code-keyword">var</span> fileId = new Guid("123e4567-e89b-12d3-a456-426614174000");
+    
+    <span class="code-keyword">if</span> (provider.Exists(fileId))
+    {
+        <span class="code-keyword">var</span> file = GetFileById(fileId); <span class="code-comment">// Получение IFile</span>
+        
+        <span class="code-keyword">using</span> (Stream stream = provider.OpenRead(file))
+        {
+            <span class="code-comment">// Работа с потоком</span>
+            <span class="code-keyword">byte</span>[] buffer = <span class="code-keyword">new</span> <span class="code-keyword">byte</span>[stream.Length];
+            stream.Read(buffer, 0, buffer.Length);
+        }
+    }
+}
+</code>
+        </pre>
+
+        <h3>Проверка доступности в offline</h3>
+        <pre>
+<code>
+<span class="code-keyword">bool</span> CanWorkOffline(Guid fileId)
+{
+    <span class="code-keyword">using</span> (var provider = GetFileProvider())
+    {
+        <span class="code-keyword">return</span> provider.Exists(fileId) && provider.IsFull(fileId);
+    }
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Всегда оборачивайте использование провайдера в <code>using</code></li>
+                <li>Проверяйте <code>IsFull()</code> перед работой в offline-режиме</li>
+                <li>Закрывайте потоки после использования</li>
+                <li>Обрабатывайте исключения ввода-вывода</li>
+            </ul>
+        </div>
+
+        <div class="warning">
+            <strong>Особенности:</strong>
+            <ul>
+                <li>OpenRead() может выполнить сетевой запрос при отсутствии файла в кеше</li>
+                <li>Повторные вызовы OpenRead() для одного файла могут возвращать разные потоки</li>
+                <li>Реализация кеширования зависит от конкретного провайдера</li>
+            </ul>
+        </div>
+
+        <h2>Связь с другими компонентами</h2>
+        <ul>
+            <li>Использует <code>IFile</code> для передачи метаданных</li>
+            <li>Может интегрироваться с <code>IEventAggregator</code> для уведомлений о загрузках</li>
+            <li>Работает совместно с <code>ISignatureVerifier</code> для проверки целостности файлов</li>
+        </ul>
+    </div>
+</body>
+</html>

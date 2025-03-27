@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация IObjectCardHandler</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IObjectCardHandler</h1>
+        
+        <h2>Описание</h2>
+        <p>Обработчик событий объектной карточки, позволяющий управлять отображением и реагировать на изменения атрибутов.</p>
+
+        <h2>Методы</h2>
+        
+        <h3>Handle</h3>
+        <pre>
+<code>
+<span class="code-keyword">bool</span> Handle(
+    IAttributeModifier modifier, 
+    ObjectCardContext context
+)
+</code>
+        </pre>
+        <p>Вызывается при отображении карточки объекта.</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Параметр</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>modifier</td>
+                    <td>Модификатор атрибутов для предварительной настройки отображения</td>
+                </tr>
+                <tr>
+                    <td>context</td>
+                    <td>Контекст объектной карточки</td>
+                </tr>
+            </tbody>
+        </table>
+        <p><strong>Возврат:</strong> true - разрешить отображение, false - отменить</p>
+
+        <h3>OnValueChanged</h3>
+        <pre>
+<code>
+<span class="code-keyword">bool</span> OnValueChanged(
+    IAttribute sender,
+    AttributeValueChangedEventArgs args,
+    IAttributeModifier modifier
+)
+</code>
+        </pre>
+        <p>Вызывается при изменении значения атрибута.</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Параметр</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>sender</td>
+                    <td>Атрибут, который был изменен</td>
+                </tr>
+                <tr>
+                    <td>args</td>
+                    <td>Аргументы события изменения (старое/новое значение)</td>
+                </tr>
+                <tr>
+                    <td>modifier</td>
+                    <td>Модификатор для внесения дополнительных изменений</td>
+                </tr>
+            </tbody>
+        </table>
+        <p><strong>Возврат:</strong> true - подтвердить изменение, false - отменить</p>
+
+        <h2>Особенности реализации</h2>
+        <ul>
+            <li>Методы могут использоваться для валидации данных</li>
+            <li>Позволяют реализовать каскадные изменения атрибутов</li>
+            <li>Возможна модификация других атрибутов через IAttributeModifier</li>
+        </ul>
+
+        <h2>Пример реализации</h2>
+        <pre>
+<code>
+<span class="code-keyword">public class</span> CustomCardHandler : IObjectCardHandler
+{
+    <span class="code-keyword">public bool</span> Handle(IAttributeModifier modifier, ObjectCardContext context)
+    {
+        <span class="code-comment">// Преднастройка полей перед отображением</span>
+        modifier.SetValue("ReadOnlyField", "Значение только для чтения");
+        <span class="code-keyword">return true</span>;
+    }
+
+    <span class="code-keyword">public bool</span> OnValueChanged(IAttribute sender, AttributeValueChangedEventArgs args, IAttributeModifier modifier)
+    {
+        <span class="code-keyword">if</span> (sender.Name == "Status")
+        {
+            <span class="code-comment">// Автоматически обновляем дату при смене статуса</span>
+            modifier.SetValue("ModifiedDate", DateTime.Now);
+        }
+        <span class="code-keyword">return true</span>;
+    }
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong> В документации к методу OnValueChanged 
+            указано, что параметр sender - это "имя измененного атрибута", 
+            но тип IAttribute предполагает объект атрибута. Это может быть 
+            либо опечатка в описании, либо ожидается реализация интерфейса IAttribute.
+        </div>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Используйте Handle для инициализации зависимых полей</li>
+                <li>В OnValueChanged проверяйте типы данных через args.Context</li>
+                <li>Для отмены операции возвращайте false в соответствующих случаях</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

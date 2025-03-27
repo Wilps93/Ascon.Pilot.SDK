@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация AttributeType</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .code-type {
+            color: #2b91af;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Перечисление AttributeType</h1>
+        
+        <h2>Описание</h2>
+        <p>Определяет возможные типы атрибутов объектов в системе. Используется для указания типа данных при работе с метаданными и поиском.</p>
+
+        <h2>Значения</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Значение</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Integer</td>
+                    <td>Целочисленный атрибут (32-битный)</td>
+                </tr>
+                <tr>
+                    <td>Double</td>
+                    <td>Числовой атрибут с плавающей точкой двойной точности</td>
+                </tr>
+                <tr>
+                    <td>DateTime</td>
+                    <td>Атрибут, хранящий дату и время</td>
+                </tr>
+                <tr>
+                    <td>String</td>
+                    <td>Строковый атрибут</td>
+                </tr>
+                <tr>
+                    <td>Decimal</td>
+                    <td>Десятичный числовой атрибут (высокая точность)</td>
+                </tr>
+                <tr>
+                    <td>Numerator</td>
+                    <td>Атрибут для нумераторов (специальный тип для автоинкрементных значений)</td>
+                </tr>
+                <tr>
+                    <td>Array</td>
+                    <td>Массив значений (коллекция элементов)</td>
+                </tr>
+                <tr>
+                    <td>UserState</td>
+                    <td>Атрибут состояния пользователя (идентификатор состояния)</td>
+                </tr>
+                <tr>
+                    <td>OrgUnit</td>
+                    <td>Атрибут организационной единицы (подразделение/отдел)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Проверка типа атрибута</h3>
+        <pre>
+<code>
+<span class="code-type">AttributeType</span> attrType = GetAttributeType();
+<span class="code-keyword">if</span> (attrType == AttributeType.DateTime)
+{
+    <span class="code-comment">// Обработка даты</span>
+    Console.WriteLine("Обнаружен атрибут типа DateTime");
+}
+</code>
+        </pre>
+
+        <h3>Создание атрибута с указанием типа</h3>
+        <pre>
+<code>
+<span class="code-type">IAttribute</span> attribute = factory.CreateAttribute(
+    "Price",
+    AttributeType.Decimal,
+    19.99m
+);
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Тип Numerator обычно используется для автоматически генерируемых уникальных номеров</li>
+                <li>UserState и OrgUnit часто связаны с системой прав и ролей</li>
+                <li>Для поиска по атрибутам используйте класс <span class="code-type">AttributeFields</span> с соответствующими методами</li>
+            </ul>
+        </div>
+
+        <h2>Связь с другими компонентами</h2>
+        <p>Типы из этого перечисления используются в:</p>
+        <ul>
+            <li>Методах класса <span class="code-type">AttributeFields</span> для построения поисковых условий</li>
+            <li>Системе метаданных объектов</li>
+            <li>Механизмах валидации данных</li>
+        </ul>
+    </div>
+</body>
+</html>

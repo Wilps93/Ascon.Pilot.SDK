@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация AutomationDefaults SDK</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7;
+            margin: 2rem auto;
+            max-width: 1200px;
+            padding: 0 20px;
+            color: #2d3436;
+        }
+
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #4a69bd;
+            padding-bottom: 0.5rem;
+        }
+
+        h2 {
+            color: #34495e;
+            margin-top: 2rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        th {
+            background-color: #4a69bd;
+            color: white;
+            padding: 1rem;
+            text-align: left;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        pre {
+            background-color: #f1f1f1;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+
+        .code-keyword {
+            color: #4a69bd;
+            font-weight: bold;
+        }
+
+        .code-comment {
+            color: #7f8c8d;
+            font-style: italic;
+        }
+
+        .alert {
+            background-color: #fff5cc;
+            border-left: 4px solid #f3d250;
+            padding: 1rem;
+            margin: 2rem 0;
+            border-radius: 4px;
+        }
+
+        .alert strong {
+            color: #e67e22;
+        }
+
+        .example {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 4px;
+            margin: 1rem 0;
+        }
+
+        .example h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+
+        .example pre {
+            margin: 0.5rem 0;
+        }
+
+        @media (max-width: 768px) {
+            th, td {
+                padding: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Класс AutomationDefaults</h1>
+    
+    <section>
+        <h2>Общее описание</h2>
+        <p>
+            Статический класс <code>AutomationDefaults</code> содержит набор предопределенных констант 
+            для конфигурации автоматизированных процессов в системе. Используется для:
+        </p>
+        <ul>
+            <li>Настройки рабочих процессов</li>
+            <li>Конфигурации прав доступа</li>
+            <li>Управления уведомлениями</li>
+            <li>Работы с состояниями объектов</li>
+            <li>Интеграции с внешними сервисами</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Константы класса</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Константа</th>
+                    <th>Значение</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>ACTIVITY_PARAMETER_NAME</td>
+                    <td>"activity"</td>
+                    <td>Параметр для указания текущей активности в рабочем процессе</td>
+                </tr>
+                <tr>
+                    <td>ActivityAdapterClassName</td>
+                    <td>"AutomationActivityAdapter"</td>
+                    <td>Имя класса адаптера для обработки активностей</td>
+                </tr>
+                <tr>
+                    <td>TriggerType</td>
+                    <td>"triggerType"</td>
+                    <td>Тип триггера автоматизации</td>
+                </tr>
+                <tr>
+                    <td>SourceTypes</td>
+                    <td>"sourceTypes"</td>
+                    <td>Типы исходных объектов для автоматизации</td>
+                </tr>
+                <tr>
+                    <td>RelationType</td>
+                    <td>"relationType"</td>
+                    <td>Тип связи между объектами</td>
+                </tr>
+                <tr>
+                    <td>RelationFilterByChangeKind</td>
+                    <td>"relationFilterByChangeKind"</td>
+                    <td>Фильтр связей по типу изменения</td>
+                </tr>
+                <tr>
+                    <td>Target</td>
+                    <td>"target"</td>
+                    <td>Целевой объект автоматизации</td>
+                </tr>
+                <tr>
+                    <td>AccessLevel</td>
+                    <td>"accessLevel"</td>
+                    <td>Уровень доступа (см. перечисление <code>AccessLevel</code>)</td>
+                </tr>
+                <tr>
+                    <td>Inheritable</td>
+                    <td>"inheritable"</td>
+                    <td>Признак наследуемости прав</td>
+                </tr>
+                <tr>
+                    <td>OrgUnitAttributeNames</td>
+                    <td>"orgUnitAttributeNames"</td>
+                    <td>Список атрибутов организационных единиц</td>
+                </tr>
+                <tr>
+                    <td>OrgUnitKinds</td>
+                    <td>"orgUnitKinds"</td>
+                    <td>Типы организационных единиц</td>
+                </tr>
+                <tr>
+                    <td>SigningRoleAttributeName</td>
+                    <td>"signingRoleAttributeName"</td>
+                    <td>Атрибут роли подписания</td>
+                </tr>
+                <tr>
+                    <td>AttributeName</td>
+                    <td>"attributeName"</td>
+                    <td>Имя атрибута объекта</td>
+                </tr>
+                <tr>
+                    <td>AttributeNames</td>
+                    <td>"attributeNames"</td>
+                    <td>Список имен атрибутов</td>
+                </tr>
+                <tr>
+                    <td>TargetAttributeName</td>
+                    <td>"targetAttributeName"</td>
+                    <td>Целевой атрибут для операций</td>
+                </tr>
+                <tr>
+                    <td>StateToOrgUnitConfig</td>
+                    <td>"stateToOrgUnitConfig"</td>
+                    <td>Конфигурация связи состояний и орг. единиц</td>
+                </tr>
+                <tr>
+                    <td>OldStates</td>
+                    <td>"oldStates"</td>
+                    <td>Предыдущие состояния объекта</td>
+                </tr>
+                <tr>
+                    <td>NewState</td>
+                    <td>"newState"</td>
+                    <td>Новое состояние объекта</td>
+                </tr>
+                <tr>
+                    <td>FromStateName</td>
+                    <td>"fromStateName"</td>
+                    <td>Начальное состояние перехода</td>
+                </tr>
+                <tr>
+                    <td>ToStateName</td>
+                    <td>"toStateName"</td>
+                    <td>Конечное состояние перехода</td>
+                </tr>
+                <tr>
+                    <td>StatesFrom</td>
+                    <td>"statesFrom"</td>
+                    <td>Список начальных состояний</td>
+                </tr>
+                <tr>
+                    <td>StatesTo</td>
+                    <td>"statesTo"</td>
+                    <td>Список конечных состояний</td>
+                </tr>
+                <tr>
+                    <td>IsVirtual</td>
+                    <td>"isVirtual"</td>
+                    <td>Признак виртуального объекта</td>
+                </tr>
+                <tr>
+                    <td>TypesForSignatureRequestData</td>
+                    <td>"typesForSignatureRequestData"</td>
+                    <td>Типы данных для запроса подписи</td>
+                </tr>
+                <tr>
+                    <td>TargetTypes</td>
+                    <td>"targetTypes"</td>
+                    <td>Целевые типы объектов</td>
+                </tr>
+                <tr>
+                    <td>AttributeValue</td>
+                    <td>"attributeValue"</td>
+                    <td>Значение атрибута</td>
+                </tr>
+                <tr>
+                    <td>OffsetAttributeName</td>
+                    <td>"offsetAttributeName"</td>
+                    <td>Атрибут для временного смещения</td>
+                </tr>
+                <tr>
+                    <td>InitialStateNames</td>
+                    <td>"initialStateNames"</td>
+                    <td>Начальные состояния объектов</td>
+                </tr>
+                <tr>
+                    <td>OldOrgUnitKind</td>
+                    <td>"oldOrgUnitKind"</td>
+                    <td>Предыдущий тип орг. единицы</td>
+                </tr>
+                <tr>
+                    <td>NewOrgUnitKind</td>
+                    <td>"newOrgUnitKind"</td>
+                    <td>Новый тип орг. единицы</td>
+                </tr>
+                <tr>
+                    <td>OrgUnitAttributeValue</td>
+                    <td>"orgUnitAttributeValue"</td>
+                    <td>Значение атрибута орг. единицы</td>
+                </tr>
+                <tr>
+                    <td>SourceAttributeName</td>
+                    <td>"sourceAttributeName"</td>
+                    <td>Исходный атрибут для операций</td>
+                </tr>
+                <tr>
+                    <td>DepartmentAttributeName</td>
+                    <td>"departmentAttributeName"</td>
+                    <td>Атрибут подразделения</td>
+                </tr>
+                <tr>
+                    <td>Subscribers</td>
+                    <td>"subscribers"</td>
+                    <td>Список подписчиков уведомлений</td>
+                </tr>
+                <tr>
+                    <td>Message</td>
+                    <td>"message"</td>
+                    <td>Текст сообщения/уведомления</td>
+                </tr>
+                <tr>
+                    <td>NotificationName</td>
+                    <td>"notificationName"</td>
+                    <td>Имя типа уведомления</td>
+                </tr>
+                <tr>
+                    <td>ItemChangeKind</td>
+                    <td>"itemChangeKind"</td>
+                    <td>Тип изменения элемента</td>
+                </tr>
+                <tr>
+                    <td>IgnoreList</td>
+                    <td>"ignoreList"</td>
+                    <td>Список игнорируемых элементов</td>
+                </tr>
+                <tr>
+                    <td>ChangeListKind</td>
+                    <td>"changeListKind"</td>
+                    <td>Тип списка изменений</td>
+                </tr>
+                <tr>
+                    <td>CompletionStateConfig</td>
+                    <td>"completionStateConfig"</td>
+                    <td>Конфигурация состояния завершения</td>
+                </tr>
+                <tr>
+                    <td>Recipients</td>
+                    <td>"recipients"</td>
+                    <td>Список получателей уведомлений</td>
+                </tr>
+                <tr>
+                    <td>Host</td>
+                    <td>"host"</td>
+                    <td>SMTP-сервер для уведомлений</td>
+                </tr>
+                <tr>
+                    <td>Port</td>
+                    <td>"port"</td>
+                    <td>Порт SMTP-сервера</td>
+                </tr>
+                <tr>
+                    <td>UseDefaultCredentials</td>
+                    <td>"useDefaultCredentials"</td>
+                    <td>Флаг использования стандартных учетных данных</td>
+                </tr>
+                <tr>
+                    <td>UserName</td>
+                    <td>"userName"</td>
+                    <td>Имя пользователя для SMTP</td>
+                </tr>
+                <tr>
+                    <td>Password</td>
+                    <td>"password"</td>
+                    <td>Пароль для SMTP</td>
+                </tr>
+                <tr>
+                    <td>Domain</td>
+                    <td>"domain"</td>
+                    <td>Домен для аутентификации</td>
+                </tr>
+                <tr>
+                    <td>EnableSsl</td>
+                    <td>"enableSsl"</td>
+                    <td>Флаг использования SSL для SMTP</td>
+                </tr>
+                <tr>
+                    <td>FromEmail</td>
+                    <td>"fromEmail"</td>
+                    <td>Адрес отправителя</td>
+                </tr>
+                <tr>
+                    <td>FromDisplayName</td>
+                    <td>"fromDisplayName"</td>
+                    <td>Отображаемое имя отправителя</td>
+                </tr>
+                <tr>
+                    <td>Subject</td>
+                    <td>"subject"</td>
+                    <td>Тема сообщения</td>
+                </tr>
+                <tr>
+                    <td>Body</td>
+                    <td>"body"</td>
+                    <td>Тело сообщения</td>
+                </tr>
+                <tr>
+                    <td>IsBodyHtml</td>
+                    <td>"isBodyHtml"</td>
+                    <td>Флаг HTML-формата тела</td>
+                </tr>
+                <tr>
+                    <td>NewVersionConfirmationNeeded</td>
+                    <td>"newVersionConfirmationNeeded"</td>
+                    <td>Требуется подтверждение новой версии</td>
+                </tr>
+                <tr>
+                    <td>FileBodyChangeOnly</td>
+                    <td>"fileBodyChangeOnly"</td>
+                    <td>Только изменения в содержимом файла</td>
+                </tr>
+                <tr>
+                    <td>FileExtensions</td>
+                    <td>"fileExtensions"</td>
+                    <td>Поддерживаемые расширения файлов</td>
+                </tr>
+                <tr>
+                    <td>ForbidAllSignedCopy</td>
+                    <td>"forbidAllSignedCopy"</td>
+                    <td>Запрет на все подписанные копии</td>
+                </tr>
+                <tr>
+                    <td>IgnoreIfAllInStates</td>
+                    <td>"ignoreIfAllInStates"</td>
+                    <td>Игнорировать, если все в указанных состояниях</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <h2>Примеры использования</h2>
+        
+        <div class="example">
+            <h3>Конфигурация SMTP</h3>
+            <pre>
+<code>
+<span class="code-keyword">var</span> smtpConfig = <span class="code-keyword">new</span> Dictionary<<span class="code-keyword">string</span>, <span class="code-keyword">object</span>>
+{
+    { AutomationDefaults.Host, "smtp.example.com" },
+    { AutomationDefaults.Port, 587 },
+    { AutomationDefaults.EnableSsl, <span class="code-keyword">true</span> },
+    { AutomationDefaults.UserName, "user@example.com" },
+    { AutomationDefaults.Password, "secure_password" }
+};
+</code>
+            </pre>
+        </div>
+
+        <div class="example">
+            <h3>Настройка перехода состояний</h3>
+            <pre>
+<code>
+<span class="code-keyword">var</span> stateConfig = <span class="code-keyword">new</span> TransitionConfiguration
+{
+    Parameters = 
+    {
+        { AutomationDefaults.FromStateName, "Draft" },
+        { AutomationDefaults.ToStateName, "Published" },
+        { AutomationDefaults.AccessLevel, AccessLevel.ViewEdit }
+    }
+};
+</code>
+            </pre>
+        </div>
+
+        <div class="example">
+            <h3>Фильтрация изменений</h3>
+            <pre>
+<code>
+<span class="code-keyword">if</span> (changeData.Contains(AutomationDefaults.ItemChangeKind) 
+    && changeData[AutomationDefaults.ItemChangeKind] == ChangeKind.Modification)
+{
+    <span class="code-comment">// Обработка модификаций</span>
+}
+</code>
+            </pre>
+        </div>
+    </section>
+
+    <div class="alert">
+        <strong>Примечание:</strong> Все константы предназначены только для чтения. 
+        Для изменения поведения автоматизации используйте их в конфигурационных словарях.
+    </div>
+</body>
+</html>

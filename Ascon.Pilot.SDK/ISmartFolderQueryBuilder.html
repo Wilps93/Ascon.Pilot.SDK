@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация ISmartFolderQueryBuilder SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background-color: #f8d7da;
+            border-left: 4px solid #f5c6cb;
+            padding: 10px;
+            margin: 20px 0;
+            color: #721c24;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс ISmartFolderQueryBuilder</h1>
+        
+        <h2>Описание</h2>
+        <p>Построитель запросов для "умных папок" с поддержкой сложной фильтрации. 
+        Позволяет создавать запросы с использованием паттерна "Builder" через цепочку методов.</p>
+
+        <h2>Методы</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Параметры</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>WithSearchMode</td>
+                    <td>SearchMode searchMode</td>
+                    <td>Устанавливает режим поиска (например, AND/OR между условиями)</td>
+                </tr>
+                <tr>
+                    <td>WithKeyword</td>
+                    <td>string keyword</td>
+                    <td>Добавляет ключевое слово для поиска по текстовым полям</td>
+                </tr>
+                <tr>
+                    <td>WithQuotedKeyword</td>
+                    <td>string keyword</td>
+                    <td>Ищет точную фразу (сохраняет пробелы и порядок слов)</td>
+                </tr>
+                <tr>
+                    <td>WithType</td>
+                    <td>int typeId</td>
+                    <td>Ограничивает поиск объектами указанного типа</td>
+                </tr>
+                <tr>
+                    <td>WithTypes</td>
+                    <td>IEnumerable<int> typeIds</td>
+                    <td>Ограничивает поиск объектами из списка типов</td>
+                </tr>
+                <tr>
+                    <td>WithState</td>
+                    <td>ObjectState state</td>
+                    <td>Фильтрует объекты по состоянию (например, активные/удаленные)</td>
+                </tr>
+                <tr>
+                    <td>WithAuthor</td>
+                    <td>int authorId</td>
+                    <td>Ищет объекты указанного автора</td>
+                </tr>
+                <tr>
+                    <td>WithAuthors</td>
+                    <td>IEnumerable<int> authorIds</td>
+                    <td>Ищет объекты нескольких авторов</td>
+                </tr>
+                <tr>
+                    <td colspan="3"><strong>Периоды создания:</strong></td>
+                </tr>
+                <tr>
+                    <td>WithCreatedToday</td>
+                    <td>-</td>
+                    <td>Ищет объекты, созданные сегодня (по UTC)</td>
+                </tr>
+                <tr>
+                    <td>WithCreatedYesterday</td>
+                    <td>-</td>
+                    <td>Ищет объекты, созданные вчера</td>
+                </tr>
+                <tr>
+                    <td>WithCreatedThisWeek</td>
+                    <td>-</td>
+                    <td>Ищет объекты, созданные на этой неделе</td>
+                </tr>
+                <tr>
+                    <td>WithCreatedLastWeek</td>
+                    <td>-</td>
+                    <td>Ищет объекты, созданные на прошлой неделе</td>
+                </tr>
+                <tr>
+                    <td>WithCreatedThisMonth</td>
+                    <td>-</td>
+                    <td>Ищет объекты, созданные в этом месяце</td>
+                </tr>
+                <tr>
+                    <td>WithCreatedLastMonth</td>
+                    <td>-</td>
+                    <td>Ищет объекты, созданные в прошлом месяце</td>
+                </tr>
+                <tr>
+                    <td>WithCreatedThisYear</td>
+                    <td>-</td>
+                    <td>Ищет объекты, созданные в этом году</td>
+                </tr>
+                <tr>
+                    <td>WithCreatedLastYear</td>
+                    <td>-</td>
+                    <td>Ищет объекты, созданные в прошлом году</td>
+                </tr>
+                <tr>
+                    <td>WithCreatedInRange</td>
+                    <td>DateTime fromUtc, DateTime toUtc</td>
+                    <td>Ищет объекты, созданные в указанном диапазоне дат (UTC)</td>
+                </tr>
+                <tr>
+                    <td>ToString</td>
+                    <td>-</td>
+                    <td>Компилирует запрос в строку для выполнения</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Простой поиск</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> query = smartFolderBuilder
+    .WithKeyword("договор")
+    .WithType(101)
+    .WithAuthor(123)
+    .ToString();
+</code>
+        </pre>
+
+        <h3>Сложная фильтрация</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> query = smartFolderBuilder
+    .WithSearchMode(SearchMode.And)
+    .WithQuotedKeyword("проект документа")
+    .WithTypes(new[] { 101, 102 })
+    .WithState(ObjectState.Active)
+    .WithCreatedThisMonth()
+    .ToString();
+</code>
+        </pre>
+
+        <h3>Поиск по датам</h3>
+        <pre>
+<code>
+<span class="code-keyword">DateTime</span> startDate = <span class="code-keyword">new</span> DateTime(2023, 1, 1);
+<span class="code-keyword">DateTime</span> endDate = <span class="code-keyword">new</span> DateTime(2023, 12, 31);
+
+<span class="code-keyword">var</span> query = smartFolderBuilder
+    .WithCreatedInRange(startDate, endDate)
+    .WithAuthor(456)
+    .ToString();
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Для точного поиска используйте WithQuotedKeyword()</li>
+                <li>При использовании WithCreatedInRange() убедитесь, что fromUtc ≤ toUtc</li>
+                <li>Метод ToString() должен вызываться после всех настроек</li>
+            </ul>
+        </div>
+
+        <div class="warning">
+            <strong>Важно:</strong> Все даты обрабатываются в формате UTC. 
+            Убедитесь в корректности временных зон при использовании методов с датами.
+        </div>
+    </div>
+</body>
+</html>

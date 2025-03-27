@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация ISearchResult</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс ISearchResult</h1>
+        
+        <h2>Описание</h2>
+        <p>Результат выполнения поискового запроса. Содержит набор найденных объектов и метаинформацию о результате.</p>
+
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Свойство</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Result</td>
+                    <td>IEnumerable<Guid></td>
+                    <td>Идентификаторы объектов, соответствующих критериям поиска</td>
+                </tr>
+                <tr>
+                    <td>Total</td>
+                    <td>long</td>
+                    <td>Общее количество совпадений (может превышать размер коллекции Result)</td>
+                </tr>
+                <tr>
+                    <td>Kind</td>
+                    <td>SearchResultKind</td>
+                    <td>Источник данных результата (база, кэш, внешний сервис)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Обработка результатов поиска</h3>
+        <pre>
+<code>
+<span class="code-keyword">void</span> ProcessSearchResult(ISearchResult searchResult)
+{
+    <span class="code-keyword">if</span> (searchResult.Total == 0)
+    {
+        Console.WriteLine("Объекты не найдены");
+        <span class="code-keyword">return</span>;
+    }
+
+    <span class="code-comment">// Обработка пакета результатов</span>
+    <span class="code-keyword">foreach</span> (Guid objectId <span class="code-keyword">in</span> searchResult.Result)
+    {
+        ProcessObject(objectId);
+    }
+
+    <span class="code-comment">// Проверка наличия дополнительных результатов</span>
+    <span class="code-keyword">if</span> (searchResult.Result.Count() < searchResult.Total)
+    {
+        Console.WriteLine($"Доступно еще {searchResult.Total - searchResult.Result.Count()} объектов");
+    }
+}
+</code>
+        </pre>
+
+        <h3>Анализ источника данных</h3>
+        <pre>
+<code>
+<span class="code-keyword">void</span> CheckResultSource(ISearchResult searchResult)
+{
+    <span class="code-keyword">switch</span> (searchResult.Kind)
+    {
+        <span class="code-keyword">case</span> SearchResultKind.Database:
+            Console.WriteLine("Результат из основной БД");
+            <span class="code-keyword">break</span>;
+        <span class="code-keyword">case</span> SearchResultKind.Cache:
+            Console.WriteLine("Результат из кэша");
+            <span class="code-keyword">break</span>;
+        <span class="code-keyword">default</span>:
+            Console.WriteLine("Внешний источник данных");
+            <span class="code-keyword">break</span>;
+    }
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Result может содержать подмножество всех совпадений (если использовался MaxResults)</li>
+                <li>Total всегда показывает полное количество совпадений в системе</li>
+                <li>Kind помогает оптимизировать дальнейшие запросы (например, избегать повторного кэширования)</li>
+                <li>При Total = 0 коллекция Result будет пустой</li>
+            </ul>
+        </div>
+
+        <h2>Рекомендации</h2>
+        <ul>
+            <li>Всегда проверяйте Total перед обработкой Result</li>
+            <li>Для постраничной навигации используйте Total и MaxResults</li>
+            <li>Учитывайте Kind при оценке актуальности данных</li>
+            <li>Проверяйте Result на null перед итерацией (хотя SDK гарантирует не-null)</li>
+            <li>Для больших Total используйте пакетную обработку</li>
+        </ul>
+    </div>
+</body>
+</html>

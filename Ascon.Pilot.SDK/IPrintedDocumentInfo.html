@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация IPrintedDocumentInfo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IPrintedDocumentInfo</h1>
+        
+        <h2>Описание</h2>
+        <p>Интерфейс предоставляет информацию о документе, подготовленном для печати, включая настройки принтера, поток данных документа и его уникальный идентификатор.</p>
+
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Свойство</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>PrinterSettings</td>
+                    <td>IPrinterUserSettings</td>
+                    <td>Настройки принтера (формат, ориентация, подключение и т.д.)</td>
+                </tr>
+                <tr>
+                    <td>DocumentStream</td>
+                    <td>Stream</td>
+                    <td>Поток данных документа (например, PDF или XPS содержимое)</td>
+                </tr>
+                <tr>
+                    <td>DocumentId</td>
+                    <td>Guid</td>
+                    <td>Уникальный идентификатор документа в системе</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Получение информации о документе</h3>
+        <pre>
+<code>
+<span class="code-keyword">IPrintedDocumentInfo</span> documentInfo = GetPrintedDocument();
+<span class="code-keyword">Guid</span> docId = documentInfo.DocumentId;
+<span class="code-keyword">using</span> (Stream stream = documentInfo.DocumentStream)
+{
+    <span class="code-comment">// Работа с потоком документа</span>
+    ProcessDocumentStream(stream);
+}
+</code>
+        </pre>
+
+        <h3>Проверка настроек принтера</h3>
+        <pre>
+<code>
+<span class="code-keyword">if</span> (documentInfo.PrinterSettings != <span class="code-keyword">null</span>)
+{
+    <span class="code-comment">// Применение специфичных настроек печати</span>
+    ApplyPrinterSettings(documentInfo.PrinterSettings);
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Свойства доступны только для чтения (get)</li>
+                <li>DocumentStream должен быть корректно закрыт после использования</li>
+                <li>В интерфейсе опечатка в XML-комментарии: "Summery" вместо "Summary"</li>
+            </ul>
+        </div>
+
+        <h2>Рекомендации</h2>
+        <ul>
+            <li>Для работы с DocumentStream используйте конструкцию using</li>
+            <li>Проверяйте PrinterSettings на null перед использованием</li>
+            <li>DocumentId может использоваться для отслеживания версий документа</li>
+        </ul>
+    </div>
+</body>
+</html>

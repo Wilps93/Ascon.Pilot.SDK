@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация перечисления PilotBalloonIcon</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 2rem;
+            color: #2d3436;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        pre {
+            background-color: #2d3436;
+            color: #ffffff;
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .code-keyword {
+            color: #55efc4;
+        }
+
+        .code-comment {
+            color: #81ecec;
+        }
+
+        .note {
+            background-color: #fff1e6;
+            border-left: 4px solid #ff9900;
+            padding: 1rem;
+            margin: 2rem 0;
+            border-radius: 3px;
+        }
+
+        .icon-preview {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            margin-right: 8px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Перечисление PilotBalloonIcon</h1>
+        
+        <h2>Описание</h2>
+        <p>Определяет типы иконок для всплывающих уведомлений (баллонов) в интерфейсе приложения.</p>
+
+        <h2>Значения перечисления</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Значение</th>
+                    <th>Описание</th>
+                    <th>Визуальное представление</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>None</td>
+                    <td>Без иконки</td>
+                    <td><div class="icon-preview" style="background-image: url('data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 16 16\'></svg>')"></div></td>
+                </tr>
+                <tr>
+                    <td>Info</td>
+                    <td>Информационная иконка</td>
+                    <td><div class="icon-preview" style="background-image: url('data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 16 16\'><circle cx=\'8\' cy=\'8\' r=\'7\' fill=\'%2317a2b8\'/><path fill=\'%23fff\' d=\'M8 11c-.55 0-1-.45-1-1V7h2v3c0 .55-.45 1-1 1zm0-5c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z\'/></svg>')"></div></td>
+                </tr>
+                <tr>
+                    <td>Warning</td>
+                    <td>Предупреждающая иконка</td>
+                    <td><div class="icon-preview" style="background-image: url('data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 16 16\'><path fill=\'%23ffc107\' d=\'M8 15c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14C4.14 1 1 4.14 1 8s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm1 10H7v-2h2v2zm0-4H7V7h2v2z\'/></svg>')"></div></td>
+                </tr>
+                <tr>
+                    <td>Error</td>
+                    <td>Иконка ошибки</td>
+                    <td><div class="icon-preview" style="background-image: url('data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 16 16\'><path fill=\'%23dc3545\' d=\'M8 15c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.59-8L8 3.41 4.41 7 8 10.59 11.59 7zM8 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z\'/></svg>')"></div></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Отображение уведомления</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> iconType = PilotBalloonIcon.Warning;
+ShowBalloonMessage("Внимание", "Низкий уровень заряда", iconType);
+
+<span class="code-keyword">void</span> ShowBalloonMessage(string title, string message, PilotBalloonIcon icon)
+{
+    <span class="code-comment">// Логика отображения уведомления с иконкой</span>
+}
+</code>
+        </pre>
+
+        <h3>Проверка типа иконки</h3>
+        <pre>
+<code>
+<span class="code-keyword">if</span> (icon == PilotBalloonIcon.Error)
+{
+    LogError("Обнаружена критическая ошибка");
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong> Визуальное представление иконок может отличаться 
+            в зависимости от темы приложения и версии SDK.
+        </div>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Используйте <code>Info</code> для нейтральных уведомлений</li>
+                <li><code>Warning</code> подходит для предупреждений, требующих внимания</li>
+                <li><code>Error</code> зарезервирован для критических сообщений</li>
+                <li>Значение <code>None</code> используется для текстовых уведомлений без иконок</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

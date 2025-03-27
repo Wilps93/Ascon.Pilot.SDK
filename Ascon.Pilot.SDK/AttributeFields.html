@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация AttributeFields</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .code-type {
+            color: #2b91af;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс AttributeFields</h1>
+        
+        <h2>Описание</h2>
+        <p>Статический класс для построения поисковых условий на основе атрибутов объектов. 
+        Каждый метод создает специализированное поле для поиска определенного типа данных.</p>
+
+        <h2>Методы</h2>
+
+        <h3>String</h3>
+        <pre>
+<code>
+<span class="code-keyword">public</span> <span class="code-keyword">static</span> StringField String(<span class="code-type">string</span> attributeName)
+</code>
+        </pre>
+        <p>Создает условие поиска для строкового атрибута.</p>
+        <table>
+            <tr>
+                <th>Параметр</th>
+                <th>Описание</th>
+            </tr>
+            <tr>
+                <td>attributeName</td>
+                <td>Название атрибута (например, "Name")</td>
+            </tr>
+        </table>
+        <p>Возвращает: Объект <span class="code-type">StringField</span> для построения условий</p>
+
+        <h3>DateTime</h3>
+        <pre>
+<code>
+<span class="code-keyword">public</span> <span class="code-keyword">static</span> DateTimeField DateTime(<span class="code-type">string</span> attributeName)
+</code>
+        </pre>
+        <p>Создает условие поиска для атрибута типа дата/время.</p>
+        <p>Возвращает: Объект <span class="code-type">DateTimeField</span></p>
+
+        <h3>Double</h3>
+        <pre>
+<code>
+<span class="code-keyword">public</span> <span class="code-keyword">static</span> DoubleField Double(<span class="code-type">string</span> attributeName)
+</code>
+        </pre>
+        <p>Создает условие поиска для атрибута с плавающей точкой.</p>
+        <p>Возвращает: Объект <span class="code-type">DoubleField</span></p>
+
+        <h3>Integer</h3>
+        <pre>
+<code>
+<span class="code-keyword">public</span> <span class="code-keyword">static</span> Int64Field Integer(<span class="code-type">string</span> attributeName)
+</code>
+        </pre>
+        <p>Создает условие поиска для целочисленного атрибута (64-bit).</p>
+        <p>Возвращает: Объект <span class="code-type">Int64Field</span></p>
+
+        <h3>OrgUnit</h3>
+        <pre>
+<code>
+<span class="code-keyword">public</span> <span class="code-keyword">static</span> Int32Field OrgUnit(<span class="code-type">string</span> attributeName)
+</code>
+        </pre>
+        <p>Создает условие поиска для атрибута организационной единицы (32-bit).</p>
+        <p>Возвращает: Объект <span class="code-type">Int32Field</span></p>
+
+        <h3>State</h3>
+        <pre>
+<code>
+<span class="code-keyword">public</span> <span class="code-keyword">static</span> GuidField State(<span class="code-type">string</span> attributeName)
+</code>
+        </pre>
+        <p>Создает условие поиска для атрибута состояния (идентификатор состояния).</p>
+        <p>Возвращает: Объект <span class="code-type">UserStateIdField</span></p>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Поиск по строковому атрибуту</h3>
+        <pre>
+<code>
+<span class="code-type">StringField</span> nameField = AttributeFields.String("Name");
+<span class="code-type">ISearchTerm</span> term = nameField.Contains("Документ");
+</code>
+        </pre>
+
+        <h3>Поиск по дате создания</h3>
+        <pre>
+<code>
+<span class="code-type">DateTimeField</span> dateField = AttributeFields.DateTime("Created");
+<span class="code-type">ISearchTerm</span> term = dateField.GreaterThan(DateTime.Now.AddDays(-7));
+</code>
+        </pre>
+
+        <h3>Комбинированный поиск</h3>
+        <pre>
+<code>
+<span class="code-type">ISearchTerm</span> complexTerm = AttributeFields.String("Type").EqualTo("Контракт")
+    .And(AttributeFields.Double("Amount").GreaterThan(10000))
+    .Or(AttributeFields.State("Status").EqualTo(someGuid));
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Методы используют внутренние префиксы типов (например, "t" для строк, "d" для double)</li>
+                <li>Для корректной работы необходимо использовать названия атрибутов, зарегистрированных в системе</li>
+                <li>Метод State() возвращает UserStateIdField, несмотря на название, что может быть особенностью реализации</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

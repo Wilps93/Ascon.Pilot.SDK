@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация интерфейса INavigationTarget</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс INavigationTarget</h1>
+        
+        <div class="note">
+            <strong>Внимание!</strong> Объект автоматически уничтожается через 2 минуты после создания. 
+            Все попытки обращения к его методам после этого срока вызовут исключение.
+        </div>
+
+        <h2>Назначение</h2>
+        <p>Представляет временный контейнер для навигации между объектами, содержащий метаданные 
+        и аргументы перехода. Используется для безопасной передачи данных между модулями системы.</p>
+
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Имя</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>ObjectId</td>
+                    <td>Guid</td>
+                    <td>Идентификатор целевого объекта</td>
+                </tr>
+                <tr>
+                    <td>Type</td>
+                    <td>NavTargetType</td>
+                    <td>Тип навигационного перехода (перечисление)</td>
+                </tr>
+                <tr>
+                    <td>Version</td>
+                    <td>long</td>
+                    <td>Версия объекта в виде тиков (для отслеживания изменений)</td>
+                </tr>
+                <tr>
+                    <td>Args</td>
+                    <td>object[]</td>
+                    <td>Массив аргументов навигации</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Пример использования</h2>
+        <pre>
+<code>
+<span class="code-keyword">void</span> ProcessNavigation(INavigationTarget target)
+{
+    <span class="code-comment">// Проверка актуальности</span>
+    <span class="code-keyword">if</span> (DateTime.Now.Ticks - target.Version > TimeSpan.FromMinutes(2).Ticks)
+    {
+        <span class="code-comment">// Обработка устаревшего объекта</span>
+        <span class="code-keyword">throw new</span> InvalidOperationException("Объект навигации устарел");
+    }
+
+    <span class="code-comment">// Работа с данными</span>
+    Console.WriteLine($"Навигация к объекту: {target.ObjectId}");
+    Console.WriteLine($"Тип перехода: {target.Type}");
+
+    <span class="code-comment">// Обработка аргументов</span>
+    <span class="code-keyword">foreach</span> (var arg <span class="code-keyword">in</span> target.Args)
+    {
+        Console.WriteLine($"Аргумент: {arg}");
+    }
+}
+</code>
+        </pre>
+
+        <h2>Особенности работы</h2>
+        <ul>
+            <li>Не сохраняйте ссылки на объект в плагинах - используйте глубокое копирование</li>
+            <li>Всегда проверяйте актуальность через свойство Version или временные метки</li>
+            <li>Для сериализации используйте DataObjectWrapper из примеров SDK</li>
+        </ul>
+
+        <h2>Рекомендации</h2>
+        <ul>
+            <li>Создавайте копии необходимых данных в первые 2 минуты работы</li>
+            <li>Обрабатывайте ObjectDisposedException при доступе к свойствам</li>
+            <li>Используйте шаблон <code>using</code> для гарантированного удаления</li>
+        </ul>
+
+        <div class="note">
+            <strong>Пример из SDK:</strong> 
+            Смотри реализацию <code>Ascon.Pilot.SDK.ObjectSample.DataObjectWrapper</code> 
+            для безопасной работы с временными объектами.
+        </div>
+    </div>
+</body>
+</html>

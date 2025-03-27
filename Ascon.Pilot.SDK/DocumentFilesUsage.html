@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация DocumentFilesUsage</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .code-type {
+            color: #2b91af;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Перечисление DocumentFilesUsage</h1>
+        
+        <h2>Описание</h2>
+        <p>Определяет режимы использования контекста файлов документов в системе. Используется в классе <a href="DocumentFilesContext.html"><code>DocumentFilesContext</code></a> для указания сценария работы.</p>
+
+        <h2>Значения</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Значение</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>CreateNew</td>
+                    <td>Режим создания нового документа ECM через диалоговое окно</td>
+                </tr>
+                <tr>
+                    <td>ObjectsExplorer</td>
+                    <td>Режим отображения в обозревателе объектов</td>
+                </tr>
+                <tr>
+                    <td>CardView</td>
+                    <td>Режим просмотра карточки объекта</td>
+                </tr>
+                <tr>
+                    <td>TemplatesManager</td>
+                    <td>Режим управления шаблонами документов</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+
+        <h3>Определение режима в контексте</h3>
+        <pre>
+<code>
+<span class="code-type">DocumentFilesContext</span> context = GetContext();
+
+<span class="code-keyword">switch</span> (context.Usage)
+{
+    <span class="code-keyword">case</span> DocumentFilesUsage.CreateNew:
+        <span class="code-comment">// Инициализация интерфейса создания документа</span>
+        InitializeCreateDialog();
+        <span class="code-keyword">break</span>;
+
+    <span class="code-keyword">case</span> DocumentFilesUsage.CardView:
+        <span class="code-comment">// Настройка режима просмотра карточки</span>
+        SetupReadOnlyMode();
+        <span class="code-keyword">break</span>;
+
+    <span class="code-keyword">default</span>:
+        <span class="code-comment">// Обработка других сценариев</span>
+        HandleDefaultCase();
+        <span class="code-keyword">break</span>;
+}
+</code>
+        </pre>
+
+        <h3>Фильтрация по режиму</h3>
+        <pre>
+<code>
+<span class="code-keyword">if</span> (context.Usage == DocumentFilesUsage.TemplatesManager)
+{
+    <span class="code-comment">// Отображаем элементы управления шаблонами</span>
+    ShowTemplateControls();
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Значения перечисления используются в связке с классом <code>DocumentFilesContext</code></li>
+                <li>Режим <code>ObjectsExplorer</code> часто применяется в деревьях навигации</li>
+                <li>Режим <code>CreateNew</code> требует дополнительной валидации прав доступа</li>
+            </ul>
+        </div>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Используйте <code>switch</code> для обработки разных режимов</li>
+                <li>Проверяйте режим перед выполнением специфичных операций</li>
+                <li>Учитывайте режим при отображении UI-компонентов</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

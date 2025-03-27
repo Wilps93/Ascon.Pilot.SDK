@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация интерфейса IObjectDialogPreviewModifier</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IObjectDialogPreviewModifier</h1>
+        
+        <h2>Назначение</h2>
+        <p>Предоставляет функционал для модификации отображения файловых предпросмотров в диалогах объектов. 
+        Позволяет задать путь к файлу, который будет использоваться для предварительного просмотра.</p>
+
+        <h2>Методы</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Параметры</th>
+                    <th>Возвращаемое значение</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>SetFilePath</td>
+                    <td>path (string) - Путь к файлу предпросмотра</td>
+                    <td>IObjectDialogPreviewModifier</td>
+                    <td>
+                        Устанавливает путь к файлу для предпросмотра.<br>
+                        Поддерживает fluent-интерфейс для цепных вызовов
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Пример использования</h2>
+        <pre>
+<code>
+<span class="code-comment">// Создание модификатора через фабричный метод (пример)</span>
+<span class="code-keyword">var</span> previewModifier = ObjectModifierFactory.CreatePreviewModifier();
+
+<span class="code-comment">// Установка пути к файлу предпросмотра</span>
+previewModifier
+    .SetFilePath(@"C:\previews\object_preview.png")
+    .Apply(); <span class="code-comment">// Применение изменений</span>
+</code>
+        </pre>
+
+        <h2>Ключевые особенности</h2>
+        <ul>
+            <li>Используется для кастомизации отображения объектов в диалоговых окнах</li>
+            <li>Путь к файлу должен быть доступен для чтения приложением</li>
+            <li>Поддерживает относительные и абсолютные пути</li>
+            <li>Работает в связке с другими модификаторами объектов</li>
+        </ul>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Убедитесь в существовании файла по указанному пути</li>
+                <li>Поддерживаемые форматы файлов зависят от реализации предпросмотра</li>
+                <li>Изменения применяются только после вызова метода Apply()</li>
+                <li>Для сброса пути используйте пустую строку или null</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

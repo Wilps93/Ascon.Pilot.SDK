@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация IAutoimportHandler SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background-color: #f8d7da;
+            border-left: 4px solid #f5c6cb;
+            padding: 10px;
+            margin: 20px 0;
+            color: #721c24;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IAutoimportHandler</h1>
+        
+        <div class="warning">
+            <strong>Важно!</strong> Временные файлы автоимпорта должны быть удалены после обработки.
+            Игнорирование этого требования может привести к утечкам памяти и сбоям системы.
+        </div>
+
+        <h2>Описание</h2>
+        <p>Предоставляет механизм обработки документов из двух источников:</p>
+        <ul>
+            <li>Виртуального принтера Pilot-XPS</li>
+            <li>Директории автоматического импорта</li>
+        </ul>
+        <p>Позволяет реализовать кастомную логику обработки файлов перед их сохранением в системе.</p>
+
+        <h2>Метод Handle()</h2>
+        <p>Основной метод обработки импортируемых файлов</p>
+        
+        <h3>Параметры</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Параметр</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>filePath</td>
+                    <td>string</td>
+                    <td>Полный путь к временному файлу автоимпорта</td>
+                </tr>
+                <tr>
+                    <td>sourceFilePath</td>
+                    <td>string</td>
+                    <td>
+                        Путь к исходному файлу (если определен).<br>
+                        Может быть <code>null</code>, если источник не распознан
+                    </td>
+                </tr>
+                <tr>
+                    <td>autoimportSource</td>
+                    <td>AutoimportSource</td>
+                    <td>Источник файла (принтер/директория).<br>См. описание перечисления ниже</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Возвращаемое значение</h3>
+        <p>
+            <code>true</code> - требуется стандартная обработка файла<br>
+            <code>false</code> - стандартная обработка должна быть пропущена
+        </p>
+
+        <h2>Перечисление AutoimportSource</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Значение</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Printer</td>
+                    <td>Файл получен через виртуальный принтер Pilot-XPS</td>
+                </tr>
+                <tr>
+                    <td>Directory</td>
+                    <td>Файл получен из директории автоимпорта</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Пример реализации</h2>
+        <pre>
+<code>
+<span class="code-keyword">public class</span> CustomAutoimportHandler : IAutoimportHandler
+{
+    <span class="code-keyword">public bool</span> Handle(string filePath, string sourceFilePath, AutoimportSource source)
+    {
+        <span class="code-keyword">try</span>
+        {
+            <span class="code-comment">// 1. Кастомная обработка файла</span>
+            ProcessFile(filePath);
+            
+            <span class="code-comment">// 2. Удаление временного файла</span>
+            File.Delete(filePath);
+            
+            <span class="code-comment">// 3. Возвращаем false для отключения стандартной обработки</span>
+            <span class="code-keyword">return false</span>;
+        }
+        <span class="code-keyword">catch</span> (Exception ex)
+        {
+            <span class="code-comment">// Логирование ошибки и возврат к стандартной обработке</span>
+            Logger.Error(ex);
+            <span class="code-keyword">return true</span>;
+        }
+    }
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Всегда проверяйте <code>sourceFilePath</code> на <code>null</code></li>
+                <li>Обрабатывайте исключения для предотвращения падения системы</li>
+                <li>Не забывайте удалять файлы через <code>File.Delete(filePath)</code></li>
+                <li>Для асинхронной обработки используйте шаблон async/await</li>
+            </ul>
+        </div>
+
+        <div class="warning">
+            <strong>Опечатка в оригинальном коде:</strong>
+            В описании параметра <code>sourceFilePath</code> написано "deletected" вместо "detected".
+        </div>
+    </div>
+</body>
+</html>

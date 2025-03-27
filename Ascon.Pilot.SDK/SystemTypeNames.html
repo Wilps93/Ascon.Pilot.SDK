@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация SystemTrayContext SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс SystemTrayContext</h1>
+        
+        <div class="note warning">
+            <strong>Внимание:</strong> 
+            <ul>
+                <li>Класс не содержит публичных членов в текущей версии SDK</li>
+                <li>В описании класса присутствует опечатка: "Contex" вместо "Context"</li>
+            </ul>
+        </div>
+
+        <h2>Описание</h2>
+        <p>Базовый класс для работы с контекстом системного трея. Наследуется от <code>MarshalByRefObject</code>, что позволяет использовать объект в сценариях удаленного взаимодействия и междоменной коммуникации.</p>
+
+        <h2>Особенности</h2>
+        <ul>
+            <li>Предназначен для расширения в производных классах</li>
+            <li>Может использоваться как контейнер данных для операций с системным трейем</li>
+            <li>Наследование от <code>MarshalByRefObject</code> позволяет передавать объект между доменами приложений</li>
+        </ul>
+
+        <h2>Пример использования</h2>
+        <pre>
+<code>
+<span class="code-comment">// Создание экземпляра контекста</span>
+<span class="code-keyword">SystemTrayContext</span> context = <span class="code-keyword">new</span> SystemTrayContext();
+
+<span class="code-comment">// Передача контекста в метод API</span>
+trayService.ProcessContext(context);
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Проверьте документацию последней версии SDK - возможно, класс был расширен</li>
+                <li>Используйте как маркерный объект для операций с системным трейем</li>
+                <li>Для кастомизации создавайте производные классы с дополнительными свойствами</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

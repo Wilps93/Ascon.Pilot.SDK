@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация IContainsAllField SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background-color: #f8d7da;
+            border-left: 4px solid #f5c6cb;
+            padding: 10px;
+            margin: 20px 0;
+            color: #721c24;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IContainsAllField<T></h1>
+        
+        <div class="note">
+            <strong>Наследование:</strong> Расширяет <code>INamedField</code>, добавляя поддержку оператора "содержит все".
+        </div>
+
+        <h2>Описание</h2>
+        <p>Представляет поле, поддерживающее оператор проверки на вхождение всех указанных значений. Используется для построения сложных условий поиска/фильтрации.</p>
+
+        <h2>Методы</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Параметры</th>
+                    <th>Возвращает</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>ContainsAll</td>
+                    <td>params T[] values - проверяемые значения</td>
+                    <td>ISearchTerm</td>
+                    <td>Создает условие, требующее наличия всех указанных значений в поле</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Фильтрация по нескольким тегам</h3>
+        <pre>
+<code>
+<span class="code-comment">// Для поля типа IContainsAllField<string></span>
+ISearchTerm condition = tagsField.ContainsAll("urgent", "approved");
+var results = repository.Find(condition);
+
+<span class="code-comment">// Аналог SQL: WHERE Tags CONTAINS ALL ('urgent', 'approved')</span>
+</code>
+        </pre>
+
+        <h3>Работа с числовыми значениями</h3>
+        <pre>
+<code>
+IContainsAllField<int> categoryField = ...;
+ISearchTerm filter = categoryField.ContainsAll(101, 205, 333);
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Особенности:</strong>
+            <ul>
+                <li>Параметр <code>values</code> использует модификатор <code>params</code> - можно передавать список значений</li>
+                <li>Реализация зависит от типа данных (T может быть string, int, enum и т.д.)</li>
+                <li>ISearchTerm можно комбинировать с другими условиями через логические операторы</li>
+            </ul>
+        </div>
+
+        <div class="warning">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Метод НЕ проверяет наличие значений в коллекции - это условие для выполнения запроса</li>
+                <li>Поведение при пустом массиве values зависит от реализации</li>
+                <li>Убедитесь что поле действительно поддерживает множественные значения</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

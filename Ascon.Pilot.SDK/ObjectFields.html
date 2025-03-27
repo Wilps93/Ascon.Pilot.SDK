@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация ObjectFields SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .code-string {
+            color: #a31515;
+        }
+
+        .field-type {
+            font-weight: bold;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс ObjectFields</h1>
+        
+        <h2>Описание</h2>
+        <p>
+            Статический класс для построения условий поиска объектов. 
+            Содержит набор предопределённых полей, соответствующих свойствам объектов в системе.
+        </p>
+
+        <h2>Поля</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Свойство</th>
+                    <th>Тип поля</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Id</td>
+                    <td class="field-type">GuidField</td>
+                    <td>Уникальный идентификатор объекта</td>
+                </tr>
+                <tr>
+                    <td>ParentId</td>
+                    <td class="field-type">GuidField</td>
+                    <td>Идентификатор родительского объекта</td>
+                </tr>
+                <tr>
+                    <td>TypeId</td>
+                    <td class="field-type">Int32Field</td>
+                    <td>Числовой идентификатор типа объекта</td>
+                </tr>
+                <tr>
+                    <td>CreatorId</td>
+                    <td class="field-type">Int32Field</td>
+                    <td>Идентификатор пользователя-создателя объекта</td>
+                </tr>
+                <tr>
+                    <td>CreatedDate</td>
+                    <td class="field-type">DateTimeField</td>
+                    <td>Дата и время создания объекта</td>
+                </tr>
+                <tr>
+                    <td>IsSecret</td>
+                    <td class="field-type">BoolAsInt32Field</td>
+                    <td>Признак секретности объекта (хранится как число)</td>
+                </tr>
+                <tr>
+                    <td>AllText</td>
+                    <td class="field-type">StringField</td>
+                    <td>Объединение всех текстовых полей объекта для полнотекстового поиска</td>
+                </tr>
+                <tr>
+                    <td>AllSnapshotsReason</td>
+                    <td class="field-type">StringField</td>
+                    <td>Причина создания снимков объекта</td>
+                </tr>
+                <tr>
+                    <td>SnapshotsCreated</td>
+                    <td class="field-type">DateTimeField</td>
+                    <td>Дата создания снимков объекта</td>
+                </tr>
+                <tr>
+                    <td>ObjectState</td>
+                    <td class="field-type">EnumAsInt32Field<ObjectState></td>
+                    <td>Текущее состояние объекта (хранится как enum)</td>
+                </tr>
+                <tr>
+                    <td>Context</td>
+                    <td class="field-type">GuidField</td>
+                    <td>Контекст объекта (например, сессия или окружение)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Особенности реализации</h2>
+        <div class="note">
+            <ul>
+                <li>Каждое свойство возвращает <strong>новый экземпляр</strong> соответствующего поля</li>
+                <li>Имена полей в формате <code>DObject.ИмяПоля</code> соответствуют внутренней структуре БД</li>
+                <li>Обнаружена опечатка в названии: <code>Dobject.SnapshotsReason</code> вместо <code>DObject.SnapshotsReason</code></li>
+            </ul>
+        </div>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Поиск объектов по типу</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> query = QueryBuilder.Create()
+    .Where(ObjectFields.TypeId == 5)
+    .ToList();
+</code>
+        </pre>
+
+        <h3>Фильтрация секретных объектов</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> secureObjects = QueryBuilder.Create()
+    .Where(ObjectFields.IsSecret == <span class="code-keyword">true</span>)
+    .ToList();
+</code>
+        </pre>
+
+        <h3>Полнотекстовый поиск</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> searchResults = QueryBuilder.Create()
+    .Where(ObjectFields.AllText.Contains("важный документ"))
+    .ToList();
+</code>
+        </pre>
+
+        <h2>Рекомендации</h2>
+        <ul>
+            <li>Используйте <code>EnumAsInt32Field<T></code> для работы с перечислениями</li>
+            <li>Для сложных запросов комбинируйте условия через <code>&&</code> и <code>||</code></li>
+            <li>Проверяйте регистр имён полей при ручном формировании запросов</li>
+        </ul>
+    </div>
+</body>
+</html>

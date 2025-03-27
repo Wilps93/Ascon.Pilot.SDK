@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация GraphicLayerElementContext</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .code-type {
+            color: #2b91af;
+        }
+
+        .warning {
+            color: #dc3545;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс GraphicLayerElementContext</h1>
+        
+        <h2>Описание</h2>
+        <p>Контекст для работы с элементами графических слоев. Наследуется от <code>MarshalByRefObject</code> для поддержки распределенных операций и сериализации.</p>
+
+        <h2>Наследование</h2>
+        <pre>
+<code>
+<span class="code-type">System.Object</span>
+    <span class="code-type">System.MarshalByRefObject</span>
+        <span class="code-type">GraphicLayerElementContext</span>
+</code>
+        </pre>
+
+        <h2>Конструктор</h2>
+        <pre>
+<code>
+<span class="code-keyword">public</span> GraphicLayerElementContext(
+    <span class="code-type">IDataObject</span> dataObject,
+    <span class="code-type">Guid</span> elementId,
+    <span class="code-type">Guid</span> contentId
+)
+</code>
+        </pre>
+        <p>Инициализирует контекст с обязательными параметрами.</p>
+
+        <h3>Параметры конструктора</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Параметр</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>dataObject</td>
+                    <td>IDataObject</td>
+                    <td>Целевой объект, к которому относится графический элемент</td>
+                </tr>
+                <tr>
+                    <td>elementId</td>
+                    <td>Guid</td>
+                    <td>Идентификатор файла элемента графического слоя</td>
+                </tr>
+                <tr>
+                    <td>contentId</td>
+                    <td>Guid</td>
+                    <td>Идентификатор файла содержимого графического слоя</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Свойство</th>
+                    <th>Тип</th>
+                    <th>Доступ</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>DataObject</td>
+                    <td>IDataObject</td>
+                    <td>Только чтение</td>
+                    <td>Объект, связанный с графическим элементом</td>
+                </tr>
+                <tr>
+                    <td>ElementId</td>
+                    <td>Guid</td>
+                    <td>Только чтение</td>
+                    <td>Уникальный идентификатор элемента слоя</td>
+                </tr>
+                <tr>
+                    <td>ContentId</td>
+                    <td>Guid</td>
+                    <td>Только чтение</td>
+                    <td>Уникальный идентификатор содержимого слоя</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Создание контекста</h3>
+        <pre>
+<code>
+<span class="code-type">IDataObject</span> targetObject = GetTargetDataObject();
+<span class="code-type">Guid</span> elementGuid = <span class="code-type">Guid</span>.NewGuid();
+<span class="code-type">Guid</span> contentGuid = <span class="code-type">Guid</span>.NewGuid();
+
+<span class="code-type">GraphicLayerElementContext</span> context = <span class="code-keyword">new</span> GraphicLayerElementContext(
+    targetObject,
+    elementGuid,
+    contentGuid
+);
+</code>
+        </pre>
+
+        <h3>Проверка идентификаторов</h3>
+        <pre>
+<code>
+<span class="code-keyword">if</span> (context.ElementId == <span class="code-type">Guid</span>.Empty)
+{
+    <span class="code-comment">// Обработка ошибки: неинициализированный идентификатор элемента</span>
+    throw <span class="code-keyword">new</span> InvalidOperationException("ElementId не задан");
+}
+</code>
+        </pre>
+
+        <div class="note warning">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Свойства <code>DataObject</code>, <code>ElementId</code> и <code>ContentId</code> неизменяемы после создания</li>
+                <li>Всегда проверяйте идентификаторы на <code>Guid.Empty</code> перед использованием</li>
+                <li>Для корректной работы в распределенных системах используйте <code>MarshalByRefObject</code> возможности</li>
+            </ul>
+        </div>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Храните контекст в сериализуемых структурах при работе с удаленными вызовами</li>
+                <li>Используйте <code>Guid.NewGuid()</code> для генерации уникальных идентификаторов</li>
+                <li>Для отладки сохраняйте идентификаторы в логах</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

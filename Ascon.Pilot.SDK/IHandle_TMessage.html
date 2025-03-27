@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация IHandle<TMessage> SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background-color: #f8d7da;
+            border-left: 4px solid #f5c6cb;
+            padding: 10px;
+            margin: 20px 0;
+            color: #721c24;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IHandle<TMessage></h1>
+        
+        <h2>Описание</h2>
+        <p>Типизированный интерфейс для обработки сообщений определенного типа. Расширяет <code>IHandle</code>, 
+        добавляя специфическую обработку сообщений заданного типа <code>TMessage</code>.</p>
+
+        <h2>Наследование</h2>
+        <ul>
+            <li><code>IHandle<TMessage></code> → <code>IHandle</code></li>
+        </ul>
+
+        <h2>Методы</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>Handle(TMessage message)</code></td>
+                    <td>Вызывается для обработки сообщения определенного типа</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Обработчик уведомлений</h3>
+        <pre>
+<code>
+<span class="code-keyword">public class</span> UserNotificationHandler : IHandle<UserLoggedInEvent>, IHandle<UserLoggedOutEvent>
+{
+    <span class="code-keyword">public void</span> Handle(UserLoggedInEvent message)
+    {
+        Console.WriteLine($"Пользователь {message.UserName} вошел в систему");
+    }
+
+    <span class="code-keyword">public void</span> Handle(UserLoggedOutEvent message)
+    {
+        Console.WriteLine($"Пользователь {message.UserName} вышел из системы");
+    }
+}
+</code>
+        </pre>
+
+        <h3>Регистрация обработчика</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> handler = <span class="code-keyword">new</span> UserNotificationHandler();
+eventAggregator.Subscribe(handler);
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Для обработки нескольких типов сообщений реализуйте несколько IHandle<T></li>
+                <li>Используйте атрибуты или атрибуты фильтрации для тонкой настройки обработки</li>
+                <li>Для асинхронной обработки используйте <code>Task.Run()</code> внутри метода</li>
+            </ul>
+        </div>
+
+        <div class="warning">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Метод Handle() должен быть потокобезопасным</li>
+                <li>Не забывайте отписываться через <code>eventAggregator.Unsubscribe()</code></li>
+                <li>Избегайте долгих синхронных операций в обработчике</li>
+            </ul>
+        </div>
+
+        <h2>Связь с другими компонентами</h2>
+        <ul>
+            <li>Интегрируется с <code>IEventAggregator</code> для подписки/отписки</li>
+            <li>Может использовать <code>IMessageFilter</code> для фильтрации сообщений</li>
+            <li>Часто применяется совместно с <code>IDomainEvent</code> для обработки доменных событий</li>
+        </ul>
+    </div>
+</body>
+</html>

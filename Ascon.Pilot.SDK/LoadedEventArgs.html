@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация класса LoadedEventArgs</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7;
+            margin: 2rem auto;
+            max-width: 1000px;
+            padding: 0 20px;
+            color: #2d3436;
+        }
+
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 0.5rem;
+        }
+
+        h2 {
+            color: #34495e;
+            margin-top: 2rem;
+        }
+
+        .class-box {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1.5rem 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin: 1.5rem 0;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        pre {
+            background-color: #282a36;
+            color: #f8f8f2;
+            padding: 1rem;
+            border-radius: 6px;
+            overflow-x: auto;
+        }
+
+        .code-comment { color: #6272a4; }
+        .code-keyword { color: #ff79c6; }
+        .code-string { color: #50fa7b; }
+
+        .note {
+            background-color: #fff5b3;
+            border-left: 4px solid #ffee33;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background-color: #f5b7b1;
+            border-left: 4px solid #c0392b;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Класс LoadedEventArgs</h1>
+    
+    <h2>Назначение</h2>
+    <p>Аргумент события, уведомляющего о завершении загрузки расширения. Используется для реализации обратных вызовов при инициализации модулей.</p>
+
+    <div class="note">
+        <strong>Особенности:</strong>
+        <ul>
+            <li>Наследуется от <code>MarshalByRefObject</code> для поддержки работы в распределенных средах</li>
+            <li>В текущей реализации не содержит дополнительных данных</li>
+        </ul>
+    </div>
+
+    <h2>Иерархия наследования</h2>
+    <pre>
+<code>
+System.Object 
+→ System.MarshalByRefObject 
+→ Ascon.Pilot.SDK.LoadedEventArgs
+</code>
+    </pre>
+
+    <h2>Пример использования</h2>
+    <pre>
+<code>
+<span class="code-keyword">public class</span> ExtensionLoader 
+{
+    <span class="code-keyword">public event</span> EventHandler<LoadedEventArgs> ExtensionLoaded;
+
+    <span class="code-keyword">protected virtual void</span> OnExtensionLoaded()
+    {
+        ExtensionLoaded?.Invoke(<span class="code-keyword">this</span>, <span class="code-keyword">new</span> LoadedEventArgs());
+    }
+}
+
+<span class="code-comment">// Подписка на событие</span>
+<span class="code-keyword">var</span> loader = <span class="code-keyword">new</span> ExtensionLoader();
+loader.ExtensionLoaded += (sender, args) => 
+{
+    Console.WriteLine("Расширение успешно загружено!");
+};
+</code>
+    </pre>
+
+    <h2>Особенности</h2>
+    <ul>
+        <li>Предназначен для использования в качестве маркерного класса (Marker Class)</li>
+        <li>Может быть расширен в будущих версиях SDK</li>
+        <li>Рекомендуется использовать в паре с <code>EventHandler<LoadedEventArgs></code></li>
+    </ul>
+
+    <div class="warning">
+        <strong>Внимание:</strong>
+        <ul>
+            <li>Не содержит пользовательских данных в текущей реализации</li>
+            <li>Не требует сериализации благодаря наследованию MarshalByRefObject</li>
+        </ul>
+    </div>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация интерфейса IXpsMergerSaveListener</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7;
+            margin: 2rem auto;
+            max-width: 1000px;
+            padding: 0 20px;
+            color: #2d3436;
+        }
+
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 0.5rem;
+        }
+
+        h2 {
+            color: #34495e;
+            margin-top: 2rem;
+        }
+
+        .method-box {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1.5rem 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin: 1.5rem 0;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        pre {
+            background-color: #282a36;
+            color: #f8f8f2;
+            padding: 1rem;
+            border-radius: 6px;
+            overflow-x: auto;
+        }
+
+        .code-comment { color: #6272a4; }
+        .code-keyword { color: #ff79c6; }
+        .code-string { color: #50fa7b; }
+
+        .note {
+            background-color: #fff5b3;
+            border-left: 4px solid #ffee33;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Интерфейс IXpsMergerSaveListener</h1>
+    
+    <h2>Назначение</h2>
+    <p>Предоставляет callback-метод для отслеживания завершения сохранения объединенного XPS-документа.</p>
+
+    <div class="note">
+        <strong>Важно:</strong> Используется в связке с интерфейсом <code>IXpsMerger</code> для получения уведомлений о завершении операции сохранения.
+    </div>
+
+    <h2>Методы</h2>
+
+    <div class="method-box">
+        <h3>OnSaveCompleted</h3>
+        <p>Вызывается при успешном завершении сохранения документа</p>
+        
+        <h4>Параметры</h4>
+        <table>
+            <tr>
+                <td>filepath</td>
+                <td>string</td>
+                <td>Полный путь к сохраненному XPS-файлу</td>
+            </tr>
+        </table>
+    </div>
+
+    <h2>Пример реализации</h2>
+    <pre>
+<code>
+<span class="code-keyword">public class</span> XpsSaveHandler : IXpsMergerSaveListener
+{
+    <span class="code-keyword">public void</span> OnSaveCompleted(<span class="code-keyword">string</span> filepath)
+    {
+        <span class="code-comment">// Обработка завершения сохранения</span>
+        Console.WriteLine($<span class="code-string">"Документ успешно сохранен: {filepath}"</span>);
+        <span class="code-comment">// Здесь можно добавить логику отправки уведомлений или пост-обработки файла</span>
+    }
+}
+
+<span class="code-comment">// Использование в связке с IXpsMerger</span>
+<span class="code-keyword">var</span> merger = <span class="code-comment">// Получение экземпляра IXpsMerger</span>
+<span class="code-keyword">var</span> saveHandler = <span class="code-keyword">new</span> XpsSaveHandler();
+
+merger.SaveMergedXps(
+    filepath: @"C:\Output\result.xps",
+    saveListener: saveHandler
+);
+</code>
+    </pre>
+
+    <h2>Особенности</h2>
+    <ul>
+        <li>Метод гарантированно вызывается после физической записи файла на диск</li>
+        <li>Не содержит информации о возможных ошибках (для обработки ошибок используйте try-catch при вызове SaveMergedXps)</li>
+        <li>Работает синхронно - выполнение продолжится только после завершения обработчика</li>
+    </ul>
+
+    <div class="note">
+        <strong>Рекомендации:</strong>
+        <ul>
+            <li>Не выполняйте длительные операции внутри OnSaveCompleted</li>
+            <li>Для отслеживания прогресса сохранения используйте дополнительные механизмы</li>
+            <li>Проверяйте существование файла в обработчике при необходимости</li>
+        </ul>
+    </div>
+</body>
+</html>

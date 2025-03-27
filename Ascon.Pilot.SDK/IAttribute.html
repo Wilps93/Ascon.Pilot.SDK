@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация IAttribute SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background-color: #f8d7da;
+            border-left: 4px solid #f5c6cb;
+            padding: 10px;
+            margin: 20px 0;
+            color: #721c24;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IAttribute</h1>
+        
+        <div class="warning">
+            <strong>Важно!</strong> Объект этого интерфейса существует временно и автоматически удаляется через 2 минуты.
+            Любые вызовы его методов после этого срока приведут к исключениям.
+        </div>
+
+        <h2>Описание</h2>
+        <p>Представляет контейнер для временной передачи данных атрибута объекта. Содержит метаинформацию о типе атрибута и его настройках.</p>
+
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Свойство</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Name</td>
+                    <td>string</td>
+                    <td>Внутреннее имя атрибута (уникальный идентификатор)</td>
+                </tr>
+                <tr>
+                    <td>Title</td>
+                    <td>string</td>
+                    <td>Отображаемое название атрибута в интерфейсе</td>
+                </tr>
+                <tr>
+                    <td>IsObligatory</td>
+                    <td>bool</td>
+                    <td>Обязательность заполнения перед сохранением объекта</td>
+                </tr>
+                <tr>
+                    <td>DisplaySortOrder</td>
+                    <td>int</td>
+                    <td>Порядок сортировки при отображении</td>
+                </tr>
+                <tr>
+                    <td>ShowInObjectsExplorer</td>
+                    <td>bool</td>
+                    <td>Признак отображения в Обозревателе объектов</td>
+                </tr>
+                <tr>
+                    <td>InGroup</td>
+                    <td>bool</td>
+                    <td>Группировка с соседними атрибутами в интерфейсе</td>
+                </tr>
+                <tr>
+                    <td>IsService</td>
+                    <td>bool</td>
+                    <td>Признак сервисного атрибута (системное использование)</td>
+                </tr>
+                <tr>
+                    <td>Configuration</td>
+                    <td>string</td>
+                    <td>XML-конфигурация для специфических случаев (справочники, штрих-коды)</td>
+                </tr>
+                <tr>
+                    <td>DisplayHeight</td>
+                    <td>int</td>
+                    <td>Высота текстового поля ввода (только для текстовых атрибутов)</td>
+                </tr>
+                <tr>
+                    <td>Type</td>
+                    <td>AttributeType</td>
+                    <td>Тип атрибута (перечисление AttributeType)</td>
+                </tr>
+                <tr>
+                    <td>IsUnique</td>
+                    <td>bool</td>
+                    <td><span style="text-decoration: line-through">Устаревшее</span>. Используйте UniquenessType</td>
+                </tr>
+                <tr>
+                    <td>UniquenessType</td>
+                    <td>AttributeUniquenessType</td>
+                    <td>Тип уникальности атрибута в базе</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Получение метаданных атрибута</h3>
+        <pre>
+<code>
+<span class="code-keyword">IAttribute</span> attribute = GetAttribute(); 
+<span class="code-keyword">string</span> name = attribute.Name; 
+<span class="code-keyword">if</span> (attribute.IsObligatory)
+{
+    <span class="code-comment">// Требуется валидация значения</span>
+}
+</code>
+        </pre>
+
+        <h3>Проверка уникальности</h3>
+        <pre>
+<code>
+<span class="code-keyword">if</span> (attribute.UniquenessType == AttributeUniquenessType.Global)
+{
+    <span class="code-comment">// Атрибут должен быть уникален в системе</span>
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Не храните ссылки на объекты IAttribute дольше необходимого</li>
+                <li>Для проверки уникальности всегда используйте UniquenessType вместо устаревшего IsUnique</li>
+                <li>XML-конфигурацию обрабатывайте через специализированные парсеры</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

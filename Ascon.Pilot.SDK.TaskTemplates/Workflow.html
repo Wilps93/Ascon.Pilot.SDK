@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация класса Workflow</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .deprecated {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .flag-values {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс Workflow <span class="deprecated">[Устаревший]</span></h1>
+        
+        <div class="note">
+            <strong>Важно:</strong> Этот класс помечен как устаревший (<code>[Obsolete]</code>). 
+            Рекомендуется использовать альтернативные подходы, если они доступны в текущей версии SDK.
+        </div>
+
+        <h2>Описание</h2>
+        <p>Представляет рабочий процесс (workflow) в системе. Содержит этапы, участников, вложения и настройки автоматического подписания.</p>
+
+        <h2>Конструктор</h2>
+        <pre>
+<code>
+<span class="code-keyword">public</span> Workflow()
+{
+    Stages = <span class="code-keyword">new</span> List<Stage>();
+    Auditors = <span class="code-keyword">new</span> List<Participant>();
+    Attachments = <span class="code-keyword">new</span> List<Attachment>();
+    AutosignOptions = <span class="code-keyword">new</span> AutosignOptions();
+    IsAdditionalRequests = <span class="code-keyword">false</span>;
+}
+</code>
+        </pre>
+        <p>Инициализирует экземпляр с пустыми коллекциями и значениями по умолчанию.</p>
+
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Имя</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Kind</td>
+                    <td>WorkflowKind</td>
+                    <td>Тип рабочего процесса (без описания в исходном коде)</td>
+                </tr>
+                <tr>
+                    <td>Title</td>
+                    <td>string</td>
+                    <td>Название рабочего процесса (без описания в исходном коде)</td>
+                </tr>
+                <tr>
+                    <td>Description</td>
+                    <td>string</td>
+                    <td>Описание рабочего процесса (без описания в исходном коде)</td>
+                </tr>
+                <tr>
+                    <td>Stages</td>
+                    <td>List<Stage></td>
+                    <td>Список этапов рабочего процесса</td>
+                </tr>
+                <tr>
+                    <td>Auditors</td>
+                    <td>List<Participant></td>
+                    <td>Список аудиторов/наблюдателей</td>
+                </tr>
+                <tr>
+                    <td>Attachments</td>
+                    <td>List<Attachment></td>
+                    <td>Список вложений</td>
+                </tr>
+                <tr>
+                    <td>AutosignOptions</td>
+                    <td>AutosignOptions</td>
+                    <td>Настройки автоматического подписания</td>
+                </tr>
+                <tr>
+                    <td>IsAdditionalRequests</td>
+                    <td>bool</td>
+                    <td>Флаг для добавления дополнительных запросов подписи</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Методы</h2>
+        <h3>Сравнение объектов</h3>
+        <pre>
+<code>
+<span class="code-keyword">protected</span> <span class="code-keyword">bool</span> Equals(Workflow other)
+<span class="code-keyword">public override bool</span> Equals(<span class="code-keyword">object</span> obj)
+<span class="code-keyword">public override int</span> GetHashCode()
+</code>
+        </pre>
+        <p>Методы реализуют глубокое сравнение всех свойств и вычисление хэша на основе:</p>
+        <ul>
+            <li>Типа рабочего процесса (Kind)</li>
+            <li>Названия и описания</li>
+            <li>Всех элементов коллекций (Stages, Auditors, Attachments)</li>
+            <li>Настроек автоматического подписания</li>
+            <li>Флага дополнительных запросов</li>
+        </ul>
+
+        <div class="note">
+            <strong>Особенности реализации:</strong>
+            <ul>
+                <li>Сравнение коллекций выполняется через <code>SequenceEqual</code>, что требует полного совпадения порядка элементов</li>
+                <li>Вычисление хэша может быть ресурсоемким для больших коллекций</li>
+                <li>В методе <code>Equals(object)</code> используется проверка <code>obj.GetType() != base.GetType()</code>, что может быть ошибкой (следует использовать <code>GetType()</code> вместо <code>base.GetType()</code>)</li>
+            </ul>
+        </div>
+
+        <h2>Пример использования</h2>
+        <pre>
+<code>
+<span class="code-keyword">var</span> workflow1 = <span class="code-keyword">new</span> Workflow
+{
+    Title = <span class="code-string">"Document Approval"</span>,
+    Stages = { <span class="code-keyword">new</span> Stage { Name = <span class="code-string">"Review"</span> } }
+};
+
+<span class="code-keyword">var</span> workflow2 = <span class="code-keyword">new</span> Workflow
+{
+    Title = <span class="code-string">"Document Approval"</span>,
+    Stages = { <span class="code-keyword">new</span> Stage { Name = <span class="code-string">"Review"</span> } }
+};
+
+<span class="code-keyword">bool</span> areEqual = workflow1.Equals(workflow2); <span class="code-comment">// true</span>
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Избегайте использование этого класса в новом коде из-за атрибута <code>[Obsolete]</code></li>
+                <li>При сравнении объектов учитывайте, что порядок элементов в коллекциях важен</li>
+                <li>Для повышения производительности кэшируйте хэш-коды, если объекты неизменяемы</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

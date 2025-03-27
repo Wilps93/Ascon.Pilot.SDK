@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация ObjectState SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .state-value {
+            font-weight: bold;
+            color: #c7254e;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Перечисление ObjectState</h1>
+        
+        <h2>Описание</h2>
+        <p>
+            Определяет жизненный цикл объекта в системе. 
+            Используется для отслеживания состояния объектов и управления их доступностью.
+        </p>
+
+        <h2>Значения</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Состояние</th>
+                    <th>Числовой код</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Alive</td>
+                    <td class="state-value">0</td>
+                    <td>Объект активен и доступен (значение по умолчанию)</td>
+                </tr>
+                <tr>
+                    <td>InRecycleBin</td>
+                    <td class="state-value">1</td>
+                    <td>Объект перемещён в корзину</td>
+                </tr>
+                <tr>
+                    <td>DeletedPermanently</td>
+                    <td class="state-value">2</td>
+                    <td>Объект удалён безвозвратно</td>
+                </tr>
+                <tr>
+                    <td>Frozen</td>
+                    <td class="state-value">3</td>
+                    <td>Объект заблокирован для изменений</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Жизненный цикл объекта</h2>
+        <div class="note">
+            <ul>
+                <li><strong>Alive → InRecycleBin → DeletedPermanently</strong> - стандартный путь удаления</li>
+                <li>Переход в состояние <strong>Frozen</strong> возможен из любого состояния</li>
+                <li>Восстановление из корзины возвращает объект в состояние <strong>Alive</strong></li>
+            </ul>
+        </div>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Проверка состояния объекта</h3>
+        <pre>
+<code>
+<span class="code-keyword">void</span> CheckObjectState(IObject obj)
+{
+    <span class="code-keyword">switch</span> (obj.State)
+    {
+        <span class="code-keyword">case</span> ObjectState.Alive:
+            Console.WriteLine("Объект доступен для работы");
+            <span class="code-keyword">break</span>;
+            
+        <span class="code-keyword">case</span> ObjectState.InRecycleBin:
+            Console.WriteLine("Объект находится в корзине");
+            <span class="code-keyword">break</span>;
+            
+        <span class="code-keyword">case</span> ObjectState.DeletedPermanently:
+            Console.WriteLine("Объект удалён безвозвратно");
+            <span class="code-keyword">break</span>;
+            
+        <span class="code-keyword">case</span> ObjectState.Frozen:
+            Console.WriteLine("Объект заблокирован");
+            <span class="code-keyword">break</span>;
+    }
+}
+</code>
+        </pre>
+
+        <h3>Фильтрация активных объектов</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> activeObjects = objects
+    .Where(o => o.State == ObjectState.Alive)
+    .ToList();
+</code>
+        </pre>
+
+        <h2>Важные замечания</h2>
+        <div class="note">
+            <ul>
+                <li>Объекты в состоянии <strong>DeletedPermanently</strong> не могут быть восстановлены</li>
+                <li>Замороженные объекты (<strong>Frozen</strong>) не могут быть изменены или удалены</li>
+                <li>Проверка состояния обязательна перед выполнением операций изменения/удаления</li>
+            </ul>
+        </div>
+
+        <h2>Рекомендации</h2>
+        <ul>
+            <li>Используйте <code>ObjectState.Alive</code> как основное рабочее состояние</li>
+            <li>Для удаления объектов сначала перемещайте их в корзину</li>
+            <li>Применяйте <strong>Frozen</strong> для защиты критически важных данных</li>
+        </ul>
+    </div>
+</body>
+</html>

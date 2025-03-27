@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация IAnyOfField<T></title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .code-type {
+            color: #2b91af;
+        }
+
+        .warning {
+            color: #dc3545;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IAnyOfField<T></h1>
+        
+        <h2>Описание</h2>
+        <p>Представляет поле, поддерживающее оператор проверки на вхождение значения в список допустимых. Наследует базовый функционал от <a href="INamedField.html"><code>INamedField</code></a>.</p>
+
+        <h2>Методы</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>BeAnyOf(params T[] values)</td>
+                    <td>Создает условие поиска, требующее, чтобы значение поля совпадало с одним из указанных значений</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Фильтрация по нескольким статусам</h3>
+        <pre>
+<code>
+<span class="code-type">IAnyOfField</span><<span class="code-type">string</span>> statusField = GetStatusField();
+
+<span class="code-type">ISearchTerm</span> condition = statusField.BeAnyOf("Active", "Pending", "InReview");
+
+<span class="code-comment">// Использование в поисковом запросе</span>
+var results = repository.Find(condition);
+</code>
+        </pre>
+
+        <h3>Работа с числовыми значениями</h3>
+        <pre>
+<code>
+<span class="code-type">IAnyOfField</span><<span class="code-type">int</span>> priorityField = GetPriorityField();
+
+<span class="code-comment">// Поиск записей с приоритетом 1, 3 или 5</span>
+<span class="code-type">ISearchTerm</span> filter = priorityField.BeAnyOf(1, 3, 5);
+</code>
+        </pre>
+
+        <div class="note warning">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Метод чувствителен к типам данных - тип T должен соответствовать типу поля</li>
+                <li>Пустой массив значений может вызвать исключение или некорректное поведение</li>
+                <li>Для сложных типов должен быть корректно реализован метод <code>Equals()</code></li>
+            </ul>
+        </div>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Используйте для фильтрации списков и комбинирования условий</li>
+                <li>Для перечислений предпочтительнее использовать <code>Enum.IsDefined()</code></li>
+                <li>Проверяйте уникальность значений в массиве для оптимизации</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

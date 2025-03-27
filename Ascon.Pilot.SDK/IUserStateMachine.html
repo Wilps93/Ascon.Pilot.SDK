@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация IUserStateMachine SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background-color: #f8d7da;
+            border-left: 4px solid #f5c6cb;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IUserStateMachine</h1>
+        
+        <h2>Описание</h2>
+        <p>Представляет конечный автомат состояний пользователя, управляющий переходами между состояниями. 
+        Содержит карту доступных переходов для каждого состояния.</p>
+
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Свойство</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Id</td>
+                    <td>Guid</td>
+                    <td>Уникальный идентификатор конечного автомата</td>
+                </tr>
+                <tr>
+                    <td>Title</td>
+                    <td>string</td>
+                    <td>Отображаемое название автомата состояний</td>
+                </tr>
+                <tr>
+                    <td>StateTransitions</td>
+                    <td>IDictionary<Guid, IEnumerable<ITransition>></td>
+                    <td>Карта переходов: ключ - идентификатор состояния, значение - доступные переходы</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Пример использования</h2>
+        <pre>
+<code>
+<span class="code-keyword">public void</span> CheckUserTransitions(IUserStateMachine stateMachine, Guid currentStateId)
+{
+    <span class="code-comment">// Проверка наличия переходов для состояния</span>
+    <span class="code-keyword">if</span> (stateMachine.StateTransitions.TryGetValue(currentStateId, out IEnumerable<ITransition> transitions))
+    {
+        Console.WriteLine($"Доступные переходы для состояния {currentStateId}:");
+        
+        <span class="code-keyword">foreach</span> (ITransition transition <span class="code-keyword">in</span> transitions)
+        {
+            Console.WriteLine($"- {transition.DisplayName} → {transition.StateTo}");
+        }
+    }
+    <span class="code-keyword">else</span>
+    {
+        Console.WriteLine("Переходы для текущего состояния не найдены");
+    }
+}
+</code>
+        </pre>
+
+        <h2>Рекомендации</h2>
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Проверяйте наличие ключей в <code>StateTransitions</code> через <code>TryGetValue</code></li>
+                <li>Учитывайте, что переходы могут быть пустыми для терминальных состояний</li>
+                <li>Используйте <code>ITransition.DisplayName</code> для UI-отображения команд</li>
+                <li>Для модификации состояний применяйте специализированные API, а не прямые манипуляции</li>
+            </ul>
+        </div>
+
+        <div class="note">
+            <strong>Особенности:</strong>
+            <ul>
+                <li>Каждый <code>ITransition</code> содержит информацию о правах доступа</li>
+                <li>Состояния идентифицируются Guid из <code>IUserState.Id</code></li>
+                <li>Автомат может содержать циклические переходы</li>
+            </ul>
+        </div>
+
+        <div class="warning">
+            <strong>Внимание!</strong>
+            <ul>
+                <li>Не сохраняйте ссылки на объект между сессиями - он может устареть</li>
+                <li>Переходы возвращают целевые состояния, но не выполняют их автоматически</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

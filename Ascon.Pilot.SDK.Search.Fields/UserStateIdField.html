@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация класса UserStateIdField</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7;
+            color: #2d3436;
+            margin: 2rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #4a69bd;
+            padding-bottom: 0.5rem;
+        }
+
+        h2 {
+            color: #34495e;
+            margin-top: 2rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin: 1.5rem 0;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f0f3f5;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 1.2rem;
+            border-radius: 4px;
+            overflow-x: auto;
+            border: 1px solid #e1e1e1;
+        }
+
+        .code-keyword {
+            color: #3498db;
+        }
+
+        .code-comment {
+            color: #7f8c8d;
+        }
+
+        .note {
+            background-color: #fff9e6;
+            border: 1px solid #ffe58c;
+            border-left: 4px solid #ffd700;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        .format-example {
+            background-color: #f1f1f1;
+            padding: 0.5rem;
+            border-radius: 4px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс UserStateIdField</h1>
+        
+        <h2>Общее описание</h2>
+        <p>Специализированный класс для работы с идентификаторами состояний пользователей в формате Guid. 
+        Гарантирует использование строкового представления Guid <strong>без дефисов</strong> (формат "N").</p>
+
+        <h3>Иерархия наследования</h3>
+        <ul>
+            <li><code>FieldBase</code></li>
+            <li>→ <code>GuidField</code></li>
+            <li>→ <code>UserStateIdField</code></li>
+        </ul>
+
+        <h2>Конструктор</h2>
+        <pre>
+<code>
+<span class="code-keyword">internal</span> UserStateIdField(<span class="code-keyword">string</span> fieldName)
+</code>
+        </pre>
+        <p>Инициализирует экземпляр с экранированным именем поля.</p>
+        <p><strong>Особенности:</strong> Доступен только внутри текущей сборки SDK.</p>
+
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Название</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>GuidStringFormat</td>
+                    <td>string</td>
+                    <td>Возвращает формат "N" для Guid (без дефисов)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Методы (наследуемые)</h2>
+        <p>Класс наследует ключевые методы из <code>GuidField</code>:</p>
+        <ul>
+            <li><code>Be(Guid)</code> - Точное совпадение</li>
+            <li><code>Exists()</code> - Проверка существования</li>
+            <li><code>BeAnyOf(Guid[])</code> - Множественный выбор</li>
+        </ul>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Форматирование Guid</h3>
+        <pre>
+<code>
+Guid stateId = Guid.Parse("123e4567-e89b-12d3-a456-426614174000");
+<span class="code-keyword">var</span> field = <span class="code-keyword">new</span> UserStateIdField("user_state");
+ISearchTerm term = field.Be(stateId);
+<span class="code-comment">// Генерирует: "user_state":"123e4567e89b12d3a456426614174000"</span>
+</code>
+        </pre>
+
+        <h3>Множественный выбор</h3>
+        <pre>
+<code>
+Guid[] states = <span class="code-keyword">new</span> Guid[] 
+{
+    Guid.Parse("11111111-1111-1111-1111-111111111111"),
+    Guid.Parse("22222222-2222-2222-2222-222222222222")
+};
+ISearchTerm anyOfTerm = field.BeAnyOf(states);
+<span class="code-comment">// Форматирует оба Guid в стиле "N"</span>
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Формат "N" удаляет дефисы: <span class="format-example">123e4567e89b12d3a456426614174000</span></li>
+                <li>Для обратной конвертации в Guid используйте <code>Guid.ParseExact(value, "N")</code></li>
+                <li>Класс предназначен для работы с внутренними идентификаторами состояний пользователей</li>
+            </ul>
+        </div>
+
+        <h2>Особенности</h2>
+        <ul>
+            <li>Автоматическое форматирование Guid для соответствия требованиям индекса</li>
+            <li>Наследует всю функциональность <code>GuidField</code></li>
+            <li>Обеспечивает единообразие представления идентификаторов состояний</li>
+        </ul>
+    </div>
+</body>
+</html>

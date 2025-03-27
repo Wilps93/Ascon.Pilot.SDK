@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация интерфейса IHotKey<THotKeyContext></title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IHotKey<THotKeyContext></h1>
+        
+        <h2>Назначение</h2>
+        <p>Позволяет связать горячие клавиши с конкретным контекстом приложения. 
+        Используется для регистрации и обработки сочетаний клавиш в рамках определенного окружения (например, активного окна/вкладки).</p>
+
+        <h2>Методы</h2>
+        
+        <h3>1. Регистрация горячих клавиш</h3>
+        <pre><code>void AssignHotKeys(IHotKeyCollection hotKeyCollection)</code></pre>
+        <p>Вызывается при загрузке контекста. Используется для регистрации всех горячих клавиш, 
+        доступных в данном контексте.</p>
+        
+        <h4>Пример реализации:</h4>
+        <pre>
+<code>
+<span class="code-keyword">public void</span> AssignHotKeys(IHotKeyCollection hotKeys)
+{
+    hotKeys.Add(Key.F5, ModifierKeys.None, "app.refresh");
+    hotKeys.Add(Key.S, ModifierKeys.Control, "app.save");
+}
+</code>
+        </pre>
+
+        <h3>2. Обработка нажатий</h3>
+        <pre><code>void OnHotKeyPressed(string commandId, THotKeyContext context)</code></pre>
+        <p>Вызывается при нажатии зарегистрированной комбинации. Содержит логику обработки команды.</p>
+        
+        <h4>Пример обработки:</h4>
+        <pre>
+<code>
+<span class="code-keyword">public void</span> OnHotKeyPressed(string commandId, TContext context)
+{
+    <span class="code-keyword">switch</span> (commandId)
+    {
+        <span class="code-keyword">case</span> "app.refresh":
+            context.RefreshData();
+            <span class="code-keyword">break</span>;
+        <span class="code-keyword">case</span> "app.save":
+            context.SaveChanges();
+            <span class="code-keyword">break</span>;
+    }
+}
+</code>
+        </pre>
+
+        <h2>Особенности реализации</h2>
+        <ul>
+            <li>Контекст <code>THotKeyContext</code> определяется при создании экземпляра</li>
+            <li>Горячие клавиши активны только при активном контексте</li>
+            <li>Команды регистрируются в момент вызова <code>AssignHotKeys</code></li>
+        </ul>
+
+        <h2>Рекомендации</h2>
+        <ul>
+            <li>Используйте уникальные префиксы для <code>commandId</code> (например: <code>module.action</code>)</li>
+            <li>Проверяйте актуальность контекста в момент обработки</li>
+            <li>Для сложных сценариев используйте шаблон Command</li>
+        </ul>
+
+        <div class="note">
+            <strong>Важно:</strong> 
+            <ul>
+                <li>Не регистрируйте одинаковые комбинации в разных контекстах</li>
+                <li>Не забывайте удалять обработчики при деактивации контекста</li>
+                <li>Обрабатывайте возможные исключения в <code>OnHotKeyPressed</code></li>
+            </ul>
+        </div>
+
+        <h2>Пример полной реализации</h2>
+        <pre>
+<code>
+<span class="code-keyword">public class</span> DocumentHotKeyHandler : IHotKey<DocumentContext>
+{
+    <span class="code-keyword">public void</span> AssignHotKeys(IHotKeyCollection hotKeys)
+    {
+        hotKeys.Add(Key.Z, ModifierKeys.Control, "doc.undo");
+        hotKeys.Add(Key.Y, ModifierKeys.Control, "doc.redo");
+    }
+
+    <span class="code-keyword">public void</span> OnHotKeyPressed(string commandId, DocumentContext context)
+    {
+        <span class="code-keyword">switch</span> (commandId)
+        {
+            <span class="code-keyword">case</span> "doc.undo":
+                context.UndoLastAction();
+                <span class="code-keyword">break</span>;
+            <span class="code-keyword">case</span> "doc.redo":
+                context.RedoAction();
+                <span class="code-keyword">break</span>;
+        }
+    }
+}
+</code>
+        </pre>
+    </div>
+</body>
+</html>

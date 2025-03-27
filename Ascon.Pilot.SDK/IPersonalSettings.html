@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация интерфейса IPersonalSettings</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background-color: #f8d7da;
+            border-left: 4px solid #f5c6cb;
+            padding: 10px;
+            margin: 20px 0;
+            color: #721c24;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IPersonalSettings</h1>
+        
+        <h2>Описание</h2>
+        <p>Интерфейс для управления персональными настройками пользователя. Реализует 
+        <code>IDisposable</code> - требует явного освобождения ресурсов.</p>
+        
+        <h2>Методы</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>SubscribeSetting(string)</td>
+                    <td>Подписка на изменения конкретной настройки по ключу</td>
+                </tr>
+                <tr>
+                    <td>ChangeSettingValue(string, string)</td>
+                    <td>Изменение значения настройки</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Подписка на изменения настроек</h3>
+        <pre>
+<code>
+<span class="code-keyword">using</span> (var settings = GetPersonalSettings())
+{
+    var subscription = settings.SubscribeSetting("theme")
+        .Subscribe(kvp => 
+        {
+            Console.WriteLine($"Настройка {kvp.Key} изменена на {kvp.Value}");
+        });
+
+    <span class="code-comment">// Для отмены подписки:</span>
+    subscription.Dispose();
+}
+</code>
+        </pre>
+
+        <h3>Изменение значения настройки</h3>
+        <pre>
+<code>
+<span class="code-keyword">using</span> (var settings = GetPersonalSettings())
+{
+    settings.ChangeSettingValue("language", "ru-RU");
+}
+</code>
+        </pre>
+
+        <div class="warning">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Всегда освобождайте ресурсы через <code>using</code> или явный вызов <code>Dispose()</code></li>
+                <li>Подписки (<code>IObservable<T></code>) требуют отдельного управления жизненным циклом</li>
+                <li>Изменения настроек сохраняются немедленно</li>
+            </ul>
+        </div>
+
+        <div class="note">
+            <strong>Примечание:</strong>
+            <ul>
+                <li>Ключи настроек зависят от реализации конкретной системы</li>
+                <li>Рекомендуется проверять существование настройки перед использованием</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

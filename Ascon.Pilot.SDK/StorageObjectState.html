@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация StorageObjectState SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .missing-doc {
+            color: #e74c3c;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Перечисление StorageObjectState</h1>
+        
+        <div class="note">
+            <strong>Внимание:</strong> Некоторые состояния не имеют описания в оригинальном коде. 
+            Значения помечены как <span class="missing-doc">без описания</span>. 
+            Рекомендуется уточнить назначение в актуальной документации SDK.
+        </div>
+
+        <h2>Описание</h2>
+        <p>Определяет состояния объекта хранилища. Использует битовые маски ([Flags]) для комбинирования состояний.</p>
+        
+        <h2>Значения</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Состояние</th>
+                    <th>Значение</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>None</td>
+                    <td>0</td>
+                    <td>Отсутствие состояний</td>
+                </tr>
+                <tr>
+                    <td>NotLoaded</td>
+                    <td>1</td>
+                    <td>Объект не загружен</td>
+                </tr>
+                <tr>
+                    <td>Loaded</td>
+                    <td>2</td>
+                    <td>Объект загружен</td>
+                </tr>
+                <tr>
+                    <td>Outdated</td>
+                    <td>4</td>
+                    <td><span class="missing-doc">Без описания</span> (предположительно: устаревший)</td>
+                </tr>
+                <tr>
+                    <td>NotSent</td>
+                    <td>8</td>
+                    <td><span class="missing-doc">Без описания</span> (предположительно: не отправлен)</td>
+                </tr>
+                <tr>
+                    <td>Edited</td>
+                    <td>16</td>
+                    <td><span class="missing-doc">Без описания</span> (предположительно: изменен)</td>
+                </tr>
+                <tr>
+                    <td>Aborted</td>
+                    <td>32</td>
+                    <td><span class="missing-doc">Без описания</span> (предположительно: отменен)</td>
+                </tr>
+                <tr>
+                    <td>Temp</td>
+                    <td>64</td>
+                    <td><span class="missing-doc">Без описания</span> (предположительно: временный)</td>
+                </tr>
+                <tr>
+                    <td>Locked</td>
+                    <td>128</td>
+                    <td><span class="missing-doc">Без описания</span> (предположительно: заблокирован)</td>
+                </tr>
+                <tr>
+                    <td>Downloading</td>
+                    <td>256</td>
+                    <td><span class="missing-doc">Без описания</span> (предположительно: загружается)</td>
+                </tr>
+                <tr>
+                    <td>Conflicted</td>
+                    <td>512</td>
+                    <td><span class="missing-doc">Без описания</span> (предположительно: конфликт версий)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Особенности</h2>
+        <ul>
+            <li>Тип <code>short</code> позволяет хранить до 16 битовых флагов</li>
+            <li>Состояния можно комбинировать: <code>StorageObjectState.Loaded | StorageObjectState.Locked</code></li>
+            <li>Используйте метод <code>.HasFlag()</code> для проверки состояний</li>
+        </ul>
+
+        <h2>Примеры</h2>
+        
+        <h3>Проверка состояния</h3>
+        <pre>
+<code>
+<span class="code-keyword">StorageObjectState</span> state = GetObjectState();
+<span class="code-keyword">if</span> (state.HasFlag(StorageObjectState.Conflicted))
+{
+    ResolveConflict();
+}
+</code>
+        </pre>
+
+        <h3>Комбинирование состояний</h3>
+        <pre>
+<code>
+<span class="code-keyword">StorageObjectState</span> combined = StorageObjectState.Loaded | StorageObjectState.Locked;
+</code>
+        </pre>
+
+        <h3>Проверка нескольких состояний</h3>
+        <pre>
+<code>
+<span class="code-keyword">bool</span> isProcessing = (state & (StorageObjectState.Loading | StorageObjectState.Downloading)) != 0;
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Избегайте предположений о назначении неподписанных состояний</li>
+                <li>Проверяйте сочетаемость флагов (некоторые состояния могут быть взаимоисключающими)</li>
+                <li>Учитывайте регистрозависимость при работе с рефлексией</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация класса FieldBase</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7;
+            color: #2d3436;
+            margin: 2rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #4a69bd;
+            padding-bottom: 0.5rem;
+        }
+
+        h2 {
+            color: #34495e;
+            margin-top: 2rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin: 1.5rem 0;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f0f3f5;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 1.2rem;
+            border-radius: 4px;
+            overflow-x: auto;
+            border: 1px solid #e1e1e1;
+        }
+
+        .code-keyword {
+            color: #3498db;
+        }
+
+        .code-comment {
+            color: #7f8c8d;
+        }
+
+        .note {
+            background-color: #fff9e6;
+            border: 1px solid #ffe58c;
+            border-left: 4px solid #ffd700;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        .internal-method {
+            color: #e67e22;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс FieldBase</h1>
+        
+        <h2>Общее описание</h2>
+        <p>Базовый абстрактный класс для всех полей в поисковых запросах. 
+        Обеспечивает безопасную обработку имен полей через экранирование 
+        специальных символов.</p>
+        
+        <h3>Иерархия наследования</h3>
+        <ul>
+            <li><code>MarshalByRefObject</code></li>
+            <li>→ <code>FieldBase</code></li>
+            <li>→ Производные классы (например, <code>EnumField<T></code>)</li>
+        </ul>
+
+        <h2>Конструктор</h2>
+        <pre>
+<code>
+<span class="code-keyword">protected</span> FieldBase(<span class="code-keyword">string</span> fieldName)
+</code>
+        </pre>
+        <p>Инициализирует экземпляр с автоматическим экранированием имени поля.</p>
+        <p><strong>Параметры:</strong></p>
+        <ul>
+            <li><code>fieldName</code> - Имя поля в индексе</li>
+        </ul>
+
+        <h2>Методы</h2>
+        
+        <h3>EscapeFieldName (статический)</h3>
+        <pre>
+<code>
+<span class="code-keyword">private static string</span> EscapeFieldName(<span class="code-keyword">string</span> fieldName)
+</code>
+        </pre>
+        <p>Экранирует специальные символы в имени поля с помощью регулярных выражений.</p>
+        <p><strong>Возвращает:</strong> Безопасное имя поля для поисковых запросов</p>
+
+        <h2>Поля</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Название</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>_fieldName</td>
+                    <td>string</td>
+                    <td>Экранированное имя поля, готовое для использования в запросах</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Экранирование имени поля</h3>
+        <pre>
+<code>
+<span class="code-comment">// Исходное имя с точкой</span>
+<span class="code-keyword">string</span> rawName = "user.profile.status";
+<span class="code-keyword">string</span> safeName = FieldBase.EscapeFieldName(rawName);
+<span class="code-comment">// Результат: "user\\.profile\\.status"</span>
+</code>
+        </pre>
+
+        <h3>Создание производного класса</h3>
+        <pre>
+<code>
+<span class="code-keyword">public class</span> StatusField : FieldBase 
+{
+    <span class="code-keyword">public</span> StatusField() : <span class="code-keyword">base</span>("status") 
+    {
+        <span class="code-comment">// Работа с _fieldName</span>
+    }
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong> 
+            <ul>
+                <li>Экранирование обрабатывает символы: <code>. $ ^ { [ ( | ) * + ? \</code></li>
+                <li>Метод <code>EscapeFieldName</code> можно использовать статически для предобработки имен</li>
+                <li>Производные классы должны использовать <code>_fieldName</code> для построения запросов</li>
+            </ul>
+        </div>
+
+        <h2>Особенности</h2>
+        <ul>
+            <li>Автоматическая обработка специальных символов в именах полей</li>
+            <li>Базовая реализация для всех типов поисковых полей</li>
+            <li>Интеграция с системой маршалинга .NET через наследование MarshalByRefObject</li>
+        </ul>
+    </div>
+</body>
+</html>

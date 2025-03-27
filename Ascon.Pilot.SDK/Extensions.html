@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация Extensions Class</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .code-type {
+            color: #2b91af;
+        }
+
+        .warning {
+            color: #dc3545;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс Extensions</h1>
+        
+        <h2>Описание</h2>
+        <p>Вспомогательный класс для работы с объектами через рефлексию. Содержит методы для динамического доступа к свойствам и методам объектов. Класс имеет модификатор <code>internal</code> и не предназначен для использования вне текущей сборки.</p>
+
+        <h2>Методы</h2>
+        
+        <h3>GetProperty</h3>
+        <pre>
+<code>
+<span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-type">object</span> GetProperty(
+    <span class="code-type">object</span> obj, 
+    <span class="code-type">string</span> name
+)
+</code>
+        </pre>
+        <p>Получает значение публичного свойства объекта по его имени.</p>
+        <ul>
+            <li>Использует <code>BindingFlags.Instance | BindingFlags.Public</code></li>
+            <li>Генерирует <code>InvalidOperationException</code>, если свойство не найдено</li>
+        </ul>
+
+        <h3>InvokeMethod</h3>
+        <pre>
+<code>
+<span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-type">object</span> InvokeMethod(
+    <span class="code-type">object</span> obj,
+    <span class="code-type">string</span> name,
+    <span class="code-type">object</span>[] args
+)
+</code>
+        </pre>
+        <p>Вызывает публичный метод объекта по имени и параметрам.</p>
+        <ul>
+            <li>Ищет методы экземпляра с публичным доступом</li>
+            <li>Генерирует исключение при отсутствии метода</li>
+        </ul>
+
+        <h3>InvokeMethodGeneric<T></h3>
+        <pre>
+<code>
+<span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-type">object</span> InvokeMethodGeneric<<span class="code-type">T</span>>(
+    <span class="code-type">object</span> obj,
+    <span class="code-type">string</span> name,
+    <span class="code-type">object</span>[] args
+)
+</code>
+        </pre>
+        <p>Вызывает обобщенный метод с указанным типом <code>T</code>.</p>
+        <ul>
+            <li>Ищет метод по имени и количеству параметров</li>
+            <li>Создает обобщенную версию метода через <code>MakeGenericMethod</code></li>
+        </ul>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Получение свойства</h3>
+        <pre>
+<code>
+<span class="code-type">MyClass</span> obj = <span class="code-keyword">new</span> MyClass();
+<span class="code-type">object</span> value = Extensions.GetProperty(obj, "MyProperty");
+</code>
+        </pre>
+
+        <h3>Вызов метода с параметрами</h3>
+        <pre>
+<code>
+<span class="code-type">object</span>[] parameters = { "param1", 42 };
+Extensions.InvokeMethod(obj, "Calculate", parameters);
+</code>
+        </pre>
+
+        <h3>Вызов обобщенного метода</h3>
+        <pre>
+<code>
+<span class="code-type">object</span> result = Extensions.InvokeMethodGeneric<<span class="code-type">int</span>>(
+    obj,
+    "ProcessData",
+    <span class="code-keyword">new</span> <span class="code-type">object</span>[] { data }
+);
+</code>
+        </pre>
+
+        <div class="note warning">
+            <strong>Важные ограничения:</strong>
+            <ul>
+                <li>Класс помечен как <code>internal</code> - недоступен вне сборки</li>
+                <li>Не обрабатывает перегрузки методов (поиск только по количеству параметров)</li>
+                <li>Не проверяет типы параметров в <code>InvokeMethodGeneric</code></li>
+                <li>Использование рефлексии может снизить производительность</li>
+            </ul>
+        </div>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Для частого доступа к свойствам используйте кэширование PropertyInfo</li>
+                <li>Оборачивайте вызовы в try-catch для обработки возможных исключений</li>
+                <li>Для публичных API предпочитайте прямые вызовы вместо рефлексии</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

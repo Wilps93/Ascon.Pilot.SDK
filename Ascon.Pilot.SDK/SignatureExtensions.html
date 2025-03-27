@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация SignatureExtensions SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс SignatureExtensions</h1>
+        
+        <h2>Описание</h2>
+        <p>Статический класс, предоставляющий методы расширения для работы с интерфейсом <code>ISignature</code>. 
+        Позволяет получать дополнительную информацию о цифровых подписях.</p>
+        
+        <h2>Методы</h2>
+        
+        <h3>IsAdditional()</h3>
+        <p>Проверяет, является ли подпись дополнительной (не основной).</p>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Параметр</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>signature</td>
+                    <td>ISignature</td>
+                    <td>Объект цифровой подписи для проверки</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <p><strong>Возвращаемое значение:</strong> <code>bool</code> - <code>true</code>, если подпись является дополнительной</p>
+
+        <h2>Особенности реализации</h2>
+        <ul>
+            <li>Использует рефлексию через <code>Extensions.GetProperty()</code> для доступа к внутреннему свойству объекта</li>
+            <li>Приводит полученное значение к типу <code>bool</code> (требует осторожности)</li>
+        </ul>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Проверка типа подписи</h3>
+        <pre>
+<code>
+<span class="code-keyword">ISignature</span> signature = GetSignature();
+<span class="code-keyword">if</span> (signature.IsAdditional())
+{
+    <span class="code-comment">// Обработка дополнительной подписи</span>
+    Console.WriteLine("Дополнительная подпись обнаружена");
+}
+</code>
+        </pre>
+
+        <h3>Пакетная проверка подписей</h3>
+        <pre>
+<code>
+<span class="code-keyword">foreach</span> (var sig <span class="code-keyword">in</span> document.Signatures)
+{
+    <span class="code-keyword">if</span> (sig.IsAdditional())
+    {
+        ProcessAdditional(sig);
+    }
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong> 
+            <ul>
+                <li>Метод может вызвать <code>InvalidCastException</code>, если свойство "IsAdditional" не является булевым</li>
+                <li>Требует наличия свойства "IsAdditional" в реализации <code>ISignature</code></li>
+                <li>Производительность: рефлексия работает медленнее прямого доступа к свойствам</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

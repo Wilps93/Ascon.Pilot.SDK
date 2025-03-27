@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация ITaskContextMenu SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background-color: #f8d7da;
+            border-left: 4px solid #f5c6cb;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс ITaskContextMenu</h1>
+        
+        <div class="warning">
+            <strong>Внимание!</strong> Этот интерфейс помечен как устаревший ([Obsolete]). 
+            Рекомендуется проверить актуальность в новой версии SDK.
+        </div>
+
+        <h2>Описание</h2>
+        <p>Расширение для добавления пользовательских пунктов в контекстное меню проводника задач. 
+        Наследует базовый интерфейс <code>IBaseContextMenu</code>.</p>
+
+        <h2>Методы</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>BuildContextMenu</td>
+                    <td>
+                        Вызывается перед отображением контекстного меню.<br>
+                        <strong>Параметры:</strong>
+                        <ul>
+                            <li><code>menuHost</code> - Хост меню для добавления пунктов</li>
+                            <li><code>selection</code> - Список выбранных объектов задач</li>
+                        </ul>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Пример реализации</h2>
+        <pre>
+<code>
+<span class="code-keyword">public class</span> CustomTaskMenu : ITaskContextMenu 
+{
+    <span class="code-keyword">public void</span> BuildContextMenu(IMenuHost menuHost, IEnumerable<ITaskObject> selection)
+    {
+        <span class="code-comment">// Проверка выбранных объектов</span>
+        <span class="code-keyword">if</span>(selection?.Any() != <span class="code-keyword">true</span>)
+            <span class="code-keyword">return</span>;
+
+        <span class="code-comment">// Создание нового пункта меню</span>
+        <span class="code-keyword">var</span> customItem = <span class="code-keyword">new</span> MenuItem("Custom Action");
+        customItem.Click += (s, e) => 
+        {
+            <span class="code-comment">// Обработка действия</span>
+            ProcessSelection(selection);
+        };
+
+        <span class="code-comment">// Добавление пункта в меню</span>
+        menuHost.Items.Add(customItem);
+    }
+}
+</code>
+        </pre>
+
+        <h2>Особенности использования</h2>
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Метод вызывается при каждом открытии контекстного меню</li>
+                <li>Проверяйте актуальность данных в <code>selection</code> перед использованием</li>
+                <li>Для добавления иерархических меню используйте <code>menuHost.CreateSubMenu()</code></li>
+                <li>Избегайте долгих операций в этом методе - он выполняется в UI-потоке</li>
+            </ul>
+        </div>
+
+        <h2>Наследование</h2>
+        <p>Реализует интерфейс <code>IBaseContextMenu</code>, который может содержать:</p>
+        <ul>
+            <li>Базовые методы управления меню</li>
+            <li>Стандартные пункты меню</li>
+            <li>Механизмы обработки горячих клавиш</li>
+        </ul>
+    </div>
+</body>
+</html>

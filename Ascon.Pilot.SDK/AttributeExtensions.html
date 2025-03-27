@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация AttributeExtensions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .code-type {
+            color: #2b91af;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс AttributeExtensions</h1>
+        
+        <h2>Описание</h2>
+        <p>Статический класс с методами расширения для интерфейса <span class="code-type">IAttribute</span>. 
+        Предоставляет дополнительные методы для работы с метаданными атрибутов.</p>
+
+        <h2>Методы расширения</h2>
+
+        <h3>EditableForPositionsSource</h3>
+        <pre>
+<code>
+<span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-type">string[]</span> EditableForPositionsSource(<span class="code-keyword">this</span> IAttribute attribute)
+</code>
+        </pre>
+        <p>Возвращает список позиций (ролей/прав), для которых доступно редактирование атрибута.</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Параметр</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>attribute</td>
+                    <td>Объект <span class="code-type">IAttribute</span>, для которого выполняется проверка</td>
+                </tr>
+            </tbody>
+        </table>
+        <p>Возвращаемое значение: Массив строк с идентификаторами позиций</p>
+
+        <h3>Obligatory</h3>
+        <pre>
+<code>
+<span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-type">bool</span> Obligatory(<span class="code-keyword">this</span> IAttribute attribute)
+</code>
+        </pre>
+        <p>Проверяет, является ли атрибут обязательным для заполнения.</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Параметр</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>attribute</td>
+                    <td>Объект <span class="code-type">IAttribute</span>, который проверяется</td>
+                </tr>
+            </tbody>
+        </table>
+        <p>Возвращаемое значение: <span class="code-keyword">true</span> - атрибут обязателен, <span class="code-keyword">false</span> - не обязателен</p>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Проверка обязательности атрибута</h3>
+        <pre>
+<code>
+<span class="code-type">IAttribute</span> attribute = GetAttribute();
+<span class="code-keyword">if</span> (attribute.Obligatory())
+{
+    <span class="code-comment">// Требуется заполнение</span>
+    Console.WriteLine("Атрибут обязателен для заполнения");
+}
+</code>
+        </pre>
+
+        <h3>Получение доступных позиций для редактирования</h3>
+        <pre>
+<code>
+<span class="code-type">string[]</span> positions = attribute.EditableForPositionsSource();
+<span class="code-keyword">foreach</span> (<span class="code-keyword">var</span> position <span class="code-keyword">in</span> positions)
+{
+    Console.WriteLine($"Доступ для позиции: {position}");
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Методы используют внутренний механизм получения свойств через <span class="code-type">Extensions.GetProperty</span></li>
+                <li>Для корректной работы требуется, чтобы в объекте <span class="code-type">IAttribute</span> были установлены соответствующие метаданные</li>
+                <li>Рекомендуется проверять наличие свойств перед использованием методов</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

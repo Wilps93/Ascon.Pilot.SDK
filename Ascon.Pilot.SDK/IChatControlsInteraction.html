@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация IChatControlsInteraction SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background-color: #f8d7da;
+            border-left: 4px solid #f5c6cb;
+            padding: 10px;
+            margin: 20px 0;
+            color: #721c24;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IChatControlsInteraction</h1>
+        
+        <div class="warning">
+            <strong>Внимание!</strong> Все методы требуют реализации в классе-наследнике.
+        </div>
+
+        <h2>Описание</h2>
+        <p>Предоставляет методы для управления участниками чата. Позволяет добавлять, удалять и обновлять участников по их идентификаторам.</p>
+
+        <h2>Методы</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Параметры</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>AddMembers</td>
+                    <td>memberIds (int[]) - массив ID добавляемых участников</td>
+                    <td>Добавляет новых участников в чат</td>
+                </tr>
+                <tr>
+                    <td>RemoveMembers</td>
+                    <td>memberIds (int[]) - массив ID удаляемых участников</td>
+                    <td>Удаляет участников из чата</td>
+                </tr>
+                <tr>
+                    <td>UpdateMembers</td>
+                    <td>memberIds (int[]) - массив ID обновляемых участников</td>
+                    <td>Обновляет данные существующих участников</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Пример реализации</h2>
+        <pre>
+<code>
+<span class="code-keyword">public class</span> ChatManager : IChatControlsInteraction
+{
+    <span class="code-keyword">public void</span> AddMembers(int[] memberIds)
+    {
+        <span class="code-keyword">foreach</span> (var id in memberIds)
+        {
+            <span class="code-comment">// Логика добавления участника</span>
+            Console.WriteLine($"Добавлен участник: {id}");
+        }
+    }
+
+    <span class="code-keyword">public void</span> RemoveMembers(int[] memberIds)
+    {
+        <span class="code-keyword">foreach</span> (var id in memberIds)
+        {
+            <span class="code-comment">// Логика удаления участника</span>
+            Console.WriteLine($"Удален участник: {id}");
+        }
+    }
+
+    <span class="code-keyword">public void</span> UpdateMembers(int[] memberIds)
+    {
+        <span class="code-keyword">foreach</span> (var id in memberIds)
+        {
+            <span class="code-comment">// Логика обновления данных участника</span>
+            Console.WriteLine($"Обновлен участник: {id}");
+        }
+    }
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Проверяйте массив memberIds на null и пустые значения</li>
+                <li>Для массовых операций используйте транзакции или пакетную обработку</li>
+                <li>Обрабатывайте возможные исключения (несуществующие ID и т.д.)</li>
+            </ul>
+        </div>
+
+        <div class="warning">
+            <strong>Особенности:</strong>
+            <ul>
+                <li>Метод UpdateMembers обычно требует дополнительных данных для обновления</li>
+                <li>Реализация должна обеспечивать потокобезопасность при многопользовательском доступе</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

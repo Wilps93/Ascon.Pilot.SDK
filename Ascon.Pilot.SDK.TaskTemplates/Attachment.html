@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация Attachment SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .obsolete {
+            color: #dc3545;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс Attachment <span class="obsolete">[Устаревший]</span></h1>
+        
+        <h2>Описание</h2>
+        <p>Представляет вложение в задачах. <strong>Класс признан устаревшим</strong> - рекомендуется использовать современные альтернативы для новых разработок.</p>
+
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Свойство</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Source</td>
+                    <td>AttachmentSource</td>
+                    <td>Источник вложения (например, файловая система, база данных)</td>
+                </tr>
+                <tr>
+                    <td>Id</td>
+                    <td>Guid</td>
+                    <td>Уникальный идентификатор вложения</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Методы</h2>
+        <h3>Переопределенные методы</h3>
+        <table>
+            <tr>
+                <td>Equals(Attachment)</td>
+                <td>Сравнивает текущий объект с другим вложением</td>
+            </tr>
+            <tr>
+                <td>Equals(object)</td>
+                <td>Сравнивает с произвольным объектом</td>
+            </tr>
+            <tr>
+                <td>GetHashCode()</td>
+                <td>Возвращает хеш-код объекта</td>
+            </tr>
+        </table>
+
+        <h2>Примеры использования</h2>
+        <pre>
+<code>
+<span class="code-comment">// Создание вложения</span>
+<span class="code-keyword">var</span> attachment = <span class="code-keyword">new</span> Attachment
+{
+    Id = Guid.NewGuid(),
+    Source = AttachmentSource.FileSystem
+};
+
+<span class="code-comment">// Сравнение вложений</span>
+Attachment another = GetAnotherAttachment();
+bool areEqual = attachment.Equals(another);
+
+<span class="code-comment">// Использование в словаре</span>
+Dictionary<Attachment, string> attachments = <span class="code-keyword">new</span> Dictionary<Attachment, string>();
+attachments.Add(attachment, "Main document");
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Класс помечен как <code>[Obsolete]</code> - использование в новых проектах не рекомендуется</li>
+                <li>Метод Equals требует проверки типа объекта перед приведением</li>
+                <li>Хеш-код вычисляется на основе Source и Id</li>
+                <li>При наследовании требуется пересмотреть реализацию Equals/GetHashCode</li>
+            </ul>
+        </div>
+
+        <h2>Особенности реализации</h2>
+        <ul>
+            <li>Сравнение объектов происходит по комбинации Source и Id</li>
+            <li>Хеш-код использует побитовую операцию XOR для комбинации значений</li>
+            <li>Реализация учитывает возможное наследование через проверку GetType()</li>
+        </ul>
+    </div>
+</body>
+</html>

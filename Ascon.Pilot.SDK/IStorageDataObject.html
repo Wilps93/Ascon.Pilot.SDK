@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация IStorageDataObject SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background-color: #f8d7da;
+            border-left: 4px solid #f5c6cb;
+            padding: 10px;
+            margin: 20px 0;
+            color: #721c24;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IStorageDataObject</h1>
+        
+        <div class="warning">
+            <strong>Внимание!</strong> Объект автоматически уничтожается через 2 минуты. 
+            Сохранение ссылок на этот объект в плагинах приведет к исключениям!
+        </div>
+
+        <h2>Описание</h2>
+        <p>Представляет объект Pilot-Storage с его атрибутами и связями. 
+        Для долгосрочного хранения данных создавайте глубокие копии свойств 
+        (см. <code>Ascon.Pilot.SDK.ObjectSample.DataObjectWrapper</code>).</p>
+
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Свойство</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>DataObject</td>
+                    <td>IDataObject</td>
+                    <td>Временный контейнер с данными объекта</td>
+                </tr>
+                <tr>
+                    <td>Path</td>
+                    <td>string</td>
+                    <td>Путь к файлу/папке в Pilot-Storage</td>
+                </tr>
+                <tr>
+                    <td>State</td>
+                    <td>StorageObjectState</td>
+                    <td>Текущее состояние объекта (например: активный, заблокированный)</td>
+                </tr>
+                <tr>
+                    <td>IsDirectory</td>
+                    <td>bool</td>
+                    <td>True - если это директория, иначе - файл</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Безопасное копирование данных</h3>
+        <pre>
+<code>
+<span class="code-keyword">public class</span> DataWrapper 
+{
+    <span class="code-keyword">public</span> Guid ObjectId { get; }
+    <span class="code-keyword">public</span> string Path { get; }
+    <span class="code-keyword">public</span> StorageObjectState State { get; }
+
+    <span class="code-keyword">public</span> DataWrapper(IStorageDataObject source)
+    {
+        <span class="code-comment">// Глубокое копирование допустимых свойств</span>
+        ObjectId = source.DataObject.Id;
+        Path = source.Path;
+        State = source.State;
+    }
+}
+</code>
+        </pre>
+
+        <h3>Проверка типа объекта</h3>
+        <pre>
+<code>
+<span class="code-keyword">void</span> ProcessObject(IStorageDataObject obj)
+{
+    <span class="code-keyword">if</span> (obj.IsDirectory)
+    {
+        Console.WriteLine($"Обработка директории: {obj.Path}");
+        <span class="code-comment">// Работа с содержимым папки</span>
+    }
+    <span class="code-keyword">else</span>
+    {
+        <span class="code-comment">// Обработка файла</span>
+        ProcessFile(obj.DataObject);
+    }
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Используйте шаблон DataObjectWrapper для сохранения данных</li>
+                <li>Не сохраняйте ссылки на IStorageDataObject в долгоживущих объектах</li>
+                <li>Для работы с DataObject используйте только методы из SDK</li>
+            </ul>
+        </div>
+
+        <div class="warning">
+            <strong>Критически важно:</strong> Все операции с объектом должны 
+            выполняться в течение первых 2 минут после получения.
+        </div>
+    </div>
+</body>
+</html>

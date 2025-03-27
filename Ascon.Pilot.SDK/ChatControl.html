@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация ChatControl</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .code-type {
+            color: #2b91af;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс ChatControl</h1>
+        
+        <h2>Описание</h2>
+        <p>Класс для интеграции элементов управления чатом в UI-компоненты. 
+        Наследуется от <span class="code-type">MarshalByRefObject</span> для поддержки кросс-доменного взаимодействия.</p>
+
+        <h2>Иерархия наследования</h2>
+        <ul>
+            <li>System.Object</li>
+            <li>System.MarshalByRefObject</li>
+            <li>Ascon.Pilot.SDK.ChatControl</li>
+        </ul>
+
+        <h2>Конструктор</h2>
+        <pre>
+<code>
+<span class="code-keyword">public</span> ChatControl(<span class="code-type">FrameworkElement</span> view, <span class="code-type">IChatControlsInteraction</span> interaction)
+</code>
+        </pre>
+        <p>Инициализирует новый экземпляр элемента управления чатом.</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Параметр</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>view</td>
+                    <td>Визуальный элемент управления (UI-компонент)</td>
+                </tr>
+                <tr>
+                    <td>interaction</td>
+                    <td>Объект для обработки взаимодействий с чатом</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Свойство</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>View</td>
+                    <td>FrameworkElement</td>
+                    <td>Визуальное представление элемента управления</td>
+                </tr>
+                <tr>
+                    <td>Interaction</td>
+                    <td>IChatControlsInteraction</td>
+                    <td>Обработчик взаимодействий с чатом</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Создание элемента управления чатом</h3>
+        <pre>
+<code>
+<span class="code-type">FrameworkElement</span> chatView = CreateChatUI();
+<span class="code-type">IChatControlsInteraction</span> interaction = <span class="code-keyword">new</span> ChatInteractionHandler();
+<span class="code-type">ChatControl</span> chatControl = <span class="code-keyword">new</span> ChatControl(chatView, interaction);
+</code>
+        </pre>
+
+        <h3>Интеграция с интерфейсом</h3>
+        <pre>
+<code>
+<span class="code-keyword">public</span> <span class="code-type">IView</span> CreateChatPanel()
+{
+    <span class="code-type">ChatControl</span> control = GetChatControl();
+    <span class="code-comment">// Добавление в UI</span>
+    mainGrid.Children.Add(control.View);
+    <span class="code-comment">// Настройка взаимодействий</span>
+    control.Interaction.SendMessage += OnSendMessage;
+    <span class="code-keyword">return</span> control.View;
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Свойства View и Interaction доступны только для чтения после создания объекта</li>
+                <li>Для корректной работы необходимо реализовать интерфейс <span class="code-type">IChatControlsInteraction</span></li>
+                <li>Используется в связке с механизмами отображения UI и обработки событий чата</li>
+            </ul>
+        </div>
+
+        <h2>Связь с системой</h2>
+        <p>Взаимодействует с:</p>
+        <ul>
+            <li>UI-фреймворком (WPF) через <span class="code-type">FrameworkElement</span></li>
+            <li>Системой обработки сообщений через <span class="code-type">IChatControlsInteraction</span></li>
+            <li>Механизмами маршалинга при кросс-доменном взаимодействии</li>
+        </ul>
+    </div>
+</body>
+</html>

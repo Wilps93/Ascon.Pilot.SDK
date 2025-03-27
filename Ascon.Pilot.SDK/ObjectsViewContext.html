@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация ObjectsViewContext SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .property-type {
+            font-weight: bold;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс ObjectsViewContext</h1>
+        
+        <h2>Описание</h2>
+        <p>
+            Контекст представления объектов, используемый для передачи информации 
+            о выбранных объектах и режиме отображения. Наследует <code>MarshalByRefObject</code> 
+            для поддержки маршалинга в распределенных средах.
+        </p>
+
+        <h2>Конструктор</h2>
+        <pre>
+<code>
+<span class="code-keyword">public</span> ObjectsViewContext(
+    IEnumerable<IDataObject> selectedObjects,
+    <span class="code-keyword">bool</span> isContext
+)
+</code>
+        </pre>
+        <table>
+            <thead>
+                <tr>
+                    <th>Параметр</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>selectedObjects</td>
+                    <td>IEnumerable<IDataObject></td>
+                    <td>Коллекция выбранных объектов данных</td>
+                </tr>
+                <tr>
+                    <td>isContext</td>
+                    <td>bool</td>
+                    <td>Флаг контекстного режима отображения</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Свойство</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>SelectedObjects</td>
+                    <td class="property-type">IEnumerable<IDataObject></td>
+                    <td>Выбранные объекты (только для чтения)</td>
+                </tr>
+                <tr>
+                    <td>IsContext</td>
+                    <td class="property-type">bool</td>
+                    <td>Признак контекстного режима (только для чтения)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Особенности</h2>
+        <div class="note">
+            <ul>
+                <li>Свойства доступны только для чтения после создания объекта</li>
+                <li>Используется для передачи контекста между компонентами системы</li>
+                <li>Наследование от <code>MarshalByRefObject</code> позволяет использовать объект в Remoting</li>
+            </ul>
+        </div>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Создание контекста</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> selected = GetSelectedObjects();
+<span class="code-keyword">var</span> context = <span class="code-keyword">new</span> ObjectsViewContext(selected, isContext: <span class="code-keyword">true</span>);
+</code>
+        </pre>
+
+        <h3>Проверка контекстного режима</h3>
+        <pre>
+<code>
+<span class="code-keyword">if</span> (context.IsContext)
+{
+    Console.WriteLine($"Режим контекста. Выбрано объектов: {context.SelectedObjects.Count()}");
+}
+</code>
+        </pre>
+
+        <h2>Важные замечания</h2>
+        <div class="note">
+            <ul>
+                <li>Изменение коллекции <code>SelectedObjects</code> после создания контекста не влияет на внутреннее состояние</li>
+                <li>Для корректной работы в распределенных системах требуется сериализация объектов</li>
+                <li>В XML-комментарии класса обнаружена опечатка: "Contex" вместо "Context"</li>
+            </ul>
+        </div>
+
+        <h2>Рекомендации</h2>
+        <ul>
+            <li>Используйте для передачи данных между слоями приложения</li>
+            <li>Проверяйте <code>IsContext</code> перед выполнением контекстных операций</li>
+            <li>Кэшируйте результаты <code>SelectedObjects</code> при многократном доступе</li>
+        </ul>
+    </div>
+</body>
+</html>

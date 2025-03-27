@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация FileSaverOptions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .code-type {
+            color: #2b91af;
+        }
+
+        .important {
+            color: #dc3545;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс FileSaverOptions</h1>
+        
+        <h2>Описание</h2>
+        <p>Класс для настройки параметров сохранения файлов. Наследуется от <code>MarshalByRefObject</code> для поддержки работы в распределенных средах и сериализации.</p>
+
+        <h2>Наследование</h2>
+        <pre>
+<code>
+<span class="code-type">System.Object</span>
+    <span class="code-type">System.MarshalByRefObject</span>
+        <span class="code-type">FileSaverOptions</span>
+</code>
+        </pre>
+
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Свойство</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>GraphicLayerOption</td>
+                    <td>GraphicLayerOption</td>
+                    <td>Определяет способ внедрения графических слоев, текстовых меток и штрих-кодов</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Базовая настройка</h3>
+        <pre>
+<code>
+<span class="code-type">FileSaverOptions</span> options = <span class="code-keyword">new</span> FileSaverOptions
+{
+    GraphicLayerOption = GraphicLayerOption.EmbedAll
+};
+</code>
+        </pre>
+
+        <h3>Интеграция с сохранением файла</h3>
+        <pre>
+<code>
+<span class="code-type">IFileSaver</span> saver = GetFileSaver();
+<span class="code-type">FileSaverOptions</span> options = <span class="code-keyword">new</span> FileSaverOptions
+{
+    GraphicLayerOption = GraphicLayerOption.EmbedTextOnly
+};
+
+saver.SaveFile(file, options);
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Свойство <code>GraphicLayerOption</code> требует предварительной настройки в системе</li>
+                <li>Значение по умолчанию: <code>GraphicLayerOption.None</code> (если не указано)</li>
+                <li>Для работы с удаленными объектами используйте <code>MarshalByRefObject</code> возможности</li>
+            </ul>
+        </div>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Проверяйте поддержку выбранных опций в вашей версии SDK</li>
+                <li>Используйте <code>GraphicLayerOption.None</code> для минимального размера файла</li>
+                <li>Для массовых операций кэшируйте настройки</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

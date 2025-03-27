@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация перечисления SearchResultKind</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 2rem;
+            color: #2d3436;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        pre {
+            background-color: #2d3436;
+            color: #ffffff;
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .code-keyword {
+            color: #55efc4;
+        }
+
+        .code-comment {
+            color: #81ecec;
+        }
+
+        .note {
+            background-color: #fff1e6;
+            border-left: 4px solid #ff9900;
+            padding: 1rem;
+            margin: 2rem 0;
+            border-radius: 3px;
+        }
+
+        .source-icons {
+            display: flex;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .source-icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem;
+            border: 1px solid #f1f1f1;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Перечисление SearchResultKind</h1>
+        
+        <h2>Описание</h2>
+        <p>Определяет источник данных для результатов поиска в системе. Позволяет различать локальные и серверные результаты.</p>
+
+        <div class="source-icons">
+            <div class="source-icon">
+                <strong>Local</strong><br>
+                <svg style="width:48px;height:48px" viewBox="0 0 24 24">
+                    <path fill="#4CAF50" d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8m-1-5h2v2h-2V9m0 7h2v-4h-2v4z"/>
+                </svg>
+            </div>
+            <div class="source-icon">
+                <strong>Remote</strong><br>
+                <svg style="width:48px;height:48px" viewBox="0 0 24 24">
+                    <path fill="#2196F3" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8m1-14H7v6h6V6m0 10H7v-2h6v2z"/>
+                </svg>
+            </div>
+        </div>
+
+        <h2>Значения перечисления</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Значение</th>
+                    <th>Описание</th>
+                    <th>Особенности</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Local</td>
+                    <td>Результат получен из локального индекса</td>
+                    <td>
+                        <ul>
+                            <li>Быстрый доступ</li>
+                            <li>Доступно в offline-режиме</li>
+                            <li>Может быть устаревшим</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Remote</td>
+                    <td>Результат получен с сервера</td>
+                    <td>
+                        <ul>
+                            <li>Актуальные данные</li>
+                            <li>Требует сетевого подключения</li>
+                            <li>Может задерживаться при загрузке</li>
+                        </ul>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Определение источника результата</h3>
+        <pre>
+<code>
+<span class="code-keyword">foreach</span> (<span class="code-keyword">var</span> result <span class="code-keyword">in</span> searchResults)
+{
+    <span class="code-keyword">if</span> (result.Source == SearchResultKind.Local)
+    {
+        <span class="code-comment">// Обработка локальных результатов</span>
+        ProcessLocalResult(result);
+    }
+    <span class="code-keyword">else</span>
+    {
+        <span class="code-comment">// Обработка серверных результатов</span>
+        ProcessRemoteResult(result);
+    }
+}
+</code>
+        </pre>
+
+        <h3>Фильтрация по источнику</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> remoteResults = searchResults
+    .Where(r => r.Source == SearchResultKind.Remote)
+    .ToList();
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Локальные результаты могут не совпадать с серверными при отложенной синхронизации</li>
+                <li>Для критических операций всегда проверяйте актуальность через <code>Remote</code></li>
+                <li>Смешанные результаты требуют явного разделения логики обработки</li>
+            </ul>
+        </div>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Используйте <code>Local</code> для предварительного просмотра</li>
+                <li>Для операций сохранения всегда проверяйте серверные данные</li>
+                <li>Кэшируйте <code>Remote</code> результаты для улучшения UX</li>
+            </ul>
+        </div>
+
+        <h2>Связанные компоненты</h2>
+        <ul>
+            <li><a href="ISearchService.html">Интерфейс ISearchService</a></li>
+            <li><a href="SearchResult.html">Класс SearchResult</a></li>
+            <li><a href="SearchMode.html">Перечисление SearchMode</a></li>
+        </ul>
+    </div>
+</body>
+</html>

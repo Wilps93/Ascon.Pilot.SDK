@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация ChildrenFilters</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .code-type {
+            color: #2b91af;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс ChildrenFilters</h1>
+        
+        <h2>Описание</h2>
+        <p>Статический класс для фильтрации дочерних объектов <span class="code-type">IDataObject</span> на основе их типов. 
+        Позволяет получать идентификаторы дочерних объектов, соответствующих определенным критериям.</p>
+
+        <h2>Методы</h2>
+
+        <h3>GetChildrenForListView</h3>
+        <pre>
+<code>
+<span class="code-keyword">public</span> <span class="code-keyword">static</span> IEnumerable<<span class="code-type">Guid</span>> GetChildrenForListView(
+    <span class="code-type">IDataObject</span> obj, 
+    <span class="code-type">IObjectsRepository</span> repository
+)
+</code>
+        </pre>
+        <p>Возвращает дочерние объекты, подходящие для отображения в списке. Фильтрует:</p>
+        <ul>
+            <li>Типы "Smart_folder_type"</li>
+            <li>Типы "Shortcut_E67517F1-93F5-4756-B651-133B816D43C8"</li>
+            <li>Пользовательские типы, не являющиеся служебными</li>
+        </ul>
+
+        <h3>GetChildrenForPilotStorage</h3>
+        <pre>
+<code>
+<span class="code-keyword">public</span> <span class="code-keyword">static</span> IEnumerable<<span class="code-type">Guid</span>> GetChildrenForPilotStorage(
+    <span class="code-type">IDataObject</span> obj, 
+    <span class="code-type">IObjectsRepository</span> repository
+)
+</code>
+        </pre>
+        <p>Возвращает дочерние объекты для Pilot Storage. Фильтрует:</p>
+        <ul>
+            <li>Типы "Project_folder"</li>
+            <li>Типы "File"</li>
+        </ul>
+
+        <h3>GetChildrenByTypeNames</h3>
+        <pre>
+<code>
+<span class="code-keyword">public</span> <span class="code-keyword">static</span> IEnumerable<<span class="code-type">Guid</span>> GetChildrenByTypeNames(
+    <span class="code-type">IDataObject</span> obj, 
+    <span class="code-type">IObjectsRepository</span> repository, 
+    <span class="code-type">string</span>[] typeNames
+)
+</code>
+        </pre>
+        <p>Возвращает дочерние объекты с указанными именами типов.</p>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Получение объектов для списка</h3>
+        <pre>
+<code>
+<span class="code-type">IEnumerable</span><<span class="code-type">Guid</span>> listItems = ChildrenFilters.GetChildrenForListView(
+    currentObject,
+    repository
+);
+</code>
+        </pre>
+
+        <h3>Фильтрация по типам хранилища</h3>
+        <pre>
+<code>
+<span class="code-type">IEnumerable</span><<span class="code-type">Guid</span>> storageItems = ChildrenFilters.GetChildrenForPilotStorage(
+    folderObject,
+    repository
+);
+</code>
+        </pre>
+
+        <h3>Кастомная фильтрация по именам типов</h3>
+        <pre>
+<code>
+<span class="code-type">IEnumerable</span><<span class="code-type">Guid</span>> customItems = ChildrenFilters.GetChildrenByTypeNames(
+    parentObject,
+    repository,
+    "Document",
+    "Task"
+);
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Методы используют репозиторий для определения типа каждого дочернего объекта</li>
+                <li>Фильтрация происходит через предикаты, что позволяет гибко настраивать условия</li>
+                <li>GetChildrenForListView исключает служебные типы (IsService = false)</li>
+            </ul>
+        </div>
+
+        <h2>Внутренняя реализация</h2>
+        <p>Все методы используют общий механизм:</p>
+        <pre>
+<code>
+<span class="code-keyword">private</span> <span class="code-keyword">static</span> IEnumerable<<span class="code-type">Guid</span>> GetChildrenByTypePredicate(
+    IDataObject obj, 
+    IObjectsRepository repository, 
+    Predicate<IType> predicate
+)
+</code>
+        </pre>
+        <p>Алгоритм:</p>
+        <ol>
+            <li>Перебор всех дочерних идентификаторов из obj.Children</li>
+            <li>Получение типа каждого объекта через repository.GetType()</li>
+            <li>Проверка типа через предикат</li>
+            <li>Фильтрация удовлетворяющих условию идентификаторов</li>
+        </ol>
+
+        <h2>Связь с системой</h2>
+        <p>Используется в:</p>
+        <ul>
+            <li>UI-компонентах для отображения деревьев объектов</li>
+            <li>Механизмах экспорта/импорта данных</li>
+            <li>Системе поиска и навигации</li>
+        </ul>
+    </div>
+</body>
+</html>

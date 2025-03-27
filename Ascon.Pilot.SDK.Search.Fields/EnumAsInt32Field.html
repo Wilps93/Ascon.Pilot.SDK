@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация EnumAsInt32Field</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс EnumAsInt32Field<T></h1>
+        
+        <h2>Описание</h2>
+        <p>Класс для работы с перечислениями (enum), хранящимися в виде 32-битных целых чисел в поисковых запросах. Наследуется от <code>EnumField<T></code>.</p>
+
+        <h2>Наследование</h2>
+        <ul>
+            <li>System.Object</li>
+            <li>EnumField<T></li>
+            <li>EnumAsInt32Field<T></li>
+        </ul>
+
+        <h2>Конструктор</h2>
+        <pre>
+<code>
+<span class="code-keyword">internal</span> EnumAsInt32Field(string fieldName)
+</code>
+        </pre>
+        <p>Инициализирует новый экземпляр класса с указанием имени поля. Доступен только внутри SDK.</p>
+
+        <h2>Методы</h2>
+        
+        <h3>WithPrefix(T value)</h3>
+        <pre>
+<code>
+<span class="code-keyword">protected internal override</span> string WithPrefix(T value)
+</code>
+        </pre>
+        <p>Преобразует значение перечисления в 32-битное целое число и добавляет специальный префикс для форматирования поискового запроса.</p>
+
+        <h2>Особенности реализации</h2>
+        <ul>
+            <li>Использует префикс "&#32;" (пробел) для указания 32-битного целочисленного формата</li>
+            <li>Требует, чтобы параметр T был перечислением (<code>enum</code>)</li>
+            <li>Производит преобразование <code>enum → int</code> через <code>Convert.ToInt32()</code></li>
+        </ul>
+
+        <h2>Пример использования</h2>
+        <pre>
+<code>
+<span class="code-comment">// Определение перечисления</span>
+<span class="code-keyword">public enum</span> DocumentStatus
+{
+    Draft = 0,
+    Published = 1,
+    Archived = 2
+}
+
+<span class="code-comment">// Создание поискового условия</span>
+<span class="code-keyword">var</span> statusField = <span class="code-keyword">new</span> EnumAsInt32Field<DocumentStatus>("Status");
+ISearchTerm term = statusField.Be(DocumentStatus.Published);
+
+<span class="code-comment">// Генерирует условие: Status: 1</span>
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong> Класс имеет внутренний модификатор доступа 
+            (internal) и не предназначен для прямого создания экземпляров. 
+            Используйте публичные методы SDK для формирования условий поиска.
+        </div>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Убедитесь, что перечисление T имеет базовый тип <code>int</code></li>
+                <li>Для 64-битных перечислений используйте соответствующий класс <code>EnumAsInt64Field<T></code></li>
+                <li>Проверяйте корректность преобразования enum-значений в целые числа</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

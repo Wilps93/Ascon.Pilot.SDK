@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация OfflineEventArgs SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .inheritance {
+            font-weight: bold;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс OfflineEventArgs</h1>
+        
+        <h2>Описание</h2>
+        <p>
+            Класс аргументов события, уведомляющий о переходе приложения в автономный режим. 
+            Наследует <code>MarshalByRefObject</code> для поддержки работы в распределенных средах.
+        </p>
+
+        <h2>Наследование</h2>
+        <table>
+            <tr>
+                <td class="inheritance">MarshalByRefObject</td>
+                <td>Базовый класс для поддержки маршалинга объектов по ссылке</td>
+            </tr>
+            <tr>
+                <td class="inheritance">→ OfflineEventArgs</td>
+                <td>Специализированный класс для событий перехода в автономный режим</td>
+            </tr>
+        </table>
+
+        <h2>Особенности</h2>
+        <div class="note">
+            <ul>
+                <li>Не содержит дополнительных свойств или методов</li>
+                <li>Используется как маркер для идентификации типа события</li>
+                <li>Поддерживает работу в Remoting-сценариях через наследование <code>MarshalByRefObject</code></li>
+            </ul>
+        </div>
+
+        <h2>Пример использования</h2>
+        
+        <h3>Подписка на событие</h3>
+        <pre>
+<code>
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> NetworkMonitor
+{
+    <span class="code-keyword">public</span> event EventHandler<OfflineEventArgs> OfflineModeEntered;
+
+    <span class="code-keyword">protected</span> <span class="code-keyword">virtual</span> <span class="code-keyword">void</span> OnOfflineModeEntered()
+    {
+        OfflineModeEntered?.Invoke(<span class="code-keyword">this</span>, <span class="code-keyword">new</span> OfflineEventArgs());
+    }
+}
+</code>
+        </pre>
+
+        <h3>Обработка события</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> monitor = <span class="code-keyword">new</span> NetworkMonitor();
+monitor.OfflineModeEntered += (sender, args) =>
+{
+    Console.WriteLine("Приложение перешло в автономный режим");
+    <span class="code-comment">// Дополнительная логика обработки</span>
+};
+</code>
+        </pre>
+
+        <h2>Важные замечания</h2>
+        <div class="note">
+            <ul>
+                <li>Класс не содержит данных - его присутствие само по себе является сигналом</li>
+                <li>Для кросс-доменной работы требуется настройка lifetime-сервисов</li>
+                <li>Рекомендуется использовать в связке с <code>OnlineEventArgs</code> для полной картины состояния</li>
+            </ul>
+        </div>
+
+        <h2>Рекомендации</h2>
+        <ul>
+            <li>Реализуйте паттерн Observer для отслеживания состояния сети</li>
+            <li>Добавьте логирование при обработке события</li>
+            <li>Проверяйте доступность сетевых ресурсов при получении уведомления</li>
+        </ul>
+    </div>
+</body>
+</html>

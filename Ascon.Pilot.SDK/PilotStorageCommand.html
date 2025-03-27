@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация перечисления PilotStorageCommand</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 2rem;
+            color: #2d3436;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        pre {
+            background-color: #2d3436;
+            color: #ffffff;
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .code-keyword {
+            color: #55efc4;
+        }
+
+        .code-comment {
+            color: #81ecec;
+        }
+
+        .note {
+            background-color: #fff1e6;
+            border-left: 4px solid #ff9900;
+            padding: 1rem;
+            margin: 2rem 0;
+            border-radius: 3px;
+        }
+
+        .group-header {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Перечисление PilotStorageCommand</h1>
+        
+        <h2>Описание</h2>
+        <p>Определяет набор команд для управления хранилищем Pilot-Storage. 
+           Используется для выполнения операций с файлами, документами и проектами.</p>
+
+        <h2>Группы команд</h2>
+        
+        <div class="group-header">
+            <strong>Управление изменениями</strong>
+        </div>
+        <table>
+            <tr>
+                <td>Commit</td>
+                <td>Фиксация изменений в хранилище</td>
+            </tr>
+            <tr>
+                <td>Revert</td>
+                <td>Откат изменений к предыдущему состоянию</td>
+            </tr>
+            <tr>
+                <td>Discard</td>
+                <td>Отмена отклоненных сервером изменений</td>
+            </tr>
+        </table>
+
+        <div class="group-header">
+            <strong>Работа с файлами</strong>
+        </div>
+        <table>
+            <tr>
+                <td>Download</td>
+                <td>Загрузка файлов с сервера</td>
+            </tr>
+            <tr>
+                <td>GetLatestVersion</td>
+                <td>Обновление файлов до последней версии</td>
+            </tr>
+            <tr>
+                <td>Lock</td>
+                <td>Блокировка файла для редактирования</td>
+            </tr>
+            <tr>
+                <td>Unlock</td>
+                <td>Снятие блокировки с файла</td>
+            </tr>
+        </table>
+
+        <div class="group-header">
+            <strong>Публикация документов</strong>
+        </div>
+        <table>
+            <tr>
+                <td>Publish</td>
+                <td>Публикация исходного файла</td>
+            </tr>
+            <tr>
+                <td>PublishAndCommit</td>
+                <td>Публикация и фиксация изменений</td>
+            </tr>
+            <tr>
+                <td>AppendPublish</td>
+                <td>Публикация в новые страницы существующего документа</td>
+            </tr>
+            <tr>
+                <td>AppendPublishAndCommit</td>
+                <td>Публикация с добавлением страниц и фиксацией</td>
+            </tr>
+        </table>
+
+        <div class="group-header">
+            <strong>Управление проектами</strong>
+        </div>
+        <table>
+            <tr>
+                <td>Unmount</td>
+                <td>Отключение проекта от хранилища</td>
+            </tr>
+        </table>
+
+        <div class="group-header">
+            <strong>Подписки</strong>
+        </div>
+        <table>
+            <tr>
+                <td>Subsribe</td>
+                <td>Подписка на обновления (содержит опечатку в названии)</td>
+            </tr>
+            <tr>
+                <td>Unsubscribe</td>
+                <td>Отмена подписки</td>
+            </tr>
+        </table>
+
+        <div class="group-header">
+            <strong>Блокировка версий</strong>
+        </div>
+        <table>
+            <tr>
+                <td>Freeze</td>
+                <td>Блокировка версии для изменений</td>
+            </tr>
+            <tr>
+                <td>Unfreeze</td>
+                <td>Снятие блокировки версии</td>
+            </tr>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Выполнение команды Commit</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> command = PilotStorageCommand.Commit;
+storage.Execute(command);
+</code>
+        </pre>
+
+        <h3>Пакетная обработка</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> commands = <span class="code-keyword">new</span>[] 
+{
+    PilotStorageCommand.Lock,
+    PilotStorageCommand.Publish,
+    PilotStorageCommand.Commit
+};
+
+<span class="code-keyword">foreach</span> (<span class="code-keyword">var</span> cmd <span class="code-keyword">in</span> commands)
+{
+    ProcessCommand(cmd);
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Команда <code>Subsribe</code> содержит опечатку в названии (правильно: Subscribe)</li>
+                <li>Команды публикации (<code>Publish*</code>) требуют предварительной проверки прав доступа</li>
+                <li><code>Unmount</code> и <code>Discard</code> могут привести к необратимым изменениям</li>
+            </ul>
+        </div>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Используйте <code>PublishAndCommit</code> для атомарных операций</li>
+                <li>Перед выполнением <code>Revert</code> убедитесь в наличии резервной копии</li>
+                <li>Для работы с блокировками используйте пару <code>Lock</code>/<code>Unlock</code></li>
+            </ul>
+        </div>
+
+        <h2>Связанные компоненты</h2>
+        <ul>
+            <li><a href="IPilotStorage.html">Интерфейс IPilotStorage</a></li>
+            <li><a href="StorageEventArgs.html">Класс StorageEventArgs</a></li>
+        </ul>
+    </div>
+</body>
+</html>

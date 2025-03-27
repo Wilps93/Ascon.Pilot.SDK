@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация интерфейса INavigationRequestHandler</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс INavigationRequestHandler</h1>
+        
+        <h2>Назначение</h2>
+        <p>Предоставляет механизм обработки навигационных запросов в приложении. 
+        Позволяет расширениям перехватывать и обрабатывать переходы к объектам, задачам и другим сущностям системы.</p>
+
+        <h2>Методы</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Параметры</th>
+                    <th>Возвращаемое значение</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>OnNavigationRequested</td>
+                    <td>navigationTarget: INavigationTarget</td>
+                    <td>bool</td>
+                    <td>
+                        Вызывается при возникновении навигационного запроса.<br>
+                        Возвращает <code>true</code>, если запрос обработан расширением и не требует дальнейших действий от системы
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Пример реализации</h2>
+        <pre>
+<code>
+<span class="code-keyword">public class</span> CustomNavigationHandler : INavigationRequestHandler 
+{
+    <span class="code-keyword">public bool</span> OnNavigationRequested(INavigationTarget target)
+    {
+        <span class="code-comment">// Обработка специфичных типов навигации</span>
+        <span class="code-keyword">if</span> (target <span class="code-keyword">is</span> IObjectNavigationTarget objectTarget)
+        {
+            <span class="code-comment">// Кастомная логика отображения объекта</span>
+            Console.WriteLine($"Открытие объекта: {objectTarget.ObjectId}");
+            <span class="code-keyword">return true</span>; <span class="code-comment">// Запрос полностью обработан</span>
+        }
+        
+        <span class="code-comment">// Передача управления системе</span>
+        <span class="code-keyword">return false</span>;
+    }
+}
+</code>
+        </pre>
+
+        <h2>Ключевые особенности</h2>
+        <ul>
+            <li>Позволяет реализовать кастомную логику навигации</li>
+            <li>Поддерживает различные типы целей (<code>IObjectNavigationTarget</code>, <code>ITaskNavigationTarget</code> и др.)</li>
+            <li>Возвращает контроль над обработкой запроса (true - прервать цепочку обработки)</li>
+            <li>Должен быть зарегистрирован как расширение в системе</li>
+        </ul>
+
+        <div class="note">
+            <strong>Важно:</strong> 
+            <ul>
+                <li>Проверяйте тип <code>navigationTarget</code> перед приведением</li>
+                <li>Возвращайте <code>false</code> для стандартной обработки запроса системой</li>
+                <li>Используйте для интеграции с внешними системами или кастомными формами</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

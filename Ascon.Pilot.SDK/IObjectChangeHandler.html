@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация интерфейса IObjectChangeHandler</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IObjectChangeHandler</h1>
+        
+        <h2>Назначение</h2>
+        <p>Предоставляет механизм отслеживания изменений объектов, внесенных текущим пользователем. 
+        Используется для реализации логики реагирования на изменения данных в реальном времени.</p>
+
+        <h2>Методы</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Параметры</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>OnChanged</td>
+                    <td>changes: IEnumerable<DataObjectChange></td>
+                    <td>
+                        Вызывается при сохранении изменений объектов пользователем.<br>
+                        Содержит коллекцию изменений с информацией об объектах и типах модификаций
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Пример реализации</h2>
+        <pre>
+<code>
+<span class="code-keyword">public class</span> CustomChangeHandler : IObjectChangeHandler 
+{
+    <span class="code-keyword">public void</span> OnChanged(IEnumerable<DataObjectChange> changes)
+    {
+        <span class="code-keyword">foreach</span> (<span class="code-keyword">var</span> change <span class="code-keyword">in</span> changes)
+        {
+            Console.WriteLine($"Объект {change.ObjectId} изменен. Тип изменения: {change.ChangeType}");
+            
+            <span class="code-comment">// Пример обработки конкретного типа изменения</span>
+            <span class="code-keyword">if</span> (change.ChangeType == ChangeType.Modified)
+            {
+                <span class="code-comment">// Логика для обновленных объектов</span>
+                ProcessModifiedObject(change.ObjectId);
+            }
+        }
+    }
+    
+    <span class="code-keyword">private void</span> ProcessModifiedObject(Guid objectId)
+    {
+        <span class="code-comment">// Дополнительная обработка</span>
+    }
+}
+</code>
+        </pre>
+
+        <h2>Ключевые особенности</h2>
+        <ul>
+            <li>Метод вызывается <strong>после</strong> сохранения изменений в базе данных</li>
+            <li>Коллекция <code>changes</code> может содержать несколько изменений за одну транзакцию</li>
+            <li>Поддерживает все типы изменений: создание, обновление, удаление</li>
+            <li>Должен быть зарегистрирован в системе через механизм расширений</li>
+        </ul>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Не выполняйте длительные операции в обработчике - это блокирует основной поток</li>
+                <li>Используйте <code>DataObjectChange</code> для получения информации об объекте и типе изменения</li>
+                <li>Обработчик получает уведомления только о изменениях, сделанных текущим пользователем</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

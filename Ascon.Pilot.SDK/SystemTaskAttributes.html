@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация SystemTaskAttributes SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .warning {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс SystemTaskAttributes</h1>
+        
+        <h2>Описание</h2>
+        <p>Статический класс, содержащий предопределенные названия системных атрибутов для работы с задачами. 
+        Используется для унификации доступа к метаданным задач в Pilot.SDK.</p>
+        
+        <h2>Атрибуты</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Имя</th>
+                    <th>Описание</th>
+                    <th>Примечания</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>INITIATOR_POSITION</td>
+                    <td>Должность инициатора задачи</td>
+                    <td>Значение: "initiator"</td>
+                </tr>
+                <tr>
+                    <td>RESPONSIBLE_POSITION</td>
+                    <td>Должность ответственного за задачу</td>
+                    <td>Значение: "responsible"</td>
+                </tr>
+                <tr>
+                    <td>EXECUTOR_POSITION</td>
+                    <td>Должность исполнителя задачи</td>
+                    <td>Значение: "executor"</td>
+                </tr>
+                <tr>
+                    <td>DATE_OF_ASSIGNMENT</td>
+                    <td>Дата назначения задачи</td>
+                    <td>Значение: "dateOfAssignment"</td>
+                </tr>
+                <tr>
+                    <td>DEADLINE_DATE</td>
+                    <td>Срок выполнения задачи</td>
+                    <td>Значение: "deadlineDate"</td>
+                </tr>
+                <tr>
+                    <td>DEADLINE_DATE_FOR_TEMPLATE</td>
+                    <td>Срок из шаблона задачи (относительный)</td>
+                    <td>Значение: "deadlineDateRelativeForTemplate"</td>
+                </tr>
+                <tr>
+                    <td>RELATIVE_DEADLINE</td>
+                    <td>Относительный срок (в днях)</td>
+                    <td>Значение: "relativeDeadlineDays"</td>
+                </tr>
+                <tr>
+                    <td>DATE_OF_COMPLETION</td>
+                    <td>Дата завершения задачи</td>
+                    <td>Значение: "dateOfCompletion"</td>
+                </tr>
+                <tr>
+                    <td>DATE_OF_REVOCATION</td>
+                    <td>Дата отзыва задачи</td>
+                    <td>Значение: "dateOfRevocation"</td>
+                </tr>
+                <tr>
+                    <td>STATE</td>
+                    <td>Текущее состояние задачи</td>
+                    <td>Значение: "state" (см. <code>SystemStates</code>)</td>
+                </tr>
+                <tr>
+                    <td>STAGE_ORDER</td>
+                    <td>Порядок этапов задачи</td>
+                    <td>Значение: "order"</td>
+                </tr>
+                <tr>
+                    <td>AUTO_COMPLETE_PARENT</td>
+                    <td>Автозавершение родительской задачи</td>
+                    <td>Значение: "autoCompleteParent"</td>
+                </tr>
+                <tr>
+                    <td>ATTACHMENTS</td>
+                    <td>Вложения задачи</td>
+                    <td class="warning">Не поддерживается в текущей версии</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Особенности</h2>
+        <ul>
+            <li>Все атрибуты доступны только для чтения (константы)</li>
+            <li>Атрибуты используются для доступа к метаданным через API задач</li>
+            <li>Значения чувствительны к регистру</li>
+        </ul>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Получение информации о задаче</h3>
+        <pre>
+<code>
+<span class="code-keyword">ITask</span> task = GetTask();
+<span class="code-keyword">DateTime</span> deadline = task.GetAttributeValue<<span class="code-keyword">DateTime</span>>(SystemTaskAttributes.DEADLINE_DATE);
+<span class="code-keyword">string</span> executor = task.GetAttributeValue<<span class="code-keyword">string</span>>(SystemTaskAttributes.EXECUTOR_POSITION);
+</code>
+        </pre>
+
+        <h3>Проверка состояния задачи</h3>
+        <pre>
+<code>
+<span class="code-keyword">if</span> (task.GetAttributeValue<<span class="code-keyword">Guid</span>>(SystemTaskAttributes.STATE) == SystemStates.TASK_REVOKED_STATE_ID)
+{
+    Console.WriteLine("Задача отозвана");
+}
+</code>
+        </pre>
+
+        <div class="note warning">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Атрибут <code>ATTACHMENTS</code> не имеет функциональности в текущей реализации</li>
+                <li>Для работы с датами используйте парсинг в <code>DateTime</code> с учетом временных зон</li>
+                <li>Проверяйте наличие атрибутов через <code>HasAttribute()</code> перед получением значения</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

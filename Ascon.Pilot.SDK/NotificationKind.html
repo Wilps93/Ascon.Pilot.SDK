@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация NotificationKind SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .deprecated {
+            text-decoration: line-through;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Перечисление NotificationKind</h1>
+        
+        <h2>Описание</h2>
+        <p>
+            Определяет типы уведомлений о изменениях в системе. 
+            Каждое значение соответствует определённому действию с объектами или задачами.
+        </p>
+
+        <h2>Значения</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Значение</th>
+                    <th>Числовой код</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Объектные события -->
+                <tr>
+                    <td colspan="3" class="category">Объекты</td>
+                </tr>
+                <tr>
+                    <td>ObjectCreated</td>
+                    <td>100</td>
+                    <td>Объект создан</td>
+                </tr>
+                <tr>
+                    <td>ObjectDeleted</td>
+                    <td>101</td>
+                    <td>Объект удалён</td>
+                </tr>
+                <tr>
+                    <td>ObjectRestored</td>
+                    <td>102</td>
+                    <td>Объект восстановлен</td>
+                </tr>
+                <tr>
+                    <td>ObjectRenamed</td>
+                    <td>103</td>
+                    <td>Объект переименован</td>
+                </tr>
+                <tr>
+                    <td>ObjectMoved</td>
+                    <td>104</td>
+                    <td>Объект перемещён в другое расположение</td>
+                </tr>
+                <tr>
+                    <td>ObjectAccessChanged</td>
+                    <td>105</td>
+                    <td>Изменены права доступа к объекту</td>
+                </tr>
+                <tr>
+                    <td>ObjectAttributeChanged</td>
+                    <td>106</td>
+                    <td>Изменены атрибуты объекта</td>
+                </tr>
+                <tr>
+                    <td>ObjectFileChanged</td>
+                    <td>107</td>
+                    <td>Изменён файл объекта</td>
+                </tr>
+                <tr>
+                    <td>ObjectSignatureChanged</td>
+                    <td>108</td>
+                    <td>Изменена подпись файла объекта</td>
+                </tr>
+                <tr>
+                    <td class="deprecated">ObjectAnnotationChanged</td>
+                    <td>109</td>
+                    <td>Устаревшее: Используйте <code>ObjectAnnotationChanged2</code></td>
+                </tr>
+                <tr>
+                    <td>ObjectUnlocked</td>
+                    <td>119</td>
+                    <td>Объект разблокирован</td>
+                </tr>
+                <tr>
+                    <td>ObjectLocked</td>
+                    <td>120</td>
+                    <td>Объект заблокирован</td>
+                </tr>
+                <tr>
+                    <td>ObjectAnnotationAdded</td>
+                    <td>121</td>
+                    <td>Добавлена аннотация к файлу объекта</td>
+                </tr>
+                <tr>
+                    <td>ObjectAnnotationDeleted</td>
+                    <td>122</td>
+                    <td>Удалена аннотация к файлу объекта</td>
+                </tr>
+                <tr>
+                    <td>ObjectAnnotationChanged2</td>
+                    <td>123</td>
+                    <td>Изменена аннотация к файлу объекта</td>
+                </tr>
+                <tr>
+                    <td>ObjectAnnotationMessageAdded</td>
+                    <td>124</td>
+                    <td>Добавлено сообщение к аннотации объекта</td>
+                </tr>
+                <tr>
+                    <td>ObjectAnnotationMessageDeleted</td>
+                    <td>125</td>
+                    <td>Удалено сообщение из аннотации объекта</td>
+                </tr>
+                <tr>
+                    <td>ObjectAnnotationMessageChanged</td>
+                    <td>126</td>
+                    <td>Изменено сообщение в аннотации объекта</td>
+                </tr>
+                <tr>
+                    <td>ObjectFreezed</td>
+                    <td>128</td>
+                    <td>Объект заморожен</td>
+                </tr>
+                <tr>
+                    <td>ObjectUnfreezed</td>
+                    <td>129</td>
+                    <td>Объект разморожен</td>
+                </tr>
+                <tr>
+                    <td>ObjectGraphicLayerChanged</td>
+                    <td>130</td>
+                    <td>Изменён графический слой объекта</td>
+                </tr>
+                <tr>
+                    <td>Automation</td>
+                    <td>135</td>
+                    <td>Уведомление сгенерировано автоматизацией</td>
+                </tr>
+                <tr>
+                    <td>RelationChanged</td>
+                    <td>136</td>
+                    <td>Изменены связи объекта</td>
+                </tr>
+
+                <!-- События хранилища -->
+                <tr>
+                    <td colspan="3" class="category">Хранилище</td>
+                </tr>
+                <tr>
+                    <td>StorageObjectCreated</td>
+                    <td>200</td>
+                    <td>Объект хранилища создан</td>
+                </tr>
+                <tr>
+                    <td>StorageObjectDeleted</td>
+                    <td>201</td>
+                    <td>Объект хранилища удалён</td>
+                </tr>
+                <tr>
+                    <td>StorageObjectRestored</td>
+                    <td>202</td>
+                    <td>Объект хранилища восстановлен</td>
+                </tr>
+                <tr>
+                    <td>StorageObjectRenamed</td>
+                    <td>203</td>
+                    <td>Объект хранилища переименован</td>
+                </tr>
+                <tr>
+                    <td>StorageObjectMoved</td>
+                    <td>204</td>
+                    <td>Объект хранилища перемещён</td>
+                </tr>
+                <tr>
+                    <td>StorageObjectAccessChanged</td>
+                    <td>205</td>
+                    <td>Изменены права доступа к объекту хранилища</td>
+                </tr>
+                <tr>
+                    <td>StorageObjectAttributeChanged</td>
+                    <td>206</td>
+                    <td>Изменены атрибуты объекта хранилища</td>
+                </tr>
+                <tr>
+                    <td>StorageObjectFileChanged</td>
+                    <td>207</td>
+                    <td>Изменён файл объекта хранилища</td>
+                </tr>
+
+                <!-- Устаревшие задачи -->
+                <tr>
+                    <td colspan="3" class="category deprecated">Устаревшие задачи</td>
+                </tr>
+                <tr>
+                    <td class="deprecated">TaskCreated</td>
+                    <td>400</td>
+                    <td>Задача создана (устаревшее)</td>
+                </tr>
+                <tr>
+                    <td class="deprecated">TaskAttributeChanged</td>
+                    <td>406</td>
+                    <td>Атрибуты задачи изменены (устаревшее)</td>
+                </tr>
+                <tr>
+                    <td class="deprecated">TaskMessageChanged</td>
+                    <td>410</td>
+                    <td>Сообщение задачи изменено (устаревшее)</td>
+                </tr>
+                <tr>
+                    <td class="deprecated">TaskStateAssigned</td>
+                    <td>411</td>
+                    <td>Задача назначена (устаревшее)</td>
+                </tr>
+                <tr>
+                    <td class="deprecated">TaskStateInProgress</td>
+                    <td>412</td>
+                    <td>Задача в работе (устаревшее)</td>
+                </tr>
+                <tr>
+                    <td class="deprecated">TaskStateOnValidation</td>
+                    <td>413</td>
+                    <td>Задача на проверке (устаревшее)</td>
+                </tr>
+                <tr>
+                    <td class="deprecated">TaskStateRevoked</td>
+                    <td>414</td>
+                    <td>Задача отменена (устаревшее)</td>
+                </tr>
+                <tr>
+                    <td class="deprecated">TaskStateReturnedAfterValidation</td>
+                    <td>415</td>
+                    <td>Задача возвращена после проверки (устаревшее)</td>
+                </tr>
+                <tr>
+                    <td class="deprecated">TaskAttachmentChanged</td>
+                    <td>416</td>
+                    <td>Вложения задачи изменены (устаревшее)</td>
+                </tr>
+                <tr>
+                    <td class="deprecated">TaskTitleChanged</td>
+                    <td>417</td>
+                    <td>Название задачи изменено (устаревшее)</td>
+                </tr>
+                <tr>
+                    <td class="deprecated">TaskDescriptionChanged</td>
+                    <td>418</td>
+                    <td>Описание задачи изменено (устаревшее)</td>
+                </tr>
+                <tr>
+                    <td class="deprecated">TaskDeadlineChanged</td>
+                    <td>427</td>
+                    <td>Срок задачи изменён (устаревшее)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Важные замечания</h2>
+        <div class="note">
+            <strong>Устаревшие элементы:</strong>
+            <ul>
+                <li>Все элементы с <code>Task*</code> помечены как устаревшие</li>
+                <li><code>ObjectAnnotationChanged</code> заменён на <code>ObjectAnnotationChanged2</code></li>
+            </ul>
+        </div>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Обработка уведомлений</h3>
+        <pre>
+<code>
+<span class="code-keyword">void</span> ProcessNotification(NotificationKind kind)
+{
+    <span class="code-keyword">switch</span> (kind)
+    {
+        <span class="code-keyword">case</span> NotificationKind.ObjectCreated:
+            Console.WriteLine("Новый объект создан");
+            <span class="code-keyword">break</span>;
+            
+        <span class="code-keyword">case</span> NotificationKind.ObjectAttributeChanged:
+            Console.WriteLine("Атрибуты объекта изменены");
+            <span class="code-keyword">break</span>;
+            
+        <span class="code-keyword">case</span> NotificationKind.Automation:
+            Console.WriteLine("Автоматическое уведомление");
+            <span class="code-keyword">break</span>;
+            
+        <span class="code-comment">// Обработка устаревших значений</span>
+        <span class="code-keyword">case</span> NotificationKind.ObjectAnnotationChanged:
+            Console.WriteLine("Используйте ObjectAnnotationChanged2");
+            <span class="code-keyword">break</span>;
+    }
+}
+</code>
+        </pre>
+
+        <h3>Проверка устаревших элементов</h3>
+        <pre>
+<code>
+<span class="code-keyword">if</span> (Enum.IsDefined(typeof(NotificationKind), NotificationKind.TaskCreated))
+{
+    <span class="code-comment">// Предупреждение: Используется устаревший элемент</span>
+    Console.WriteLine("Обнаружено устаревшее уведомление о задаче");
+}
+</code>
+        </pre>
+    </div>
+</body>
+</html>

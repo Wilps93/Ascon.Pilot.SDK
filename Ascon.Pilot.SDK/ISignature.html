@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация ISignature SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background-color: #f8d7da;
+            border-left: 4px solid #f5c6cb;
+            padding: 10px;
+            margin: 20px 0;
+            color: #721c24;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс ISignature</h1>
+        
+        <div class="warning">
+            <strong>Внимание!</strong> Объект этого интерфейса автоматически уничтожается через 2 минуты.
+            Попытки обращения к его свойствам после этого вызовут исключение.
+        </div>
+
+        <h2>Описание</h2>
+        <p>Представляет временный контейнер для передачи данных, используемый при работе с цифровыми подписями.</p>
+
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Свойство</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Id</td>
+                    <td>Guid</td>
+                    <td>Уникальный идентификатор подписи</td>
+                </tr>
+                <tr>
+                    <td>DatabaseId</td>
+                    <td>Guid</td>
+                    <td>Идентификатор базы данных, связанной с подписью</td>
+                </tr>
+                <tr>
+                    <td>PositionId</td>
+                    <td>int</td>
+                    <td>Идентификатор позиции лица, подписавшего документ</td>
+                </tr>
+                <tr>
+                    <td>Role</td>
+                    <td>string</td>
+                    <td>Роль лица, подписавшего документ (например, "Менеджер", "Директор")</td>
+                </tr>
+                <tr>
+                    <td>Sign</td>
+                    <td>string</td>
+                    <td>Цифровая подпись в виде строки</td>
+                </tr>
+                <tr>
+                    <td>RequestedSigner</td>
+                    <td>string</td>
+                    <td>Имя запрошенного подписывающего лица</td>
+                </tr>
+                <tr>
+                    <td>ObjectId</td>
+                    <td>Guid</td>
+                    <td>Идентификатор связанного объекта в системе</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Получение данных подписи</h3>
+        <pre>
+<code>
+<span class="code-keyword">ISignature</span> signature = GetSignature();
+<span class="code-keyword">Guid</span> signatureId = signature.Id;
+<span class="code-keyword">string</span> signerRole = signature.Role;
+
+<span class="code-comment">// Важно: используйте данные в течение 2 минут!</span>
+ProcessSignature(signature.Sign);
+</code>
+        </pre>
+
+        <h3>Проверка данных перед использованием</h3>
+        <pre>
+<code>
+<span class="code-keyword">if</span> (signature != <span class="code-keyword">null</span>)
+{
+    <span class="code-keyword">try</span>
+    {
+        <span class="code-comment">// Критически важные операции</span>
+        ValidateSignature(signature.Sign);
+    }
+    <span class="code-keyword">catch</span> (ObjectDisposedException)
+    {
+        <span class="code-comment">// Обработка случая, когда объект уже уничтожен</span>
+        Logger.Warn("Объект подписи недоступен");
+    }
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Выполняйте все операции с объектом в течение первых 2 минут после получения</li>
+                <li>Избегайте сохранения ссылок на объект в долгоживущие структуры данных</li>
+                <li>Обрабатывайте возможные исключения ObjectDisposedException</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

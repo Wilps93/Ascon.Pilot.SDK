@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация ITaskModifier SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background-color: #f8d7da;
+            border-left: 4px solid #f5c6cb;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс ITaskModifier</h1>
+        
+        <div class="warning">
+            <strong>Внимание!</strong> Все методы этого интерфейса помечены как устаревшие ([Obsolete]). 
+            Рекомендуется проверить актуальность в новой версии SDK.
+        </div>
+
+        <h2>Описание</h2>
+        <p>Предоставляет методы для создания, редактирования и удаления задач, рабочих процессов и этапов. 
+        Реализует паттерн "Строитель" (Fluent Interface) для конфигурации объектов.</p>
+
+        <h2>Методы</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>NewWorkflow()</td>
+                    <td>Создает новый рабочий процесс</td>
+                </tr>
+                <tr>
+                    <td>NewStage(workflow)</td>
+                    <td>Создает новый этап в указанном рабочем процессе</td>
+                </tr>
+                <tr>
+                    <td>NewTask(title, description, executors, deadline)</td>
+                    <td>Создает задачу с базовыми параметрами</td>
+                </tr>
+                <tr>
+                    <td>NewTask(title, description, executors, deadline, attachments)</td>
+                    <td>Создает задачу с вложениями</td>
+                </tr>
+                <tr>
+                    <td>NewTask(workflow, stage, executorPosition)</td>
+                    <td>Создает задачу в контексте рабочего процесса и этапа</td>
+                </tr>
+                <tr>
+                    <td>NewAgreementTask(workflow, stage, executorPosition)</td>
+                    <td>Создает задачу согласования</td>
+                </tr>
+                <tr>
+                    <td>EditTask(task)</td>
+                    <td>Редактирует существующую задачу</td>
+                </tr>
+                <tr>
+                    <td>EditTaskById(taskId)</td>
+                    <td>Редактирует задачу по идентификатору</td>
+                </tr>
+                <tr>
+                    <td>EditWorkflow(workflow)</td>
+                    <td>Редактирует рабочий процесс</td>
+                </tr>
+                <tr>
+                    <td>EditStage(stage)</td>
+                    <td>Редактирует этап</td>
+                </tr>
+                <tr>
+                    <td>Apply()</td>
+                    <td>Применяет все изменения</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Пример использования</h2>
+        <pre>
+<code>
+<span class="code-keyword">using</span> (ITaskModifier modifier = GetTaskModifier())
+{
+    <span class="code-comment">// Создание задачи с вложениями</span>
+    <span class="code-keyword">var</span> taskBuilders = modifier.NewTask(
+        title: "Новая задача",
+        description: "Описание задачи",
+        executors: new List<int> { 101, 102 },
+        deadLine: DateTime.Now.AddDays(7),
+        attachments: new List<Guid> { Guid.NewGuid() }
+    );
+
+    <span class="code-comment">// Настройка задач через билдер</span>
+    <span class="code-keyword">foreach</span> (ITaskBuilder builder <span class="code-keyword">in</span> taskBuilders)
+    {
+        builder.SetPriority(TaskPriority.High);
+    }
+
+    <span class="code-comment">// Применение изменений</span>
+    modifier.Apply();
+}
+</code>
+        </pre>
+
+        <h2>Рекомендации</h2>
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Всегда оборачивайте работу с модификатором в <code>using</code> для своевременного освобождения ресурсов</li>
+                <li>Проверяйте возвращаемые объекты билдеров на null перед использованием</li>
+                <li>Для массового редактирования используйте пакетные операции через <code>EditTaskById</code></li>
+                <li>Всегда вызывайте <code>Apply()</code> после завершения изменений</li>
+            </ul>
+        </div>
+
+        <div class="note">
+            <strong>Особенности:</strong>
+            <ul>
+                <li>Методы возвращают Fluent-интерфейсы для цепочки настроек</li>
+                <li>Каждая задача создается для отдельного исполнителя (по ID должности)</li>
+                <li>При создании задачи с N исполнителями возвращается N билдеров</li>
+            </ul>
+        </div>
+
+        <div class="note">
+            <strong>Известные проблемы:</strong>
+            <ul>
+                <li>В XML-комментариях метода Apply() опечатка: "have been made in modifier"</li>
+                <li>Отсутствует метод удаления объектов - используйте редактирование с флагами удаления</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

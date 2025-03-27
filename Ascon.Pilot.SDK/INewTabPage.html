@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация интерфейса INewTabPage</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс INewTabPage</h1>
+        
+        <h2>Назначение</h2>
+        <p>Позволяет расширять страницу новой вкладки приложения, добавляя пользовательские кнопки и обрабатывая их нажатия.</p>
+
+        <h2>Методы интерфейса</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Параметры</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>BuildNewTabPage</td>
+                    <td>host: INewTabPageHost</td>
+                    <td>Вызывается при инициализации страницы новой вкладки. Используется для добавления кнопок</td>
+                </tr>
+                <tr>
+                    <td>OnButtonClick</td>
+                    <td>name: string</td>
+                    <td>Вызывается при нажатии пользователем на зарегистрированную кнопку</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Пример реализации</h2>
+        <pre>
+<code>
+<span class="code-keyword">public class</span> CustomNewTab : INewTabPage 
+{
+    <span class="code-keyword">public void</span> BuildNewTabPage(INewTabPageHost host)
+    {
+        <span class="code-comment">// Добавляем кнопку на страницу новой вкладки</span>
+        host.AddButton(
+            name: "custom_button",
+            displayName: "Моя кнопка",
+            icon: File.ReadAllBytes("icon.png"),
+            tooltip: "Создать специальный объект"
+        );
+    }
+
+    <span class="code-keyword">public void</span> OnButtonClick(string name)
+    {
+        <span class="code-keyword">if</span> (name == "custom_button")
+        {
+            <span class="code-comment">// Логика создания специального объекта</span>
+            Console.WriteLine("Создание нового специального объекта...");
+        }
+    }
+}
+</code>
+        </pre>
+
+        <h2>Ключевые особенности</h2>
+        <ul>
+            <li>Метод <code>BuildNewTabPage</code> вызывается один раз при создании вкладки</li>
+            <li>Кнопки добавляются через <code>INewTabPageHost</code> с указанием имени, отображаемого текста и иконки</li>
+            <li>Обработка кликов должна быть реализована в <code>OnButtonClick</code></li>
+            <li>Иконки рекомендуется использовать в формате PNG размером 32x32px</li>
+        </ul>
+
+        <div class="note">
+            <strong>Важно:</strong> Для корректной работы необходимо:
+            <ul>
+                <li>Зарегистрировать реализацию интерфейса в системе расширений</li>
+                <li>Обеспечить уникальность имен добавляемых кнопок</li>
+                <li>Обрабатывать только зарегистрированные кнопки в OnButtonClick</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

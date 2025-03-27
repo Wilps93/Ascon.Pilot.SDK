@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация ActiveTabChangedEventArgs</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .code-type {
+            color: #2b91af;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс ActiveTabChangedEventArgs</h1>
+        
+        <h2>Описание</h2>
+        <p>Событие, уведомляющее о смене активной вкладки. Наследуется от <span class="code-type">MarshalByRefObject</span> 
+        для поддержки маршалинга между доменами приложений.</p>
+        
+        <h2>Иерархия наследования</h2>
+        <ul>
+            <li>System.Object</li>
+            <li>System.MarshalByRefObject</li>
+            <li>Ascon.Pilot.SDK.ActiveTabChangedEventArgs</li>
+        </ul>
+
+        <h2>Конструктор</h2>
+        <pre>
+<code>
+<span class="code-keyword">public</span> ActiveTabChangedEventArgs(<span class="code-type">Guid</span> activeTabId)
+</code>
+        </pre>
+        <p>Инициализирует новый экземпляр класса с указанием идентификатора активной вкладки.</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Параметр</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>activeTabId</td>
+                    <td>Уникальный идентификатор активной вкладки (тип <span class="code-type">Guid</span>)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Свойство</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>ActiveTabId</td>
+                    <td>Guid</td>
+                    <td>Получает идентификатор активной вкладки. Значение доступно только для чтения после инициализации.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Обработка события смены вкладки</h3>
+        <pre>
+<code>
+<span class="code-keyword">void</span> OnActiveTabChanged(<span class="code-type">object</span> sender, ActiveTabChangedEventArgs e)
+{
+    <span class="code-type">Guid</span> currentTabId = e.ActiveTabId;
+    <span class="code-comment">// Логика обработки смены вкладки</span>
+    Console.WriteLine($"Активная вкладка изменена: {currentTabId}");
+}
+</code>
+        </pre>
+
+        <h3>Создание экземпляра</h3>
+        <pre>
+<code>
+<span class="code-type">Guid</span> newTabId = <span class="code-type">Guid</span>.NewGuid();
+ActiveTabChangedEventArgs args = <span class="code-keyword">new</span> ActiveTabChangedEventArgs(newTabId);
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Особенности:</strong>
+            <ul>
+                <li>Свойство ActiveTabId доступно только для чтения после инициализации</li>
+                <li>Наследование от MarshalByRefObject позволяет использовать объект в сценариях удаленного взаимодействия</li>
+                <li>Рекомендуется использовать в связке с событиями интерфейса (например, смена активного окна/вкладки)</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

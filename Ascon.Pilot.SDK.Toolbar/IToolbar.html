@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация интерфейса IToolbar<TToolbarContext></title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .method-signature {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IToolbar<TToolbarContext></h1>
+        
+        <h2>Описание</h2>
+        <p>Обобщенный интерфейс для создания и управления панелями инструментов с поддержкой контекстной настройки. Позволяет динамически строить панель и обрабатывать взаимодействие пользователя.</p>
+
+        <h2>Методы</h2>
+        
+        <h3>Построение панели</h3>
+        <div class="method-signature">
+            <code>void Build(IToolbarBuilder builder, TToolbarContext context)</code>
+            <p>Вызывается перед отображением панели для настройки элементов</p>
+            <ul>
+                <li><strong>builder</strong> - Объект для построения панели</li>
+                <li><strong>context</strong> - Контекстные данные для настройки панели</li>
+            </ul>
+        </div>
+
+        <h3>Обработка событий</h3>
+        <div class="method-signature">
+            <code>void OnToolbarItemClick(string name, TToolbarContext context)</code>
+            <p>Вызывается при взаимодействии пользователя с элементом панели</p>
+            <ul>
+                <li><strong>name</strong> - Имя нажатого элемента</li>
+                <li><strong>context</strong> - Текущий контекст панели</li>
+            </ul>
+        </div>
+
+        <h2>Пример реализации</h2>
+        <pre>
+<code>
+<span class="code-keyword">public class</span> DocumentToolbar : IToolbar<DocumentContext>
+{
+    <span class="code-keyword">public void</span> Build(IToolbarBuilder builder, DocumentContext context)
+    {
+        <span class="code-comment">// Динамическое построение панели на основе контекста</span>
+        <span class="code-keyword">if</span> (context.IsEditable)
+        {
+            builder.AddButtonItem(<span class="code-string">"save"</span>, 0)
+                .WithHeader(<span class="code-string">"Сохранить"</span>)
+                .WithIcon(LoadIcon(<span class="code-string">"save.svg"</span>));
+
+            builder.AddToggleButtonItem(<span class="code-string">"preview"</span>, 1)
+                .WithHeader(<span class="code-string">"Предпросмотр"</span>)
+                .WithIsChecked(context.IsPreviewEnabled);
+        }
+
+        builder.AddMenuButtonItem(<span class="code-string">"export"</span>, 2)
+            .WithHeader(<span class="code-string">"Экспорт"</span>)
+            .WithMenu(<span class="code-keyword">new</span> ExportMenuHandler());
+    }
+
+    <span class="code-keyword">public void</span> OnToolbarItemClick(string name, DocumentContext context)
+    {
+        <span class="code-keyword">switch</span> (name)
+        {
+            <span class="code-keyword">case</span> <span class="code-string">"save"</span>:
+                context.Document.Save();
+                <span class="code-keyword">break</span>;
+            <span class="code-keyword">case</span> <span class="code-string">"preview"</span>:
+                context.TogglePreview();
+                <span class="code-keyword">break</span>;
+        }
+    }
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важные замечания:</strong>
+            <ul>
+                <li>Тип <code>TToolbarContext</code> позволяет передавать произвольные данные между компонентами</li>
+                <li>Метод <code>Build()</code> вызывается при каждом обновлении панели</li>
+                <li>Для сохранения состояния элементов используйте контекст</li>
+                <li>Обработка кликов должна быть максимально быстрой для предотвращения задержек UI</li>
+            </ul>
+        </div>
+
+        <h2>Связь с другими компонентами</h2>
+        <p>Использует:</p>
+        <ul>
+            <li><code>IToolbarBuilder</code> - для построения элементов панели</li>
+            <li><code>IToolbarButtonItemBuilder</code> - для настройки кнопок</li>
+            <li><code>IToolbarItemSubmenuHandler</code> - для работы с подменю</li>
+        </ul>
+
+        <h2>Рекомендации</h2>
+        <ul>
+            <li>Используйте контекст для передачи состояния документа/приложения</li>
+            <li>Для сложных панелей разбивайте логику на отдельные обработчики</li>
+            <li>Кэшируйте часто используемые элементы в контексте</li>
+            <li>Добавляйте обработку ошибок в методе <code>OnToolbarItemClick</code></li>
+            <li>Для асинхронных операций используйте async/await в обработчиках</li>
+        </ul>
+    </div>
+</body>
+</html>

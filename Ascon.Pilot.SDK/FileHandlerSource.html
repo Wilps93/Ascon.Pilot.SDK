@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация FileHandlerSource</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .code-type {
+            color: #2b91af;
+        }
+
+        .important {
+            color: #dc3545;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Перечисление FileHandlerSource</h1>
+        
+        <h2>Описание</h2>
+        <p>Определяет источники файлов в системе. Поддерживает комбинирование значений через битовые операции ([Flags]).</p>
+
+        <h2>Значения</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Значение</th>
+                    <th>Числовой код</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Unknown</td>
+                    <td>0</td>
+                    <td>Неизвестный источник (значение по умолчанию)</td>
+                </tr>
+                <tr>
+                    <td>Publication</td>
+                    <td>1</td>
+                    <td>Файл связан с публикацией</td>
+                </tr>
+                <tr>
+                    <td>ObjectCreation</td>
+                    <td>2</td>
+                    <td>Файл используется при создании объекта</td>
+                </tr>
+                <tr>
+                    <td>AutoImport</td>
+                    <td>4</td>
+                    <td>Файл получен через автоматический импорт из папки</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры комбинаций</h2>
+        <pre>
+<code>
+<span class="code-comment">// Объединение источников</span>
+<span class="code-type">FileHandlerSource</span> combined = FileHandlerSource.Publication | FileHandlerSource.AutoImport;
+
+<span class="code-comment">// Проверка наличия флага</span>
+<span class="code-keyword">if</span> (combined.HasFlag(FileHandlerSource.Publication))
+{
+    <span class="code-comment">// Обработка публикации</span>
+}
+
+<span class="code-comment">// Битовая операция проверки</span>
+<span class="code-keyword">if</span> ((combined & FileHandlerSource.AutoImport) == FileHandlerSource.AutoImport)
+{
+    <span class="code-comment">// Обработка автоимпорта</span>
+}
+</code>
+        </pre>
+
+        <h2>Особенности</h2>
+        <div class="note">
+            <ul>
+                <li>Значение <code>Unknown</code> не участвует в комбинациях (0 не влияет на битовые операции)</li>
+                <li>Для проверки нескольких флагов используйте <code>HasFlag()</code> или битовые операции</li>
+                <li>Числовые коды соответствуют степеням двойки для корректной работы битовых масок</li>
+            </ul>
+        </div>
+
+        <div class="note warning">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Не используйте <code>Unknown</code> в комбинациях с другими флагами</li>
+                <li>Проверяйте наличие <code>Unknown</code> отдельно для обработки неопределенных состояний</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

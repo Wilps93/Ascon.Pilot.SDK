@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация класса ServerCommandRequestResult</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 2rem;
+            color: #2d3436;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        pre {
+            background-color: #2d3436;
+            color: #ffffff;
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .code-keyword {
+            color: #55efc4;
+        }
+
+        .code-comment {
+            color: #81ecec;
+        }
+
+        .note {
+            background-color: #fff1e6;
+            border-left: 4px solid #ff9900;
+            padding: 1rem;
+            margin: 2rem 0;
+            border-radius: 3px;
+        }
+
+        .class-diagram {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 2rem 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс ServerCommandRequestResult</h1>
+        
+        <h2>Описание</h2>
+        <p>Представляет результат выполнения серверной команды. Содержит данные ответа и статус выполнения.</p>
+
+        <div class="class-diagram">
+            <strong>Иерархия:</strong><br>
+            <code>System.Object → ServerCommandRequestResult</code>
+        </div>
+
+        <h2>Конструктор</h2>
+        <div class="method-signature">
+            <code>public ServerCommandRequestResult(byte[] data, ServerCommandResult result)</code>
+            <p>Инициализирует новый экземпляр класса с указанными данными и статусом.</p>
+        </div>
+
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Свойство</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Data</td>
+                    <td>byte[]</td>
+                    <td>Бинарные данные ответа сервера</td>
+                </tr>
+                <tr>
+                    <td>Result</td>
+                    <td>ServerCommandResult</td>
+                    <td>Статус выполнения команды</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Получение результата команды</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> response = commandExecutor.Execute(command);
+<span class="code-keyword">if</span> (response.Result == ServerCommandResult.Success)
+{
+    ProcessData(response.Data);
+}
+</code>
+        </pre>
+
+        <h3>Обработка ошибок</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> result = SendCommandToServer();
+<span class="code-keyword">if</span> (result.Result != ServerCommandResult.Success)
+{
+    Logger.Error(<span class="code-string">$"Ошибка выполнения: {result.Result}"</span>);
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Свойства доступны только для чтения</li>
+                <li><code>Data</code> может быть null при статусе <code>Error</code></li>
+                <li>Для десериализации <code>Data</code> используйте <code>Serializer</code></li>
+            </ul>
+        </div>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Всегда проверяйте <code>Result</code> перед использованием <code>Data</code></li>
+                <li>Для критических ошибок используйте <code>ServerCommandResult.Fatal</code></li>
+                <li>При сериализации учитывайте формат данных сервера</li>
+            </ul>
+        </div>
+
+        <h2>Связанные компоненты</h2>
+        <ul>
+            <li><a href="ServerCommandResult.html">Перечисление ServerCommandResult</a></li>
+            <li><a href="ICommandExecutor.html">Интерфейс ICommandExecutor</a></li>
+            <li><a href="Serializer.html">Класс Serializer</a></li>
+        </ul>
+    </div>
+</body>
+</html>

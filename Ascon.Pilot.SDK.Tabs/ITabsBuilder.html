@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация ITabsBuilder SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс ITabsBuilder</h1>
+        
+        <h2>Описание</h2>
+        <p>Позволяет динамически добавлять пользовательские вкладки в интерфейс системы. Используется для расширения функционала вкладок в UI-компонентах, таких как Document Explorer.</p>
+        
+        <h2>Методы</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>AddTab</td>
+                    <td>Добавляет новую вкладку в коллекцию</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Метод AddTab</h2>
+        <pre>
+<code>
+<span class="code-keyword">void</span> AddTab(
+    Guid id,
+    string title,
+    FrameworkElement view
+)
+</code>
+        </pre>
+        
+        <h3>Параметры</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Параметр</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>id</td>
+                    <td>Guid</td>
+                    <td>Уникальный идентификатор вкладки (обязателен)</td>
+                </tr>
+                <tr>
+                    <td>title</td>
+                    <td>string</td>
+                    <td>Заголовок вкладки, отображаемый пользователю</td>
+                </tr>
+                <tr>
+                    <td>view</td>
+                    <td>FrameworkElement</td>
+                    <td>Элемент управления WPF, отображаемый на вкладке</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Особенности реализации</h2>
+        <ul>
+            <li>Требует уникального Guid для каждой вкладки</li>
+            <li>Элемент view должен быть корректно реализованным WPF-элементом</li>
+            <li>Может использоваться совместно с <code>DocumentExplorerDetailsTabsContext</code> для контекстной привязки</li>
+            <li>Реализация должна обеспечивать потокобезопасность при работе с UI</li>
+        </ul>
+
+        <h2>Пример использования</h2>
+        <pre>
+<code>
+<span class="code-keyword">public class</span> CustomTabsService : ITabsBuilder
+{
+    <span class="code-keyword">public void</span> AddTab(Guid id, string title, FrameworkElement view)
+    {
+        <span class="code-comment">// Пример интеграции с UI</span>
+        Application.Current.Dispatcher.Invoke(() => 
+        {
+            TabControl mainTabs = GetMainTabControl();
+            mainTabs.Items.Add(<span class="code-keyword">new</span> TabItem
+            {
+                Header = title,
+                Content = view,
+                Tag = id
+            });
+        });
+    }
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong> 
+            <ul>
+                <li>Guid должен генерироваться через <code>Guid.NewGuid()</code> для обеспечения уникальности</li>
+                <li>Для WPF-элементов рекомендуется использовать привязку данных (MVVM) вместо прямого кодирования</li>
+                <li>При удалении вкладок необходимо вручную управлять жизненным циклом элементов view</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

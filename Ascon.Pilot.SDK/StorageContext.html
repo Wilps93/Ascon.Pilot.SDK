@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация StorageContext SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс StorageContext</h1>
+        
+        <div class="note">
+            <strong>Важно:</strong> Название "pilot-strage" в описании класса содержит опечатку. 
+            Предположительно должно быть "pilot-storage". Уточните в актуальной документации.
+        </div>
+
+        <h2>Описание</h2>
+        <p>Контекст для работы с хранилищем данных. Наследуется от <code>MarshalByRefObject</code>, 
+        что позволяет использовать объект в сценариях удаленного взаимодействия и междоменной коммуникации.</p>
+        
+        <h2>Конструктор</h2>
+        <pre>
+<code>
+<span class="code-keyword">public</span> StorageContext(IEnumerable<IStorageDataObject> selectedObjects)
+</code>
+        </pre>
+        <p>Инициализирует новый экземпляр контекста с выбранными объектами хранилища.</p>
+        
+        <h3>Параметры</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Параметр</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>selectedObjects</td>
+                    <td>IEnumerable<IStorageDataObject></td>
+                    <td>Коллекция выбранных объектов хранилища</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Свойство</th>
+                    <th>Тип</th>
+                    <th>Доступ</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>SelectedObjects</td>
+                    <td>IEnumerable<IStorageDataObject></td>
+                    <td>Только чтение</td>
+                    <td>Коллекция объектов хранилища, переданных в конструкторе</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Особенности</h2>
+        <ul>
+            <li>Свойство <code>SelectedObjects</code> инициализируется один раз при создании объекта</li>
+            <li>Наследование от <code>MarshalByRefObject</code> позволяет использовать контекст в распределенных системах</li>
+            <li>Отсутствие публичного сеттера гарантирует неизменяемость коллекции после создания</li>
+        </ul>
+
+        <h2>Пример использования</h2>
+        <pre>
+<code>
+<span class="code-comment">// Получение выбранных объектов из хранилища</span>
+IEnumerable<IStorageDataObject> selected = GetSelectedObjects();
+
+<span class="code-comment">// Создание контекста</span>
+StorageContext context = <span class="code-keyword">new</span> StorageContext(selected);
+
+<span class="code-comment">// Работа с объектами</span>
+<span class="code-keyword">foreach</span> (var obj <span class="code-keyword">in</span> context.SelectedObjects)
+{
+    ProcessObject(obj);
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Для изменения списка объектов создавайте новый экземпляр контекста</li>
+                <li>Убедитесь в поддержке сериализации объектов при использовании в распределенных системах</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

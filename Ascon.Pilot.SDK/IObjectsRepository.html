@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация интерфейса IObjectsRepository</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .obsolete {
+            text-decoration: line-through;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IObjectsRepository</h1>
+        
+        <h2>Описание</h2>
+        <p>Центральный интерфейс для доступа к данным системы: объектам, типам, людям и организационным единицам. 
+        Поддерживает реактивные обновления через <code>IObservable<T></code>.</p>
+        
+        <h2>Группы методов</h2>
+        
+        <h3>1. Работа с объектами</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>SubscribeObjects(IEnumerable<Guid>)</td>
+                    <td>Подписка на изменения объектов по идентификаторам</td>
+                </tr>
+                <tr>
+                    <td class="obsolete">SubscribeTasks/Workflow/StageObjects</td>
+                    <td>Устаревшие методы подписки на задачи и процессы</td>
+                </tr>
+                <tr>
+                    <td>GetHistoryItems(IEnumerable<Guid>)</td>
+                    <td>Получение элементов истории по идентификаторам</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h3>2. Работа с людьми (IPerson)</h3>
+        <table>
+            <tbody>
+                <tr>
+                    <td>GetPerson(int)</td>
+                    <td>Получение пользователя по ID</td>
+                </tr>
+                <tr>
+                    <td>GetPeople()</td>
+                    <td>Получение всех пользователей</td>
+                </tr>
+                <tr>
+                    <td>GetCurrentPerson()</td>
+                    <td>Получение текущего пользователя</td>
+                </tr>
+                <tr>
+                    <td>SubscribePeople()</td>
+                    <td>Подписка на изменения пользователей</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h3>3. Работа с типами (IType)</h3>
+        <table>
+            <tbody>
+                <tr>
+                    <td>GetType(int)/GetType(string)</td>
+                    <td>Получение типа по ID или имени</td>
+                </tr>
+                <tr>
+                    <td>GetTypes()</td>
+                    <td>Получение всех типов</td>
+                </tr>
+                <tr>
+                    <td>SubscribeTypes()</td>
+                    <td>Подписка на изменения типов</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h3>4. Организационные единицы</h3>
+        <table>
+            <tbody>
+                <tr>
+                    <td>GetOrganisationUnit(int)</td>
+                    <td>Получение подразделения по ID</td>
+                </tr>
+                <tr>
+                    <td>GetOrganisationUnits()</td>
+                    <td>Получение всех подразделений</td>
+                </tr>
+                <tr>
+                    <td>SubscribeOrganisationUnits()</td>
+                    <td>Подписка на изменения подразделений</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h3>5. Хранилище файлов</h3>
+        <table>
+            <tbody>
+                <tr>
+                    <td>GetStoragePath(Guid)</td>
+                    <td>Получение пути объекта в файловом хранилище</td>
+                </tr>
+                <tr>
+                    <td>GetStorageObjects(IEnumerable<string>)</td>
+                    <td>Получение объектов хранилища по путям</td>
+                </tr>
+                <tr>
+                    <td>Mount(Guid)</td>
+                    <td>Монтирование объекта в хранилище</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h3>6. Системные методы</h3>
+        <table>
+            <tbody>
+                <tr>
+                    <td>GetDatabaseId()</td>
+                    <td>Получение ID текущей базы данных</td>
+                </tr>
+                <tr>
+                    <td>InvokeServerCommandAsync()</td>
+                    <td>Выполнение серверной команды</td>
+                </tr>
+                <tr class="obsolete">
+                    <td>GetCachedObject(Guid)</td>
+                    <td>Получение объекта из кэша (устаревший)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Подписка на изменения объектов</h3>
+        <pre>
+<code>
+var objectIds = new List<Guid> { obj1Id, obj2Id };
+var subscription = repository.SubscribeObjects(objectIds)
+    .Subscribe(obj => 
+    {
+        <span class="code-comment">// Обработка изменений объекта</span>
+        Console.WriteLine($"Объект {obj.Id} изменен");
+    });
+</code>
+        </pre>
+
+        <h3>Получение типа по имени</h3>
+        <pre>
+<code>
+IType documentType = repository.GetType("Document");
+<span class="code-keyword">if</span> (documentType != null)
+{
+    <span class="code-comment">// Работа с типом</span>
+}
+</code>
+        </pre>
+
+        <h3>Асинхронная серверная команда</h3>
+        <pre>
+<code>
+<span class="code-keyword">async</span> Task ExecuteCommand()
+{
+    var result = await repository.InvokeServerCommandAsync("ExportData", 
+        Encoding.UTF8.GetBytes("{ param: 42 }"));
+    <span class="code-comment">// Обработка результата</span>
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Методы с атрибутом <code>[Obsolete]</code> будут удалены в будущих версиях</li>
+                <li>Для работы с файловым хранилищем требуется предварительное монтирование объектов</li>
+                <li>Подписки (<code>IObservable<T></code>) требуют управления жизненным циклом</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

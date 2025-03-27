@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация класса PersonExtensions</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 2rem;
+            color: #2d3436;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        pre {
+            background-color: #2d3436;
+            color: #ffffff;
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .code-keyword {
+            color: #55efc4;
+        }
+
+        .code-comment {
+            color: #81ecec;
+        }
+
+        .note {
+            background-color: #fff1e6;
+            border-left: 4px solid #ff9900;
+            padding: 1rem;
+            margin: 2rem 0;
+            border-radius: 3px;
+        }
+
+        .note strong {
+            color: #ff6b6b;
+        }
+
+        .method-signature {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс PersonExtensions</h1>
+        
+        <h2>Описание</h2>
+        <p>Статический класс с методами расширения для работы с объектами <code>IPerson</code>. 
+           Предоставляет удобный доступ к контактной информации и организационной принадлежности сотрудников.</p>
+
+        <h2>Методы расширения</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Описание</th>
+                    <th>Возвращаемое значение</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>Email()</code></td>
+                    <td>Получает email сотрудника</td>
+                    <td><code>string</code></td>
+                </tr>
+                <tr>
+                    <td><code>Phone()</code></td>
+                    <td>Получает телефон сотрудника</td>
+                    <td><code>string</code></td>
+                </tr>
+                <tr>
+                    <td><code>Groups()</code></td>
+                    <td>Получает группы, в которых состоит сотрудник</td>
+                    <td><code>ReadOnlyCollection<int></code></td>
+                </tr>
+                <tr>
+                    <td><code>AllOrgUnits()</code></td>
+                    <td>Получает все связанные организационные единицы</td>
+                    <td><code>ReadOnlyCollection<int></code></td>
+                </tr>
+                <tr>
+                    <td><code>IsInactive()</code></td>
+                    <td>Проверяет активность сотрудника</td>
+                    <td><code>bool</code></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Получение контактных данных</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> email = person.Email();
+<span class="code-keyword">var</span> phone = person.Phone();
+
+<span class="code-keyword">if</span> (!string.IsNullOrEmpty(email))
+{
+    <span class="code-comment">// Отправка уведомления на email</span>
+}
+</code>
+        </pre>
+
+        <h3>Работа с организационной структурой</h3>
+        <pre>
+<code>
+<span class="code-keyword">foreach</span> (<span class="code-keyword">var</span> groupId <span class="code-keyword">in</span> person.Groups())
+{
+    <span class="code-comment">// Обработка групп</span>
+}
+
+<span class="code-keyword">foreach</span> (<span class="code-keyword">var</span> orgUnitId <span class="code-keyword">in</span> person.AllOrgUnits())
+{
+    <span class="code-comment">// Обработка всех организационных единиц</span>
+}
+</code>
+        </pre>
+
+        <h3>Проверка активности</h3>
+        <pre>
+<code>
+<span class="code-keyword">if</span> (!person.IsInactive())
+{
+    <span class="code-comment">// Выполнение действий для активных сотрудников</span>
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong> Все методы являются обертками над вызовами 
+            <code>Extensions.GetProperty()</code>. Убедитесь, что объект <code>IPerson</code> 
+            корректно инициализирован перед использованием.
+        </div>
+
+        <div class="note">
+            <strong>Особенности:</strong>
+            <ul>
+                <li>Коллекции <code>Groups()</code> и <code>AllOrgUnits()</code> доступны только для чтения</li>
+                <li>Метод <code>AllOrgUnits()</code> включает все типы организационных единиц (должности, группы, подразделения)</li>
+                <li>В XML-комментариях метода <code>AllOrgUnits()</code> допущены опечатки в написании "organisation"</li>
+            </ul>
+        </div>
+
+        <h2>Детали реализации</h2>
+        <div class="method-signature">
+            <code>public static string Email(this IPerson person)</code>
+            <p>Возвращает значение свойства "Email" объекта <code>IPerson</code>.</p>
+        </div>
+
+        <div class="method-signature">
+            <code>public static string Phone(this IPerson person)</code>
+            <p>Возвращает значение свойства "Phone" объекта <code>IPerson</code>.</p>
+        </div>
+
+        <div class="method-signature">
+            <code>public static ReadOnlyCollection<int> Groups(this IPerson person)</code>
+            <p>Возвращает коллекцию идентификаторов групп, в которых состоит сотрудник.</p>
+        </div>
+
+        <div class="method-signature">
+            <code>public static ReadOnlyCollection<int> AllOrgUnits(this IPerson person)</code>
+            <p>Возвращает все связанные организационные единицы, включая:</p>
+            <ul>
+                <li>Должности (<code>OrganizationUnitKind.Position</code>)</li>
+                <li>Группы (<code>OrganizationUnitKind.Group</code>)</li>
+                <li>Подразделения (<code>OrganizationUnitKind.Department</code>)</li>
+            </ul>
+        </div>
+
+        <div class="method-signature">
+            <code>public static bool IsInactive(this IPerson person)</code>
+            <p>Возвращает <code>true</code>, если сотрудник помечен как неактивный.</p>
+        </div>
+    </div>
+</body>
+</html>

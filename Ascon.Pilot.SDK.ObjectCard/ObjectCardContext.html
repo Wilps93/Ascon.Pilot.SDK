@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация ObjectCardContext</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс ObjectCardContext</h1>
+        
+        <h2>Описание</h2>
+        <p>Контекст объектной карточки, содержащий метаданные и текущее состояние объекта. Наследуется от <code>MarshalByRefObject</code> для поддержки работы в распределенных средах.</p>
+
+        <h2>Конструктор</h2>
+        <pre>
+<code>
+<span class="code-keyword">public</span> ObjectCardContext(
+    IEnumerable<IAttribute> displayAttributes,
+    IDictionary<string, object> attributesValues,
+    IType type,
+    IDataObject editedObject,
+    IDataObject parent,
+    <span class="code-keyword">bool</span> isReadOnly
+)
+</code>
+        </pre>
+        <p>Инициализирует новый экземпляр контекста карточки объекта.</p>
+
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Имя</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>DisplayAttributes</td>
+                    <td>IEnumerable<IAttribute></td>
+                    <td>Список атрибутов, отображаемых в карточке</td>
+                </tr>
+                <tr>
+                    <td>AttributesValues</td>
+                    <td>IDictionary<string, object></td>
+                    <td>Текущие значения атрибутов объекта</td>
+                </tr>
+                <tr>
+                    <td>Type</td>
+                    <td>IType</td>
+                    <td>Тип объекта</td>
+                </tr>
+                <tr>
+                    <td>EditiedObject</td>
+                    <td>IDataObject</td>
+                    <td>Редактируемый объект (null при создании нового)</td>
+                </tr>
+                <tr>
+                    <td>Parent</td>
+                    <td>IDataObject</td>
+                    <td>Родительский объект</td>
+                </tr>
+                <tr>
+                    <td>IsReadOnly</td>
+                    <td>bool</td>
+                    <td>Флаг режима "только чтение"</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Особенности</h2>
+        <ul>
+            <li>Все свойства доступны только для чтения</li>
+            <li>Содержит полную информацию о текущем состоянии объектной карточки</li>
+            <li>Используется в связке с <code>IObjectCardHandler</code> и <code>IAttributeModifier</code></li>
+        </ul>
+
+        <h2>Пример использования</h2>
+        <pre>
+<code>
+<span class="code-keyword">void</span> ProcessContext(ObjectCardContext context)
+{
+    <span class="code-comment">// Проверка режима доступа</span>
+    <span class="code-keyword">if</span> (context.IsReadOnly)
+    {
+        Console.WriteLine("Карточка в режиме просмотра");
+    }
+
+    <span class="code-comment">// Получение типа объекта</span>
+    Console.WriteLine($"Тип объекта: {context.Type.Name}");
+
+    <span class="code-comment">// Работа с атрибутами</span>
+    <span class="code-keyword">foreach</span> (var attr <span class="code-keyword">in</span> context.DisplayAttributes)
+    {
+        Console.WriteLine($"Атрибут: {attr.Name} = {context.AttributesValues[attr.Name]}");
+    }
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong> В свойстве <code>EditiedObject</code> 
+            пропущена буква 't' в названии (корректно: EditedObject). 
+            Убедитесь, что в коде используется правильное написание.
+        </div>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Используйте <code>DisplayAttributes</code> для получения списка видимых полей</li>
+                <li>Проверяйте <code>IsReadOnly</code> перед модификацией данных</li>
+                <li>Для новых объектов <code>EditiedObject</code> будет null</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация интерфейса IChild</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IChild</h1>
+        
+        <h2>Назначение</h2>
+        <p>Представляет дочерний элемент в иерархических структурах данных. Используется для связи элементов с родительскими объектами и идентификации их типа.</p>
+        
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Имя</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>ObjectId</td>
+                    <td>Guid</td>
+                    <td>Уникальный идентификатор родительского объекта, к которому относится дочерний элемент</td>
+                </tr>
+                <tr>
+                    <td>TypeId</td>
+                    <td>int</td>
+                    <td>Числовой идентификатор типа дочернего элемента (определяется конкретной реализацией системы)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Пример реализации</h2>
+        <pre>
+<code>
+<span class="code-keyword">public class</span> ChildElement : IChild
+{
+    <span class="code-keyword">public</span> Guid ObjectId { get; }
+    <span class="code-keyword">public</span> int TypeId { get; }
+
+    <span class="code-keyword">public</span> ChildElement(Guid parentId, int childType)
+    {
+        ObjectId = parentId;
+        TypeId = childType;
+    }
+}
+</code>
+        </pre>
+
+        <h2>Пример использования</h2>
+        <pre>
+<code>
+<span class="code-keyword">void</span> ProcessChild(IChild child)
+{
+    <span class="code-keyword">if</span> (child.ObjectId == Guid.Empty)
+    {
+        <span class="code-comment">// Обработка ошибки: не указан родительский объект</span>
+        <span class="code-keyword">throw new</span> ArgumentException("ObjectId не может быть пустым");
+    }
+
+    Console.WriteLine($"Дочерний элемент типа {child.TypeId} относится к объекту {child.ObjectId}");
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Значение <code>ObjectId</code> должно быть валидным Guid (не <code>Guid.Empty</code>)</li>
+                <li><code>TypeId</code> должен соответствовать заранее определенным константам в системе</li>
+                <li>Реализация должна гарантировать неизменяемость свойств после создания объекта</li>
+            </ul>
+        </div>
+
+        <h2>Типовые сценарии</h2>
+        <ul>
+            <li>Построение иерархических структур данных</li>
+            <li>Связывание метаданных с основными объектами</li>
+            <li>Фильтрация дочерних элементов по типу</li>
+            <li>Сериализация связей между объектами</li>
+        </ul>
+
+        <h2>Рекомендации</h2>
+        <ul>
+            <li>Используйте константы или перечисления для <code>TypeId</code> вместо магических чисел</li>
+            <li>Добавляйте проверку <code>ObjectId</code> на корректность при создании объекта</li>
+            <li>Для сложных сценариев расширяйте интерфейс дополнительными свойствами</li>
+        </ul>
+    </div>
+</body>
+</html>

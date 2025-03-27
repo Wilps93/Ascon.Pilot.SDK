@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация интерфейса IXpsMerger</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7;
+            margin: 2rem auto;
+            max-width: 1000px;
+            padding: 0 20px;
+            color: #2d3436;
+        }
+
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 0.5rem;
+        }
+
+        h2 {
+            color: #34495e;
+            margin-top: 2rem;
+        }
+
+        .method-box {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1.5rem 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin: 1.5rem 0;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        pre {
+            background-color: #282a36;
+            color: #f8f8f2;
+            padding: 1rem;
+            border-radius: 6px;
+            overflow-x: auto;
+        }
+
+        .code-comment { color: #6272a4; }
+        .code-keyword { color: #ff79c6; }
+        .code-string { color: #50fa7b; }
+
+        .note {
+            background-color: #fff5b3;
+            border-left: 4px solid #ffee33;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Интерфейс IXpsMerger</h1>
+    
+    <h2>Назначение</h2>
+    <p>Предоставляет функционал для объединения и сохранения документов в формате XPS (XML Paper Specification).</p>
+
+    <div class="note">
+        <strong>Важно:</strong> Работа с данным интерфейсом требует понимания формата XPS и механизма подписчиков (<code>IXpsMergerSaveListener</code>).
+    </div>
+
+    <h2>Методы</h2>
+
+    <div class="method-box">
+        <h3>SaveMergedXps</h3>
+        <p>Сохраняет объединенный XPS-документ</p>
+        
+        <h4>Параметры</h4>
+        <table>
+            <tr>
+                <td>filepath</td>
+                <td>string</td>
+                <td>Полный путь к файлу для сохранения результата (включая расширение .xps)</td>
+            </tr>
+            <tr>
+                <td>saveListener</td>
+                <td>IXpsMergerSaveListener</td>
+                <td>Обработчик событий процесса сохранения</td>
+            </tr>
+        </table>
+    </div>
+
+    <h2>Пример использования</h2>
+    <pre>
+<code>
+<span class="code-comment">// Пример реализации обработчика событий</span>
+<span class="code-keyword">class</span> XpsSaveListener : IXpsMergerSaveListener 
+{
+    <span class="code-keyword">public void</span> OnProgressChanged(<span class="code-keyword">int</span> progress) 
+    {
+        Console.WriteLine($<span class="code-string">"Прогресс сохранения: {progress}%</span>");
+    }
+
+    <span class="code-keyword">public void</span> OnCompleted() 
+    {
+        Console.WriteLine(<span class="code-string">"Сохранение завершено"</span>);
+    }
+
+    <span class="code-keyword">public void</span> OnError(Exception ex) 
+    {
+        Console.WriteLine($<span class="code-string">"Ошибка: {ex.Message}</span>");
+    }
+}
+
+<span class="code-comment">// Использование интерфейса</span>
+<span class="code-keyword">var</span> merger = <span class="code-comment">// Получение экземпляра IXpsMerger</span>
+<span class="code-keyword">var</span> listener = <span class="code-keyword">new</span> XpsSaveListener();
+
+merger.SaveMergedXps(
+    filepath: @"C:\Documents\merged.xps",
+    saveListener: listener
+);
+</code>
+    </pre>
+
+    <h2>Особенности</h2>
+    <ul>
+        <li>Формат XPS сохраняет документ в фиксированном макетном представлении</li>
+        <li>IXpsMergerSaveListener позволяет отслеживать:
+            <ul>
+                <li>Прогресс сохранения</li>
+                <li>Ошибки в процессе</li>
+                <li>Завершение операции</li>
+            </ul>
+        </li>
+        <li>Метод блокирует выполнение до завершения сохранения</li>
+    </ul>
+
+    <div class="note">
+        <strong>Рекомендации:</strong>
+        <ul>
+            <li>Всегда проверяйте доступность указанного пути</li>
+            <li>Обрабатывайте возможные исключения через try-catch</li>
+            <li>Для длительных операций используйте асинхронные обёртки</li>
+        </ul>
+    </div>
+</body>
+</html>

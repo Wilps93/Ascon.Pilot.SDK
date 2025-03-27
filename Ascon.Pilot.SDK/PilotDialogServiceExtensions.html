@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация класса PilotDialogServiceExtensions</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 2rem;
+            color: #2d3436;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        pre {
+            background-color: #2d3436;
+            color: #ffffff;
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .code-keyword {
+            color: #55efc4;
+        }
+
+        .code-comment {
+            color: #81ecec;
+        }
+
+        .note {
+            background-color: #fff1e6;
+            border-left: 4px solid #ff9900;
+            padding: 1rem;
+            margin: 2rem 0;
+            border-radius: 3px;
+        }
+
+        .method-signature {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс PilotDialogServiceExtensions</h1>
+        
+        <h2>Описание</h2>
+        <p>Статический класс с методами расширения для <code>IPilotDialogService</code>. 
+           Предоставляет удобный способ отображения диалогов выбора организационных единиц.</p>
+
+        <h2>Методы расширения</h2>
+        
+        <h3>ShowOrganisationUnitSelectorDialog()</h3>
+        <div class="method-signature">
+            <code>public static IEnumerable<IOrganisationUnit> ShowOrganisationUnitSelectorDialog(this IPilotDialogService pilotDialogService, IPilotDialogOptions options = null)</code>
+        </div>
+
+        <table>
+            <tr>
+                <th>Параметр</th>
+                <th>Тип</th>
+                <th>Описание</th>
+            </tr>
+            <tr>
+                <td>pilotDialogService</td>
+                <td>IPilotDialogService</td>
+                <td>Сервис диалоговых окон</td>
+            </tr>
+            <tr>
+                <td>options</td>
+                <td>IPilotDialogOptions</td>
+                <td>Опции диалога (необязательный параметр)</td>
+            </tr>
+        </table>
+
+        <h3>Возвращаемое значение</h3>
+        <p><code>IEnumerable<IOrganisationUnit></code> - Коллекция выбранных организационных единиц</p>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Базовый вызов без опций</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> selectedUnits = dialogService.ShowOrganisationUnitSelectorDialog();
+<span class="code-keyword">foreach</span> (<span class="code-keyword">var</span> unit <span class="code-keyword">in</span> selectedUnits)
+{
+    <span class="code-comment">// Обработка выбранных единиц</span>
+    ProcessUnit(unit);
+}
+</code>
+        </pre>
+
+        <h3>Вызов с настройкой опций</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> options = <span class="code-keyword">new</span> PilotDialogOptions
+{
+    Title = <span class="code-string">"Выбор подразделения"</span>,
+    AllowMultipleSelection = <span class="code-keyword">true</span>,
+    ShowGroups = <span class="code-keyword">false</span>
+};
+
+<span class="code-keyword">var</span> departments = dialogService.ShowOrganisationUnitSelectorDialog(options);
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong> 
+            <ul>
+                <li>Метод является оберткой над рефлексивным вызовом <code>Extensions.InvokeMethod()</code></li>
+                <li>Поддерживает выбор всех типов организационных единиц (<code>Department</code>, <code>Position</code>, <code>Group</code>)</li>
+                <li>Возвращаемая коллекция может быть пустой, если пользователь отменил выбор</li>
+            </ul>
+        </div>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Используйте <code>options</code> для настройки фильтров и поведения диалога</li>
+                <li>Проверяйте возвращаемое значение на null перед использованием</li>
+                <li>Для работы с результатом используйте методы из <code>OrganisationUnitExtensions</code></li>
+            </ul>
+        </div>
+
+        <h2>Связанные компоненты</h2>
+        <ul>
+            <li><a href="OrganizationUnitKind.html">Перечисление OrganizationUnitKind</a></li>
+            <li><a href="OrganisationUnitExtensions.html">Класс OrganisationUnitExtensions</a></li>
+        </ul>
+    </div>
+</body>
+</html>

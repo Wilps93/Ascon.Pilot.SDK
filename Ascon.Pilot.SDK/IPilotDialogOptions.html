@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация интерфейса IPilotDialogOptions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IPilotDialogOptions</h1>
+        
+        <h2>Описание</h2>
+        <p>Интерфейс для конфигурации диалоговых окон с использованием паттерна Builder. 
+        Позволяет настраивать параметры отображения и поведения диалогов.</p>
+        
+        <h2>Методы конфигурации</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Параметры</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>WithCaption</td>
+                    <td>string caption</td>
+                    <td>Устанавливает заголовок диалогового окна</td>
+                </tr>
+                <tr>
+                    <td>WithOkButtonCaption</td>
+                    <td>string okButtonCaption</td>
+                    <td>Задает текст для кнопки подтверждения</td>
+                </tr>
+                <tr>
+                    <td>WithParentWindow</td>
+                    <td>IntPtr parentWindow</td>
+                    <td>Привязывает диалог к родительскому окну (для модальных окон)</td>
+                </tr>
+                <tr>
+                    <td>WithAllowMultiSelect</td>
+                    <td>bool allowMultiSelect</td>
+                    <td>Разрешает множественный выбор элементов</td>
+                </tr>
+                <tr>
+                    <td>WithAllowChecking</td>
+                    <td>bool allowChecking</td>
+                    <td>Включает/отключает отображение чекбоксов</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Настройка базового диалога</h3>
+        <pre>
+<code>
+var options = dialogService.CreateOptions()
+    .WithCaption("Подтверждение действия")
+    .WithOkButtonCaption("Применить")
+    .WithAllowMultiSelect(false);
+</code>
+        </pre>
+
+        <h3>Модальное окно с привязкой к родителю</h3>
+        <pre>
+<code>
+<span class="code-keyword">IntPtr</span> mainWindowHandle = GetMainWindowHandle();
+var options = dialogService.CreateOptions()
+    .WithParentWindow(mainWindowHandle)
+    .WithAllowChecking(true);
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Примечание:</strong>
+            <ul>
+                <li>Все методы возвращают сам интерфейс (fluent interface)</li>
+                <li>Параметры применяются до отображения диалога</li>
+                <li>Родительское окно указывается через хендл (IntPtr)</li>
+            </ul>
+        </div>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Для модальных окон обязательно указывайте родительское окно</li>
+                <li>Проверяйте поддержку множественного выбора в конкретной реализации диалога</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

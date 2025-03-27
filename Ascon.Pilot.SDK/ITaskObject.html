@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация ITaskObject SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background-color: #f8d7da;
+            border-left: 4px solid #f5c6cb;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс ITaskObject</h1>
+        
+        <div class="warning">
+            <strong>Важно!</strong>
+            <ul>
+                <li>Интерфейс помечен как устаревший ([Obsolete])</li>
+                <li>Объект автоматически уничтожается через 2 минуты</li>
+                <li>Любые обращения к свойствам/методам после уничтожения вызовут исключение</li>
+            </ul>
+        </div>
+
+        <h2>Описание</h2>
+        <p>Контейнер для временного хранения данных задачи с метаданными. 
+        Предназначен для безопасной передачи информации между компонентами системы.</p>
+
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Свойство</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Id</td>
+                    <td>Guid</td>
+                    <td>Уникальный идентификатор задачи</td>
+                </tr>
+                <tr>
+                    <td>Initiator</td>
+                    <td>IPerson</td>
+                    <td>Инициатор задачи</td>
+                </tr>
+                <tr>
+                    <td>Executor</td>
+                    <td>IPerson</td>
+                    <td>Исполнитель задачи</td>
+                </tr>
+                <tr>
+                    <td>Created</td>
+                    <td>DateTime</td>
+                    <td>Дата создания задачи</td>
+                </tr>
+                <tr>
+                    <td>Attributes</td>
+                    <td>IDictionary<string, object></td>
+                    <td>Атрибуты задачи (ключ-значение)</td>
+                </tr>
+                <tr>
+                    <td>Children</td>
+                    <td>ReadOnlyCollection<Guid></td>
+                    <td>Дочерние объекты задачи</td>
+                </tr>
+                <tr>
+                    <td>InitiatorAttachments</td>
+                    <td>ReadOnlyCollection<Guid></td>
+                    <td>Вложения инициатора</td>
+                </tr>
+                <tr>
+                    <td>ExecutorAttachments</td>
+                    <td>ReadOnlyCollection<Guid></td>
+                    <td>Вложения исполнителя</td>
+                </tr>
+                <tr>
+                    <td>State</td>
+                    <td>State</td>
+                    <td>Текущее состояние задачи</td>
+                </tr>
+                <tr>
+                    <td>DataState</td>
+                    <td>DataState</td>
+                    <td>Состояние данных объекта</td>
+                </tr>
+                <tr>
+                    <td>Title</td>
+                    <td>string</td>
+                    <td>Заголовок задачи</td>
+                </tr>
+                <tr>
+                    <td>Description</td>
+                    <td>string</td>
+                    <td>Описание задачи</td>
+                </tr>
+                <tr>
+                    <td>DeadlineDate</td>
+                    <td>DateTime</td>
+                    <td>Срок выполнения задачи</td>
+                </tr>
+                <tr>
+                    <td>DateOfAssignment</td>
+                    <td>DateTime</td>
+                    <td>Дата назначения задачи</td>
+                </tr>
+                <tr>
+                    <td>DateOfCompletion</td>
+                    <td>DateTime?</td>
+                    <td>Дата завершения задачи</td>
+                </tr>
+                <tr>
+                    <td>DateOfStart</td>
+                    <td>DateTime?</td>
+                    <td>Дата начала выполнения</td>
+                </tr>
+                <tr>
+                    <td>DisplayTitle</td>
+                    <td>string</td>
+                    <td>Отображаемый заголовок</td>
+                </tr>
+                <tr>
+                    <td>IsAgreementTask</td>
+                    <td>bool</td>
+                    <td>Флаг задачи согласования (устаревшее)</td>
+                </tr>
+                <tr>
+                    <td>SynchronizationState</td>
+                    <td>SynchronizationState</td>
+                    <td>Состояние синхронизации</td>
+                </tr>
+                <tr>
+                    <td>ChatId</td>
+                    <td>Guid</td>
+                    <td>Идентификатор чата задачи</td>
+                </tr>
+                <tr>
+                    <td>IsVersion</td>
+                    <td>bool</td>
+                    <td>Флаг версионности задачи</td>
+                </tr>
+                <tr>
+                    <td>Auditors</td>
+                    <td>IEnumerable<IOrganisationUnit></td>
+                    <td>Список аудиторов</td>
+                </tr>
+                <tr>
+                    <td>Tags</td>
+                    <td>ReadOnlyCollection<string></td>
+                    <td>Теги задачи</td>
+                </tr>
+                <tr>
+                    <td>Kind</td>
+                    <td>TaskKind</td>
+                    <td>Тип задачи</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Методы</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>ToDataObject()</td>
+                    <td>Конвертирует ITaskObject в IDataObject</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Пример использования</h2>
+        <pre>
+<code>
+<span class="code-keyword">public void</span> ProcessTask(ITaskObject task)
+{
+    <span class="code-comment">// Проверка состояния данных</span>
+    <span class="code-keyword">if</span> (task.DataState != DataState.Valid)
+        <span class="code-keyword">throw new</span> InvalidOperationException("Объект устарел");
+
+    <span class="code-comment">// Создание безопасной копии данных</span>
+    <span class="code-keyword">var</span> taskCopy = <span class="code-keyword">new</span> TaskCopy
+    {
+        Id = task.Id,
+        Title = task.Title,
+        Deadline = task.DeadlineDate,
+        Attributes = <span class="code-keyword">new</span> Dictionary<string, object>(task.Attributes)
+    };
+
+    <span class="code-comment">// Работа с данными</span>
+    Console.WriteLine($"Обработка задачи: {taskCopy.Title}");
+}
+
+<span class="code-keyword">public class</span> TaskCopy
+{
+    <span class="code-keyword">public</span> Guid Id { get; set; }
+    <span class="code-keyword">public</span> string Title { get; set; }
+    <span class="code-keyword">public</span> DateTime Deadline { get; set; }
+    <span class="code-keyword">public</span> IDictionary<string, object> Attributes { get; set; }
+}
+</code>
+        </pre>
+
+        <h2>Рекомендации</h2>
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Не сохраняйте ссылки на объект дольше 2 минут</li>
+                <li>Делайте глубокие копии нужных свойств (пример выше)</li>
+                <li>Всегда проверяйте <code>DataState</code> перед использованием</li>
+                <li>Используйте <code>ToDataObject()</code> для конвертации в постоянный объект</li>
+                <li>Для работы с <code>IsAgreementTask</code> используйте альтернативные методы</li>
+            </ul>
+        </div>
+
+        <div class="note">
+            <strong>Известные проблемы:</strong>
+            <ul>
+                <li>В XML-комментариях опечатка: "iniator" вместо "initiator"</li>
+                <li>Отсутствует метод удаления задач - используйте <code>ITaskModifier</code></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

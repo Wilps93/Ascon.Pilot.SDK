@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация интерфейса IPosition</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background-color: #f8d7da;
+            border-left: 4px solid #f5c6cb;
+            padding: 10px;
+            margin: 20px 0;
+            color: #721c24;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IPosition</h1>
+        
+        <h2>Описание</h2>
+        <p>Представляет должность/роль, которую занимает сотрудник в организационной структуре. 
+        Используется в связке с интерфейсом <code>IPerson</code> для описания иерархии позиций.</p>
+        
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Свойство</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Order</td>
+                    <td>int</td>
+                    <td>Порядок сортировки позиции в рамках организационной структуры</td>
+                </tr>
+                <tr>
+                    <td>Position</td>
+                    <td>int</td>
+                    <td>Уникальный числовой идентификатор позиции</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Получение информации о позиции</h3>
+        <pre>
+<code>
+IPosition position = person.MainPosition;
+<span class="code-keyword">if</span> (position != null)
+{
+    Console.WriteLine($"ID позиции: {position.Position}");
+    Console.WriteLine($"Порядок сортировки: {position.Order}");
+}
+</code>
+        </pre>
+
+        <h3>Сравнение позиций</h3>
+        <pre>
+<code>
+<span class="code-keyword">bool</span> IsHigherPosition(IPosition pos1, IPosition pos2)
+{
+    <span class="code-keyword">return</span> pos1.Order < pos2.Order;
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Примечания:</strong>
+            <ul>
+                <li>Order определяет иерархию: меньшее значение = более высокая позиция</li>
+                <li>Position соответствует ID в базе данных организационных единиц</li>
+            </ul>
+        </div>
+
+        <div class="warning">
+            <strong>Важно:</strong>
+            <ul>
+                <li>MainPosition в IPerson может быть null - всегда проверяйте перед использованием</li>
+                <li>Значения Order имеют смысл только в рамках одной организационной ветки</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

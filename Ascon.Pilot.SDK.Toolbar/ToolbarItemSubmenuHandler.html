@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация класса ToolbarItemSubmenuHandler</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .method-signature {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Абстрактный класс ToolbarItemSubmenuHandler</h1>
+        
+        <h2>Описание</h2>
+        <p>Базовый класс для реализации обработчиков подменю панели инструментов. Позволяет динамически формировать содержимое выпадающих меню через объект <code>IToolbarBuilder</code>.</p>
+
+        <h2>Наследование</h2>
+        <div class="method-signature">
+            <code>public abstract class ToolbarItemSubmenuHandler : MarshalByRefObject, IToolbarItemSubmenuHandler</code>
+        </div>
+        <p>Наследует <code>MarshalByRefObject</code> для поддержки кросс-доменного взаимодействия.</p>
+
+        <h2>Методы</h2>
+        
+        <div class="method-signature">
+            <code>public abstract void OnSubmenuRequested(IToolbarBuilder builder)</code>
+            <p>Абстрактный метод для построения подменю. Вызывается при открытии выпадающего списка.</p>
+            <ul>
+                <li><strong>builder</strong> - Объект для конфигурации элементов подменю</li>
+            </ul>
+        </div>
+
+        <h2>Пример реализации</h2>
+        <pre>
+<code>
+<span class="code-keyword">public class</span> DynamicSubMenuHandler : ToolbarItemSubmenuHandler
+{
+    <span class="code-keyword">public override void</span> OnSubmenuRequested(IToolbarBuilder builder)
+    {
+        builder.AddButtonItem(<span class="code-string">"item_1"</span>, 0)
+            .WithHeader(<span class="code-string">"Элемент 1"</span>)
+            .WithIcon(LoadIcon(<span class="code-string">"item1.svg"</span>));
+
+        builder.AddSeparator(1);
+
+        builder.AddToggleButtonItem(<span class="code-string">"toggle_item"</span>, 2)
+            .WithHeader(<span class="code-string">"Переключатель"</span>)
+            .WithIsChecked(GetSavedState());
+    }
+
+    <span class="code-keyword">private bool</span> GetSavedState()
+    {
+        <span class="code-comment">// Логика получения состояния из настроек</span>
+        <span class="code-keyword">return false</span>;
+    }
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важные замечания:</strong>
+            <ul>
+                <li>Класс требует обязательной реализации метода <code>OnSubmenuRequested</code></li>
+                <li>Поддержка <code>MarshalByRefObject</code> позволяет использовать обработчик в разных доменах приложения</li>
+                <li>Для каждого открытия меню создается новый экземпляр билдера</li>
+                <li>Изменения в билдере применяются только к текущему экземпляру подменю</li>
+            </ul>
+        </div>
+
+        <h2>Связь с другими компонентами</h2>
+        <p>Используется совместно с:</p>
+        <ul>
+            <li><code>IToolbarMenuButtonItemBuilder</code> - для привязки обработчика к кнопке меню</li>
+            <li><code>IToolbarBuilder</code> - для построения элементов подменю</li>
+            <li><code>IToolbar</code> - в рамках общей системы панелей инструментов</li>
+        </ul>
+
+        <h2>Рекомендации</h2>
+        <ul>
+            <li>Кэшируйте данные, требующие длительной загрузки, в производных классах</li>
+            <li>Используйте проверки прав доступа внутри метода <code>OnSubmenuRequested</code></li>
+            <li>Для сложных меню реализуйте паттерн "компоновщик" для управления элементами</li>
+            <li>Обрабатывайте возможные исключения для предотвращения падения UI</li>
+        </ul>
+    </div>
+</body>
+</html>

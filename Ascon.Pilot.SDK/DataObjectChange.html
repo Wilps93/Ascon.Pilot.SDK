@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация DataObjectChange</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .code-type {
+            color: #2b91af;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс DataObjectChange</h1>
+        
+        <h2>Описание</h2>
+        <p>Класс инкапсулирующий изменение состояния объекта. Содержит снимки объекта до и после модификации.</p>
+
+        <h2>Иерархия наследования</h2>
+        <ul>
+            <li>System.Object</li>
+            <li>Ascon.Pilot.SDK.DataObjectChange</li>
+        </ul>
+
+        <h2>Конструктор</h2>
+        <pre>
+<code>
+<span class="code-keyword">internal</span> DataObjectChange(<span class="code-type">IDataObject</span> old, <span class="code-type">IDataObject</span> @new)
+</code>
+        </pre>
+        <p>Инициализирует новый экземпляр изменения объекта. <strong>Доступен только внутри сборки</strong>.</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Параметр</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>old</td>
+                    <td>Состояние объекта до изменения</td>
+                </tr>
+                <tr>
+                    <td>new</td>
+                    <td>Состояние объекта после изменения</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Свойство</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Old</td>
+                    <td>IDataObject</td>
+                    <td>Объект до изменений (только для чтения)</td>
+                </tr>
+                <tr>
+                    <td>New</td>
+                    <td>IDataObject</td>
+                    <td>Объект после изменений (только для чтения)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Анализ изменений объекта</h3>
+        <pre>
+<code>
+<span class="code-type">DataObjectChange</span> change = GetObjectChange();
+<span class="code-keyword">if</span> (change.Old.Version != change.New.Version)
+{
+    Console.WriteLine($"Обнаружено изменение версии: {change.Old.Version} -> {change.New.Version}");
+}
+</code>
+        </pre>
+
+        <h3>Сравнение состояний</h3>
+        <pre>
+<code>
+<span class="code-keyword">void</span> LogChanges(<span class="code-type">DataObjectChange</span> change)
+{
+    <span class="code-comment">// Сравнение свойств объектов</span>
+    <span class="code-keyword">foreach</span> (<span class="code-keyword">var</span> attr <span class="code-keyword">in</span> change.New.Attributes)
+    {
+        <span class="code-keyword">if</span> (!change.Old.Attributes[attr.Key].Equals(attr.Value))
+        {
+            Console.WriteLine($"Изменен атрибут {attr.Key}: {change.Old.Attributes[attr.Key]} -> {attr.Value}");
+        }
+    }
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Класс предназначен только для чтения - свойства Old и New нельзя изменить после создания</li>
+                <li>Используется в механизмах отслеживания изменений и аудита</li>
+                <li>Доступ к конструктору ограничен внутренней реализацией SDK</li>
+            </ul>
+        </div>
+
+        <h2>Связь с системой</h2>
+        <p>Интегрирован с:</p>
+        <ul>
+            <li>Системой версионирования объектов</li>
+            <li>Механизмами событий обновления данных</li>
+            <li>Аудит-логами изменений</li>
+        </ul>
+    </div>
+</body>
+</html>

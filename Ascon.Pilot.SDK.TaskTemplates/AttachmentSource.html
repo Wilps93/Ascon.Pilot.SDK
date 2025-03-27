@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация AttachmentSource SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .obsolete {
+            color: #dc3545;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Перечисление AttachmentSource <span class="obsolete">[Устаревший]</span></h1>
+        
+        <h2>Описание</h2>
+        <p>Определяет источник вложений в задачах. <strong>Перечисление признано устаревшим</strong> - рекомендуется использовать современные альтернативы для новых разработок.</p>
+
+        <h2>Значения</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Значение</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Object</td>
+                    <td>Вложение представляет собой обычный объект системы</td>
+                </tr>
+                <tr>
+                    <td>PilotStorage</td>
+                    <td>Вложение хранится в специализированном хранилище Pilot Storage</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        <pre>
+<code>
+<span class="code-comment">// Проверка типа вложения</span>
+AttachmentSource source = GetAttachmentSource();
+
+<span class="code-keyword">if</span> (source == AttachmentSource.PilotStorage)
+{
+    <span class="code-comment">// Обработка вложений из Pilot Storage</span>
+}
+<span class="code-keyword">else</span>
+{
+    <span class="code-comment">// Работа с обычными объектами</span>
+}
+
+<span class="code-comment">// Использование в условиях фильтрации</span>
+IEnumerable<Attachment> FilterAttachments(IEnumerable<Attachment> attachments)
+{
+    return attachments.Where(a => a.Source == AttachmentSource.Object);
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Перечисление помечено как <code>[Obsolete]</code> - использование в новых проектах не рекомендуется</li>
+                <li>Значение PilotStorage требует специфической обработки хранилищем</li>
+                <li>При переходе на новые версии SDK потребуется рефакторинг кода</li>
+                <li>Рекомендуется избегать хранения значений этого типа в долгоживущих данных</li>
+            </ul>
+        </div>
+
+        <h2>Совместимость</h2>
+        <p>Используется в связке с устаревшим классом <code>Attachment</code>. Для новых разработок:</p>
+        <ul>
+            <li>Используйте <code>IStorageReference</code> для работы с внешними хранилищами</li>
+            <li>Применяйте <code>ObjectReference</code> для ссылок на объекты системы</li>
+        </ul>
+    </div>
+</body>
+</html>

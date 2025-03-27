@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация IRelation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IRelation</h1>
+        
+        <h2>Описание</h2>
+        <p>Представляет связь между объектами в системе. Все свойства доступны только для чтения.</p>
+
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Свойство</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Id</td>
+                    <td>Guid</td>
+                    <td>Уникальный идентификатор отношения</td>
+                </tr>
+                <tr>
+                    <td>TargetId</td>
+                    <td>Guid</td>
+                    <td>Идентификатор связанного объекта</td>
+                </tr>
+                <tr>
+                    <td>Type</td>
+                    <td>ObjectRelationType</td>
+                    <td>Тип отношения (например: "Родитель-потомок", "Связанный документ")</td>
+                </tr>
+                <tr>
+                    <td>Name</td>
+                    <td>string</td>
+                    <td>Название отношения (для отображения пользователю)</td>
+                </tr>
+                <tr>
+                    <td>VersionId</td>
+                    <td>DateTime</td>
+                    <td>Временная метка версии связанного объекта</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Проверка типа отношения</h3>
+        <pre>
+<code>
+<span class="code-keyword">void</span> ProcessRelation(IRelation relation)
+{
+    <span class="code-keyword">if</span> (relation.Type == ObjectRelationType.ParentChild)
+    {
+        <span class="code-comment">// Обработка иерархической связи</span>
+        Console.WriteLine($"Родительский объект: {relation.TargetId}");
+    }
+}
+</code>
+        </pre>
+
+        <h3>Отображение информации о связи</h3>
+        <pre>
+<code>
+<span class="code-keyword">string</span> GetRelationInfo(IRelation relation)
+{
+    <span class="code-keyword">return</span> $"<span class="code-string">Связь '{relation.Name}'</span> " +
+           $"(ID: {relation.Id}) " +
+           $"с объектом {relation.TargetId} " +
+           $"(версия от {relation.VersionId:dd.MM.yyyy HH:mm})";
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>VersionId показывает версию связанного объекта <strong>на момент создания отношения</strong></li>
+                <li>Проверяйте существование TargetId через объектный менеджер перед использованием</li>
+                <li>Имя отношения (Name) может быть локализовано в зависимости от настроек системы</li>
+                <li>Типы отношений (ObjectRelationType) должны быть предварительно зарегистрированы в системе</li>
+            </ul>
+        </div>
+
+        <h2>Рекомендации</h2>
+        <ul>
+            <li>Используйте <code>VersionId</code> для отслеживания изменений связанных объектов</li>
+            <li>Для отображения пользователю всегда используйте <code>Name</code>, а не <code>Type</code></li>
+            <li>Проверяйте <code>TargetId != Guid.Empty</code> перед обращением к связанному объекту</li>
+            <li>Кэшируйте результаты проверки типов отношений для повышения производительности</li>
+        </ul>
+    </div>
+</body>
+</html>

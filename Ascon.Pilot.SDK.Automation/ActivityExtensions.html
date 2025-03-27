@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация ActivityExtensions SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .class-name {
+            color: #2b91af;
+            font-weight: bold;
+        }
+
+        .method-name {
+            color: #795E26;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс ActivityExtensions</h1>
+        
+        <h2>Описание</h2>
+        <p>Статический класс с методами расширения для работы с автоматизацией процессов. Обрабатывает логику получения объектов для выполнения активностей на основе контекста событий.</p>
+        
+        <h2>Методы</h2>
+        
+        <h3 class="method-name">GetObjectsToExecute</h3>
+        <p>Основной метод получения объектов для выполнения активности</p>
+        <pre>
+<code>
+<span class="code-keyword">public static</span> IEnumerable<<span class="class-name">IDataObject</span>> GetObjectsToExecute(
+    <span class="class-name">IAutomationEventContext</span> context,
+    <span class="class-name">IAutomationBackend</span> backend,
+    <span class="class-name">IAutomationActivity</span> sourceActivity
+)
+</code>
+        </pre>
+        <table>
+            <thead>
+                <tr>
+                    <th>Параметр</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>context</td>
+                    <td>Контекст события автоматизации</td>
+                </tr>
+                <tr>
+                    <td>backend</td>
+                    <td>Бэкенд для доступа к данным</td>
+                </tr>
+                <tr>
+                    <td>sourceActivity</td>
+                    <td>Исходная активность</td>
+                </tr>
+            </tbody>
+        </table>
+        <p>Возвращает: Коллекцию объектов для обработки</p>
+        <p>Исключения: <span class="class-name">AutomationException</span> при отсутствии объекта</p>
+
+        <h3 class="method-name">GetRelatedObjectsByKind</h3>
+        <p>Получает объекты по изменению связей</p>
+        <pre>
+<code>
+<span class="code-keyword">private static</span> IEnumerable<<span class="class-name">IDataObject</span>> GetRelatedObjectsByKind(
+    <span class="class-name">IAutomationEventContext</span> context,
+    <span class="class-name">IAutomationBackend</span> backend,
+    <span class="class-name">IAutomationActivity</span> sourceActivity
+)
+</code>
+        </pre>
+        <p>Обрабатывает фильтрацию по типу изменения связей (добавление/удаление)</p>
+
+        <h3 class="method-name">RestoreObjectsFromRelations</h3>
+        <p>Восстанавливает объекты из связей с проверкой доступа</p>
+        <pre>
+<code>
+<span class="code-keyword">private static</span> IEnumerable<<span class="class-name">IDataObject</span>> RestoreObjectsFromRelations(
+    <span class="class-name">IAutomationActivity</span> sourceActivity,
+    <span class="class-name">IAutomationBackend</span> backend,
+    IEnumerable<<span class="class-name">IRelation</span>> relations
+)
+</code>
+        </pre>
+        <p>Фильтрует объекты по целевым типам и проверяет доступность</p>
+
+        <h2>Вспомогательные методы</h2>
+        
+        <h3 class="method-name">IsForbidden</h3>
+        <pre>
+<code>
+<span class="code-keyword">private static bool</span> IsForbidden(<span class="code-keyword">this</span> <span class="class-name">IDataObject</span> obj)
+</code>
+        </pre>
+        <p>Проверяет, заблокирован ли объект для обработки. Условия блокировки:</p>
+        <ul>
+            <li>Тип объекта с ID 0</li>
+            <li>Не является корневым объектом</li>
+            <li>Нет записей доступа</li>
+            <li>Нет атрибутов</li>
+            <li>Не находится в состоянии "Постоянно удален"</li>
+        </ul>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Получение объектов для активности</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> objectsToProcess = ActivityExtensions.GetObjectsToExecute(
+    context,
+    backend,
+    currentActivity
+);
+
+<span class="code-keyword">foreach</span> (<span class="code-keyword">var</span> obj <span class="code-keyword">in</span> objectsToProcess)
+{
+    <span class="code-comment">// Обработка объекта</span>
+    ProcessObject(obj);
+}
+</code>
+        </pre>
+
+        <h3>Проверка доступности объекта</h3>
+        <pre>
+<code>
+<span class="code-keyword">if</span> (!obj.IsForbidden())
+{
+    <span class="code-comment">// Объект доступен для модификации</span>
+    UpdateObject(obj);
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Методы чувствительны к настройкам <code>RelationFilterByChangeKind</code> в активности</li>
+                <li>Объекты с типом 0 считаются системными и требуют дополнительной проверки</li>
+                <li>Всегда обрабатывайте возможные исключения <span class="class-name">AutomationException</span></li>
+            </ul>
+        </div>
+
+        <h2>Рекомендации</h2>
+        <ul>
+            <li>Для массовых операций предварительно проверяйте права доступа</li>
+            <li>Используйте фильтрацию по типам объектов через <code>TargetTypes</code></li>
+            <li>Кэшируйте результаты <code>GetObjectsToExecute</code> при многократных вызовах</li>
+        </ul>
+    </div>
+</body>
+</html>

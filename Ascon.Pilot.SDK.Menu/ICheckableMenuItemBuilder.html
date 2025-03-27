@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация интерфейса ICheckableMenuItemBuilder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс ICheckableMenuItemBuilder</h1>
+        
+        <h2>Назначение</h2>
+        <p>Расширяет функционал <code>IMenuItemBuilder</code>, добавляя возможность создания пунктов меню с поддержкой состояния "отмечено" (checkbox/radio). Используется для реализации переключателей и опций в пользовательском интерфейсе.</p>
+
+        <h2>Методы</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>WithIsChecked(bool value)</td>
+                    <td>
+                        Устанавливает начальное состояние пункта меню (отмечен/не отмечен)<br>
+                        <strong>Параметры:</strong>
+                        <ul>
+                            <li><code>value</code> - true для отмеченного состояния, false - для неотмеченного</li>
+                        </ul>
+                        <strong>Возвращает:</strong> Ссылку на текущий билдер для цепочки вызовов
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Пример использования</h2>
+        <pre>
+<code>
+<span class="code-keyword">var</span> menuItem = <span class="code-keyword">new</span> CheckableMenuItemBuilder()
+    .WithText("Темная тема")
+    .WithIsChecked(isDarkModeEnabled)
+    .WithIcon(Icons.Theme)
+    .WithCommand("app.theme.toggle")
+    .Build();
+</code>
+        </pre>
+
+        <h2>Особенности</h2>
+        <ul>
+            <li>Состояние автоматически синхронизируется с UI при использовании в связке с <code>IMenuService</code></li>
+            <li>Поддерживает как checkbox, так и radio-группы через дополнительные методы из <code>IMenuItemBuilder</code></li>
+            <li>Изменение состояния генерирует событие <code>MenuItemCheckedChanged</code></li>
+        </ul>
+
+        <h2>Рекомендации</h2>
+        <ul>
+            <li>Используйте для настроек, которые могут быть включены/выключены</li>
+            <li>Для взаимоисключающих опций комбинируйте с <code>WithGroupName()</code></li>
+            <li>Подписывайтесь на события изменения состояния для обновления UI</li>
+        </ul>
+
+        <div class="note">
+            <strong>Важно:</strong> 
+            <ul>
+                <li>Состояние сохраняется между сессиями только при явной реализации сохранения</li>
+                <li>Для динамического обновления состояния используйте <code>IMenuService.Refresh()</code></li>
+            </ul>
+        </div>
+
+        <h2>Пример обработки состояния</h2>
+        <pre>
+<code>
+<span class="code-keyword">public class</span> ThemeMenuItem : ICheckableMenuItemBuilder
+{
+    <span class="code-keyword">private bool</span> _isChecked;
+
+    <span class="code-keyword">public</span> ICheckableMenuItemBuilder WithIsChecked(bool value)
+    {
+        _isChecked = value;
+        <span class="code-keyword">return this</span>;
+    }
+
+    <span class="code-keyword">public void</span> OnCheckedChanged(bool newValue)
+    {
+        _isChecked = newValue;
+        SettingsService.Save("theme.dark", newValue);
+        UIService.Refresh();
+    }
+}
+</code>
+        </pre>
+    </div>
+</body>
+</html>

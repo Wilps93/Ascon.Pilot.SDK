@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация ITaskTemplateParser SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background-color: #f8d7da;
+            border-left: 4px solid #f5c6cb;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс ITaskTemplateParser</h1>
+        
+        <div class="warning">
+            <strong>Внимание!</strong>
+            <ul>
+                <li>Реализует <code>IDisposable</code> - требует освобождения ресурсов</li>
+                <li>Возвращаемые объекты <code>ITaskTemplateItem</code> уничтожаются через 2 минуты</li>
+            </ul>
+        </div>
+
+        <h2>Описание</h2>
+        <p>Парсер строковых представлений шаблонов задач. Преобразует текстовые шаблоны в структурированные объекты <code>ITaskTemplateItem</code>.</p>
+
+        <h2>Методы</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Parse(string)</td>
+                    <td>Парсит строку шаблона и возвращает корневой элемент шаблона</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Пример использования</h2>
+        <pre>
+<code>
+<span class="code-keyword">string</span> templateString = "{ TypeId: 100, Attributes: { 'Priority': 'High' }, Children: [...] }";
+
+<span class="code-keyword">using</span> (ITaskTemplateParser parser = GetTemplateParser())
+{
+    <span class="code-keyword">try</span>
+    {
+        ITaskTemplateItem template = parser.Parse(templateString);
+        
+        <span class="code-comment">// Создаем безопасную копию данных</span>
+        <span class="code-keyword">var</span> templateCopy = DeepCopyTemplate(template);
+        
+        <span class="code-comment">// Работа с шаблоном</span>
+        ProcessTemplate(templateCopy);
+    }
+    <span class="code-keyword">catch</span> (FormatException ex)
+    {
+        Console.WriteLine($"Ошибка парсинга: {ex.Message}");
+    }
+}
+
+<span class="code-keyword">private</span> TemplateCopy DeepCopyTemplate(ITaskTemplateItem source)
+{
+    <span class="code-comment">// Реализация глубокого копирования</span>
+}
+</code>
+        </pre>
+
+        <h2>Рекомендации</h2>
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Всегда оборачивайте парсер в <code>using</code> для своевременного освобождения ресурсов</li>
+                <li>Проверяйте результат парсинга на <code>null</code></li>
+                <li>Делайте глубокие копии возвращаемых объектов <code>ITaskTemplateItem</code></li>
+                <li>Обрабатывайте исключения <code>FormatException</code> при некорректном формате шаблона</li>
+                <li>Не используйте возвращенные объекты после истечения 2 минут</li>
+            </ul>
+        </div>
+
+        <div class="note">
+            <strong>Особенности парсера:</strong>
+            <ul>
+                <li>Поддерживает вложенные структуры через <code>Children</code></li>
+                <li>Распознает атрибуты в формате ключ-значение</li>
+                <li>Обрабатывает ссылки на вложения через Guid</li>
+            </ul>
+        </div>
+
+        <div class="note">
+            <strong>Известные проблемы:</strong>
+            <ul>
+                <li>В XML-комментарии метода Parse опечатка: параметр <code>stringTemplateValue</code> описан как результат, а не как входная строка</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация ClientType</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .code-type {
+            color: #2b91af;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Перечисление ClientType</h1>
+        
+        <h2>Описание</h2>
+        <p>Определяет типы клиентских приложений в системе. Используется для идентификации версий и функциональных возможностей клиента.</p>
+
+        <h2>Значения</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Значение</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Ice</td>
+                    <td>Базовая версия клиента ICE</td>
+                </tr>
+                <tr>
+                    <td>IceEnterprise</td>
+                    <td>Корпоративная версия ICE с расширенными возможностями</td>
+                </tr>
+                <tr>
+                    <td>ThreeDStorage</td>
+                    <td>Клиент для работы с 3D-хранилищем</td>
+                </tr>
+                <tr>
+                    <td>Ecm</td>
+                    <td>Клиент для ECM-систем (Enterprise Content Management)</td>
+                </tr>
+                <tr>
+                    <td>Bim</td>
+                    <td>Клиент для работы с BIM-моделями (Building Information Modeling)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Определение типа клиента</h3>
+        <pre>
+<code>
+<span class="code-type">ClientType</span> clientType = GetCurrentClientType();
+<span class="code-keyword">switch</span> (clientType)
+{
+    <span class="code-keyword">case</span> ClientType.IceEnterprise:
+        EnableAdvancedFeatures();
+        <span class="code-keyword">break</span>;
+    <span class="code-keyword">case</span> ClientType.ThreeDStorage:
+        Initialize3DViewer();
+        <span class="code-keyword">break</span>;
+    <span class="code-keyword">default</span>:
+        SetupBasicInterface();
+        <span class="code-keyword">break</span>;
+}
+</code>
+        </pre>
+
+        <h3>Проверка поддержки функционала</h3>
+        <pre>
+<code>
+<span class="code-keyword">if</span> (clientType == ClientType.Bim)
+{
+    <span class="code-comment">// Активация BIM-инструментов</span>
+    BIMTools.Enable();
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Тип клиента определяется при подключении к серверу</li>
+                <li>IceEnterprise включает все функции базового ICE + корпоративные модули</li>
+                <li>ThreeDStorage и Bim могут требовать специфических лицензий</li>
+            </ul>
+        </div>
+
+        <h2>Связь с системой</h2>
+        <p>Используется в:</p>
+        <ul>
+            <li>Механизмах авторизации и лицензирования</li>
+            <li>Логике активации функциональных модулей</li>
+            <li>Системе настройки пользовательского интерфейса</li>
+        </ul>
+    </div>
+</body>
+</html>

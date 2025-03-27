@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация ILicenseManager SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background-color: #f8d7da;
+            border-left: 4px solid #f5c6cb;
+            padding: 10px;
+            margin: 20px 0;
+            color: #721c24;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс ILicenseManager</h1>
+        
+        <div class="warning">
+            <strong>Важно!</strong> Реализует <code>IDisposable</code> - всегда освобождайте ресурсы после использования
+        </div>
+
+        <h2>Описание</h2>
+        <p>Менеджер лицензий для управления потреблением и проверкой лицензионных прав продукта. 
+        Предоставляет методы для активации, освобождения и проверки статуса лицензий.</p>
+
+        <h2>Методы</h2>
+        
+        <h3>Consume</h3>
+        <p>Активирует лицензию для указанного продукта. Возвращает асинхронный результат операции.</p>
+        <table>
+            <tr>
+                <th>Параметр</th>
+                <th>Тип</th>
+                <th>Описание</th>
+            </tr>
+            <tr>
+                <td>productId</td>
+                <td>int</td>
+                <td>Уникальный код продукта (идентификатор лицензии)</td>
+            </tr>
+        </table>
+        <p><strong>Возвращает:</strong> <code>IObservable<bool></code> - true при успешной активации, false при ошибке</p>
+
+        <h3>Release</h3>
+        <p>Освобождает ранее активированную лицензию продукта</p>
+        <table>
+            <tr>
+                <th>Параметр</th>
+                <th>Тип</th>
+                <th>Описание</th>
+            </tr>
+            <tr>
+                <td>productId</td>
+                <td>int</td>
+                <td>Уникальный код продукта</td>
+            </tr>
+        </table>
+
+        <h3>LoadLicenseInfo</h3>
+        <p>Загружает информацию о лицензионном статусе продукта</p>
+        <table>
+            <tr>
+                <th>Параметр</th>
+                <th>Тип</th>
+                <th>Описание</th>
+            </tr>
+            <tr>
+                <td>productId</td>
+                <td>int</td>
+                <td>Уникальный код продукта</td>
+            </tr>
+        </table>
+        <p><strong>Возвращает:</strong> <code>IObservable<ILicenseInfo></code> - информация о лицензии</p>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Активация лицензии</h3>
+        <pre>
+<code>
+<span class="code-keyword">using</span> (var licenseManager = GetLicenseManager())
+{
+    <span class="code-keyword">var</span> productId = 12345;
+    
+    licenseManager.Consume(productId)
+        .Subscribe(
+            success => 
+            {
+                <span class="code-keyword">if</span> (success)
+                    Console.WriteLine("Лицензия активирована");
+                <span class="code-keyword">else</span>
+                    Console.WriteLine("Ошибка активации");
+            },
+            ex => Console.WriteLine($"Ошибка: {ex.Message}")
+        );
+}
+</code>
+        </pre>
+
+        <h3>Проверка статуса лицензии</h3>
+        <pre>
+<code>
+<span class="code-keyword">public</span> ILicenseInfo GetLicenseStatus(int productId)
+{
+    <span class="code-keyword">var</span> licenseInfo = <span class="code-keyword">null</span>;
+    <span class="code-keyword">var</span> manualReset = <span class="code-keyword">new</span> ManualResetEvent(<span class="code-keyword">false</span>);
+    
+    licenseManager.LoadLicenseInfo(productId)
+        .Subscribe(
+            info => 
+            {
+                licenseInfo = info;
+                manualReset.Set();
+            },
+            () => manualReset.Set()
+        );
+    
+    manualReset.WaitOne();
+    <span class="code-keyword">return</span> licenseInfo;
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Всегда оборачивайте использование менеджера в <code>using</code></li>
+                <li>Обрабатывайте ошибки через обработчик исключений в Subscribe</li>
+                <li>Для синхронной работы используйте блокировки (ManualResetEvent)</li>
+                <li>Проверяйте IsExpired перед активацией функционала</li>
+            </ul>
+        </div>
+
+        <div class="warning">
+            <strong>Особенности:</strong>
+            <ul>
+                <li>Повторный вызов Consume для одного productId может привести к блокировке</li>
+                <li>Release не гарантирует немедленное освобождение ресурсов</li>
+                <li>Методы могут требовать подключения к лицензионному серверу</li>
+            </ul>
+        </div>
+
+        <h2>Связь с другими компонентами</h2>
+        <ul>
+            <li>Использует <code>ILicenseInfo</code> для передачи статуса лицензии</li>
+            <li>Может интегрироваться с <code>ILicensingService</code> для проверки прав</li>
+            <li>Работает совместно с <code>IEventAggregator</code> для уведомлений об истечении</li>
+        </ul>
+    </div>
+</body>
+</html>

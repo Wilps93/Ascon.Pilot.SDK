@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация перечисления OrganizationUnitKind</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 2rem;
+            color: #2d3436;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        pre {
+            background-color: #2d3436;
+            color: #ffffff;
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .code-keyword {
+            color: #55efc4;
+        }
+
+        .code-comment {
+            color: #81ecec;
+        }
+
+        .note {
+            background-color: #fff1e6;
+            border-left: 4px solid #ff9900;
+            padding: 1rem;
+            margin: 2rem 0;
+            border-radius: 3px;
+        }
+
+        .note strong {
+            color: #ff6b6b;
+        }
+
+        .comparison-table {
+            background-color: #f8f9fa;
+            margin: 2rem 0;
+            padding: 1rem;
+            border-radius: 5px;
+        }
+
+        .comparison-table th:first-child {
+            width: 25%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Перечисление OrganizationUnitKind</h1>
+        
+        <h2>Описание</h2>
+        <p>Определяет типы организационных единиц в структуре предприятия. 
+           Каждый тип определяет допустимые свойства и вложенные элементы.</p>
+
+        <h2>Значения перечисления</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Значение</th>
+                    <th>Описание</th>
+                    <th>Особенности</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Department</td>
+                    <td>Подразделение организации</td>
+                    <td>
+                        <ul>
+                            <li>Может содержать вложенные подразделения и должности</li>
+                            <li>Не может иметь назначенного сотрудника</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Position</td>
+                    <td>Должность в организации</td>
+                    <td>
+                        <ul>
+                            <li>Не может содержать вложенные элементы</li>
+                            <li>Может иметь основного сотрудника и заместителей</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Group</td>
+                    <td>Группа сотрудников</td>
+                    <td>
+                        <ul>
+                            <li>Доступна только на верхнем уровне иерархии</li>
+                            <li>Не может содержать вложенные элементы</li>
+                            <li>Используется для объединения сотрудников</li>
+                        </ul>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Сравнительная таблица типов</h2>
+        <table class="comparison-table">
+            <tr>
+                <th>Характеристика</th>
+                <th>Department</th>
+                <th>Position</th>
+                <th>Group</th>
+            </tr>
+            <tr>
+                <td>Вложенные элементы</td>
+                <td>Да</td>
+                <td>Нет</td>
+                <td>Нет</td>
+            </tr>
+            <tr>
+                <td>Назначение сотрудника</td>
+                <td>Нет</td>
+                <td>Да</td>
+                <td>Только через GroupPersons</td>
+            </tr>
+            <tr>
+                <td>Уровень иерархии</td>
+                <td>Любой</td>
+                <td>Любой</td>
+                <td>Только корневой</td>
+            </tr>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Определение типа организационной единицы</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> unitKind = orgUnit.Kind();
+<span class="code-keyword">if</span> (unitKind == OrganizationUnitKind.Department)
+{
+    <span class="code-comment">// Логика для подразделений</span>
+}
+</code>
+        </pre>
+
+        <h3>Обработка разных типов</h3>
+        <pre>
+<code>
+<span class="code-keyword">switch</span> (orgUnit.Kind())
+{
+    <span class="code-keyword">case</span> OrganizationUnitKind.Department:
+        ProcessDepartment(orgUnit);
+        <span class="code-keyword">break</span>;
+    <span class="code-keyword">case</span> OrganizationUnitKind.Position:
+        ProcessPosition(orgUnit);
+        <span class="code-keyword">break</span>;
+    <span class="code-keyword">case</span> OrganizationUnitKind.Group:
+        ProcessGroup(orgUnit);
+        <span class="code-keyword">break</span>;
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong> Для корректной работы с группами (<code>Group</code>) 
+            используйте метод <code>GroupPersons()</code> из класса <code>OrganisationUnitExtensions</code>.
+        </div>
+
+        <div class="note">
+            <strong>Ограничения:</strong>
+            <ul>
+                <li>Вложенные элементы могут быть только у типа <code>Department</code></li>
+                <li>Назначать сотрудников через <code>Person()</code> можно только для типа <code>Position</code></li>
+                <li>Группы (<code>Group</code>) не могут быть вложенными</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

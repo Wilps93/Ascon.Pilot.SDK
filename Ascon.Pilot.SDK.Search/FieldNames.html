@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация FieldNames</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Статический класс FieldNames</h1>
+        
+        <h2>Описание</h2>
+        <p>Контейнер констант с именами полей для построения поисковых запросов в системе. Содержит предопределенные имена системных полей объектов.</p>
+
+        <h2>Константы</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Имя</th>
+                    <th>Значение</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>ID</td>
+                    <td>"DObject.Id"</td>
+                    <td>Уникальный идентификатор объекта</td>
+                </tr>
+                <tr>
+                    <td>TYPE_ID</td>
+                    <td>"DObject.TypeId"</td>
+                    <td>Идентификатор типа объекта</td>
+                </tr>
+                <tr>
+                    <td>PARENT_ID</td>
+                    <td>"DObject.ParentId"</td>
+                    <td>Идентификатор родительского объекта</td>
+                </tr>
+                <tr>
+                    <td>CREATOR_ID</td>
+                    <td>"DObject.CreatorId"</td>
+                    <td>ID создателя объекта</td>
+                </tr>
+                <tr>
+                    <td>CREATED</td>
+                    <td>"DObject.Created"</td>
+                    <td>Дата создания объекта</td>
+                </tr>
+                <tr>
+                    <td>IS_SECRET</td>
+                    <td>"DObject.IsSecret"</td>
+                    <td>Флаг конфиденциальности</td>
+                </tr>
+                <tr>
+                    <td>IS_DELETED</td>
+                    <td>"DObject.IsDeleted"</td>
+                    <td>Флаг удаления объекта</td>
+                </tr>
+                <tr>
+                    <td>IS_IN_RECYCLE_BIN</td>
+                    <td>"DObject.IsInRecycleBin"</td>
+                    <td>Флаг нахождения в корзине</td>
+                </tr>
+                <tr>
+                    <td>ALL_TEXT</td>
+                    <td>"DObject.AllText"</td>
+                    <td>Полнотекстовый поиск по содержимому</td>
+                </tr>
+                <tr>
+                    <td>ALL_SNAPSHOTS_REASON</td>
+                    <td>"Dobject.SnapshotsReason"</td>
+                    <td>Причина создания снимков объекта</td>
+                </tr>
+                <tr>
+                    <td>SNAPSHOTS_CREATED</td>
+                    <td>"Dobject.SnapshotsCreated"</td>
+                    <td>Дата создания снимков</td>
+                </tr>
+                <tr>
+                    <td>OBJECT_STATE</td>
+                    <td>"DObject.State.State"</td>
+                    <td>Текущее состояние объекта</td>
+                </tr>
+                <tr>
+                    <td>STATE_PERSON_ID</td>
+                    <td>"DObject.State.PersonId"</td>
+                    <td>ID пользователя, изменившего состояние</td>
+                </tr>
+                <tr>
+                    <td>STATE_DATE</td>
+                    <td>"DObject.State.Date"</td>
+                    <td>Дата изменения состояния</td>
+                </tr>
+                <tr>
+                    <td>STATE_POSITION</td>
+                    <td>"DObject.State.PositionId"</td>
+                    <td>Должность пользователя при изменении состояния</td>
+                </tr>
+                <tr>
+                    <td>CONTEXT</td>
+                    <td>"DObject.Context"</td>
+                    <td>Контекст объекта</td>
+                </tr>
+                <tr>
+                    <td>LEVEL</td>
+                    <td>"DObject.Level"</td>
+                    <td>Уровень вложенности объекта</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Особенности</h2>
+        <ul>
+            <li>Класс предназначен только для внутреннего использования в SDK</li>
+            <li>Имена полей соответствуют внутренней структуре данных системы</li>
+            <li>Используется для формирования критериев поиска в <code>ISearchService</code></li>
+        </ul>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Фильтрация по типу объекта</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> query = searchService.CreateQuery();
+query.AddCondition(FieldNames.TYPE_ID, "contract");
+</code>
+        </pre>
+
+        <h3>Проверка нахождения в корзине</h3>
+        <pre>
+<code>
+query.AddCondition(
+    FieldNames.IS_IN_RECYCLE_BIN, 
+    <span class="code-keyword">true</span>
+);
+</code>
+        </pre>
+
+        <h3>Полнотекстовый поиск</h3>
+        <pre>
+<code>
+query.AddCondition(
+    FieldNames.ALL_TEXT, 
+    "важный документ"
+);
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong> В константах ALL_SNAPSHOTS_REASON и 
+            SNAPSHOTS_CREATED используется написание "Dobject" с маленькой 
+            буквы. Это может быть либо особенностью системы, либо опечаткой 
+            в названии. Рекомендуется проверять актуальность имен через 
+            рефлексию или документацию API.
+        </div>
+    </div>
+</body>
+</html>

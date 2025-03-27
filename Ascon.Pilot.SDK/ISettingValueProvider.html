@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация ISettingValueProvider</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс ISettingValueProvider</h1>
+        
+        <h2>Описание</h2>
+        <p>Провайдер для управления значением настройки. Используется для сохранения/получения данных в связке с <code>ISettingsFeature</code>.</p>
+
+        <h2>Методы</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Параметры</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>GetValue</td>
+                    <td>-</td>
+                    <td>Получает текущее значение настройки в виде строки</td>
+                </tr>
+                <tr>
+                    <td>SetValue</td>
+                    <td>string value</td>
+                    <td>Устанавливает новое значение настройки</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Пример реализации</h2>
+        <pre>
+<code>
+<span class="code-keyword">public class</span> RegistrySettingProvider : ISettingValueProvider
+{
+    <span class="code-keyword">private readonly</span> string _registryPath;
+    
+    <span class="code-keyword">public</span> RegistrySettingProvider(string registryPath)
+    {
+        _registryPath = registryPath;
+    }
+
+    <span class="code-keyword">public string</span> GetValue()
+    {
+        <span class="code-comment">// Чтение из реестра</span>
+        <span class="code-keyword">using</span> (var key = Registry.CurrentUser.OpenSubKey(_registryPath))
+        {
+            <span class="code-keyword">return</span> key?.GetValue("SettingValue") as string;
+        }
+    }
+
+    <span class="code-keyword">public void</span> SetValue(string value)
+    {
+        <span class="code-comment">// Запись в реестр</span>
+        <span class="code-keyword">using</span> (var key = Registry.CurrentUser.CreateSubKey(_registryPath))
+        {
+            key.SetValue("SettingValue", value);
+        }
+    }
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Реализация должна гарантировать потокобезопасность</li>
+                <li>Рекомендуется добавлять обработку исключений</li>
+                <li>Для сложных типов данных используйте сериализацию</li>
+                <li>Проверяйте корректность данных перед сохранением</li>
+                <li>Реализация зависит от выбранного хранилища (реестр, БД, файл)</li>
+            </ul>
+        </div>
+
+        <h2>Рекомендации</h2>
+        <ul>
+            <li>Для чувствительных данных используйте шифрование</li>
+            <li>Добавьте кэширование для частых запросов GetValue</li>
+            <li>Реализуйте INotifyPropertyChanged для уведомления об изменениях</li>
+            <li>Предусмотрите значения по умолчанию</li>
+            <li>Для тестирования используйте MemorySettingProvider</li>
+        </ul>
+    </div>
+</body>
+</html>

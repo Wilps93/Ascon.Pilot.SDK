@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация AttributeUniquenessType</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .code-type {
+            color: #2b91af;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Перечисление AttributeUniquenessType</h1>
+        
+        <h2>Описание</h2>
+        <p>Определяет уровень контроля уникальности значений атрибутов объектов.</p>
+
+        <h2>Значения</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Значение</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>NotUnique</td>
+                    <td>Допускаются неуникальные значения атрибута</td>
+                </tr>
+                <tr>
+                    <td>Warning</td>
+                    <td>Предупреждение при создании неуникального значения</td>
+                </tr>
+                <tr>
+                    <td>Prohibition</td>
+                    <td>Запрет создания дублирующихся значений</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Проверка уровня уникальности</h3>
+        <pre>
+<code>
+<span class="code-type">AttributeUniquenessType</span> uniqueness = GetUniquenessType();
+<span class="code-keyword">switch</span> (uniqueness)
+{
+    <span class="code-keyword">case</span> AttributeUniquenessType.NotUnique:
+        Console.WriteLine("Проверка уникальности не требуется");
+        <span class="code-keyword">break</span>;
+    <span class="code-keyword">case</span> AttributeUniquenessType.Warning:
+        ShowWarning("Обнаружены дубликаты!");
+        <span class="code-keyword">break</span>;
+    <span class="code-keyword">case</span> AttributeUniquenessType.Prohibition:
+        <span class="code-keyword">throw</span> <span class="code-keyword">new</span> InvalidOperationException("Дублирование запрещено");
+}
+</code>
+        </pre>
+
+        <h3>Применение при создании атрибута</h3>
+        <pre>
+<code>
+<span class="code-type">IAttributeDefinition</span> attrDef = metadata.CreateAttribute(
+    "UserLogin",
+    AttributeType.String,
+    AttributeUniquenessType.Prohibition
+);
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Prohibition вызывает исключение при попытке сохранения дубликата</li>
+                <li>Warning позволяет сохранить значение, но уведомляет пользователя</li>
+                <li>Используется в связке с <span class="code-type">IAttributeDefinition</span> при настройке метаданных</li>
+            </ul>
+        </div>
+
+        <h2>Связь с системой</h2>
+        <p>Контроль уникальности реализуется через:</p>
+        <ul>
+            <li>Механизмы валидации данных при сохранении объектов</li>
+            <li>Проверку целостности данных в БД</li>
+            <li>Интерфейсные уведомления для пользователей</li>
+        </ul>
+    </div>
+</body>
+</html>

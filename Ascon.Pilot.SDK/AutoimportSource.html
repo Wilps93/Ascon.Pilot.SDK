@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация AutoimportSource</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .code-type {
+            color: #2b91af;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Перечисление AutoimportSource</h1>
+        
+        <h2>Описание</h2>
+        <p>Определяет источник автоматически импортируемых файлов в систему.</p>
+
+        <h2>Значения</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Значение</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Unknown</td>
+                    <td>Источник файла не определен или неизвестен</td>
+                </tr>
+                <tr>
+                    <td>UserFolder</td>
+                    <td>Файл импортирован из пользовательской директории автозагрузки</td>
+                </tr>
+                <tr>
+                    <td>PilotXps</td>
+                    <td>Файл получен через виртуальный принтер Pilot XPS</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Обработка источника файла</h3>
+        <pre>
+<code>
+<span class="code-type">AutoimportSource</span> source = GetFileSource();
+<span class="code-keyword">switch</span> (source)
+{
+    <span class="code-keyword">case</span> AutoimportSource.UserFolder:
+        Console.WriteLine("Файл из пользовательской папки");
+        <span class="code-keyword">break</span>;
+    <span class="code-keyword">case</span> AutoimportSource.PilotXps:
+        ProcessXpsDocument();
+        <span class="code-keyword">break</span>;
+    <span class="code-keyword">default</span>:
+        LogUnknownSource();
+        <span class="code-keyword">break</span>;
+}
+</code>
+        </pre>
+
+        <h3>Создание объекта с указанием источника</h3>
+        <pre>
+<code>
+<span class="code-type">ImportSettings</span> settings = <span class="code-keyword">new</span> ImportSettings
+{
+    Source = AutoimportSource.PilotXps,
+    FilePath = "C:\\Temp\\document.xps"
+};
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Значение <span class="code-type">Unknown</span> обычно указывает на ошибку или устаревшие данные</li>
+                <li>PilotXps предполагает специфическую обработку XPS-документов</li>
+                <li>Используется в механизмах автоматического импорта и обработки входящих файлов</li>
+            </ul>
+        </div>
+
+        <h2>Связь с системой</h2>
+        <p>Интегрирован с:</p>
+        <ul>
+            <li>Модулем автоматического импорта документов</li>
+            <li>Сервисом обработки печатных форм через Pilot XPS</li>
+            <li>Системой логирования операций с файлами</li>
+        </ul>
+    </div>
+</body>
+</html>

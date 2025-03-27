@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация класса Relation</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 2rem;
+            color: #2d3436;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        pre {
+            background-color: #2d3436;
+            color: #ffffff;
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .code-keyword {
+            color: #55efc4;
+        }
+
+        .code-comment {
+            color: #81ecec;
+        }
+
+        .note {
+            background-color: #fff1e6;
+            border-left: 4px solid #ff9900;
+            padding: 1rem;
+            margin: 2rem 0;
+            border-radius: 3px;
+        }
+
+        .class-diagram {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 2rem 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс Relation</h1>
+        
+        <h2>Описание</h2>
+        <p>Представляет связь между объектами в системе. Используется для установки и управления отношениями между различными сущностями.</p>
+
+        <div class="class-diagram">
+            <strong>Иерархия наследования:</strong><br>
+            <code>MarshalByRefObject → Relation</code>
+        </div>
+
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Свойство</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Id</td>
+                    <td>Guid</td>
+                    <td>Уникальный идентификатор связи</td>
+                </tr>
+                <tr>
+                    <td>TargetId</td>
+                    <td>Guid</td>
+                    <td>Идентификатор связанного объекта</td>
+                </tr>
+                <tr>
+                    <td>Type</td>
+                    <td>ObjectRelationType</td>
+                    <td>Тип связи (из перечисления)</td>
+                </tr>
+                <tr>
+                    <td>Name</td>
+                    <td>string</td>
+                    <td>Название/метка связи</td>
+                </tr>
+                <tr>
+                    <td>VersionId</td>
+                    <td>DateTime</td>
+                    <td>Временная метка версии связанного объекта</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Создание связи между объектами</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> relation = <span class="code-keyword">new</span> Relation
+{
+    Id = Guid.NewGuid(),
+    TargetId = targetObjectId,
+    Type = ObjectRelationType.Dependency,
+    Name = <span class="code-string">"MainComponent"</span>,
+    VersionId = DateTime.UtcNow
+};
+</code>
+        </pre>
+
+        <h3>Обновление версии связи</h3>
+        <pre>
+<code>
+relation.VersionId = <span class="code-keyword">new</span>VersionService().GetCurrentVersion(targetObjectId);
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li><code>VersionId</code> должен обновляться при каждом изменении связанного объекта</li>
+                <li>Значение <code>Type</code> должно соответствовать одному из <code>ObjectRelationType</code></li>
+                <li>Идентификаторы (<code>Id</code>/<code>TargetId</code>) генерируются системой</li>
+            </ul>
+        </div>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Используйте <code>Name</code> для семантического описания связи</li>
+                <li>Проверяйте актуальность <code>VersionId</code> перед выполнением операций</li>
+                <li>Для удаленных объектов используйте <code>MarshalByRefObject</code> методы</li>
+            </ul>
+        </div>
+
+        <h2>Связанные компоненты</h2>
+        <ul>
+            <li><a href="ObjectRelationType.html">Перечисление ObjectRelationType</a></li>
+            <li><a href="IRelation.html">Интерфейс IRelation</a></li>
+            <li><a href="VersionService.html">Сервис версий VersionService</a></li>
+        </ul>
+    </div>
+</body>
+</html>

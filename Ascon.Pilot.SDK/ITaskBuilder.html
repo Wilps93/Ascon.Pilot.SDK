@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация ITaskBuilder SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background-color: #f8d7da;
+            border-left: 4px solid #f5c6cb;
+            padding: 10px;
+            margin: 20px 0;
+            color: #721c24;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .obsolete {
+            text-decoration: line-through;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс ITaskBuilder</h1>
+        
+        <div class="warning">
+            <strong>Внимание!</strong> Все методы этого интерфейса помечены как устаревшие (Obsolete). 
+            Использование может привести к ошибкам в будущих версиях SDK.
+        </div>
+
+        <h2>Описание</h2>
+        <p>Флюент-интерфейс для модификации задач (Task). <strong>Не рекомендуется к использованию</strong> - 
+        сохраняется исключительно для поддержки legacy-кода.</p>
+
+        <h2>Устаревшие методы</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Описание</th>
+                    <th>Статус</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="obsolete">SetAttribute</td>
+                    <td>Установка атрибутов задачи (string, int, double и т.д.)</td>
+                    <td>Obsolete</td>
+                </tr>
+                <tr>
+                    <td class="obsolete">SetTitle</td>
+                    <td>Изменение заголовка задачи</td>
+                    <td>Obsolete</td>
+                </tr>
+                <tr>
+                    <td class="obsolete">SetDescription</td>
+                    <td>Изменение описания задачи</td>
+                    <td>Obsolete</td>
+                </tr>
+                <tr>
+                    <td class="obsolete">SetState</td>
+                    <td>Изменение состояния задачи</td>
+                    <td>Obsolete</td>
+                </tr>
+                <tr>
+                    <td class="obsolete">SetExecutor</td>
+                    <td>Назначение исполнителя по ID должности</td>
+                    <td>Obsolete</td>
+                </tr>
+                <tr>
+                    <td class="obsolete">SetDeadline</td>
+                    <td>Установка абсолютного дедлайна</td>
+                    <td>Obsolete</td>
+                </tr>
+                <tr>
+                    <td class="obsolete">SetRelativeDeadline</td>
+                    <td>Установка относительного дедлайна</td>
+                    <td>Obsolete</td>
+                </tr>
+                <tr>
+                    <td class="obsolete">SetInitiatorAttachments</td>
+                    <td>Управление вложениями инициатора</td>
+                    <td>Obsolete</td>
+                </tr>
+                <tr>
+                    <td class="obsolete">SetExecutorAttachments</td>
+                    <td>Управление вложениями исполнителя</td>
+                    <td>Obsolete</td>
+                </tr>
+                <tr>
+                    <td class="obsolete">SetExecutorRole</td>
+                    <td>Установка роли исполнителя</td>
+                    <td>Obsolete</td>
+                </tr>
+                <tr>
+                    <td class="obsolete">SetValidationPhase</td>
+                    <td>Включение/отключение фазы валидации</td>
+                    <td>Obsolete</td>
+                </tr>
+                <tr>
+                    <td class="obsolete">SetAuditors</td>
+                    <td>Назначение аудиторов</td>
+                    <td>Obsolete</td>
+                </tr>
+                <tr>
+                    <td class="obsolete">SetTags</td>
+                    <td>Установка тегов задачи</td>
+                    <td>Obsolete</td>
+                </tr>
+                <tr>
+                    <td class="obsolete">SetKind</td>
+                    <td>Установка типа задачи</td>
+                    <td>Obsolete</td>
+                </tr>
+                <tr>
+                    <td class="obsolete">TaskObject</td>
+                    <td>Свойство для получения связанной задачи</td>
+                    <td>Obsolete</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Пример (только для legacy-кода)</h2>
+        <pre>
+<code>
+<span class="code-comment">// Пример устаревшего кода (не рекомендуется)</span>
+<span class="code-keyword">var</span> taskBuilder = taskBuilderFactory.Create();
+taskBuilder
+    .SetTitle("Устаревшая задача")
+    .SetDescription("Пример legacy-метода")
+    .SetExecutor(123)
+    .SetDeadline(DateTime.Now.AddDays(7))
+    .SetAttribute("Priority", "High");
+
+<span class="code-keyword">var</span> task = taskBuilder.TaskObject;
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Избегайте использования в новом коде</li>
+                <li>Проверьте документацию SDK на наличие современных альтернатив</li>
+                <li>Планируйте миграцию legacy-кода</li>
+            </ul>
+        </div>
+
+        <div class="warning">
+            <strong>Важно:</strong> Все методы будут удалены в будущих версиях SDK 
+            без обратной совместимости.
+        </div>
+    </div>
+</body>
+</html>

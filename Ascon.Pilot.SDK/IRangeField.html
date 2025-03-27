@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация IRangeField</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IRangeField<T></h1>
+        
+        <h2>Описание</h2>
+        <p>Поле, поддерживающее операции поиска в диапазоне значений. Наследует функциональность именованного поля (<code>INamedField</code>).</p>
+
+        <h2>Методы</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Параметры</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>BeInRange</td>
+                    <td>T from, T to</td>
+                    <td>Создает условие поиска для значений в диапазоне [from, to]</td>
+                </tr>
+                <tr>
+                    <td>Exists</td>
+                    <td>-</td>
+                    <td>Проверяет наличие значения в поле</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Поиск в числовом диапазоне</h3>
+        <pre>
+<code>
+<span class="code-comment">// Поиск объектов с ценой от 100 до 500</span>
+<span class="code-keyword">var</span> priceField = ObjectFields.Price;
+<span class="code-keyword">var</span> query = queryBuilder.Must(
+    priceField.BeInRange(100, 500)
+);
+</code>
+        </pre>
+
+        <h3>Фильтрация по дате</h3>
+        <pre>
+<code>
+<span class="code-comment">// Поиск документов с датой создания с 01.01.2023 по 31.12.2023</span>
+<span class="code-keyword">var</span> dateField = ObjectFields.CreatedDate;
+<span class="code-keyword">var</span> query = queryBuilder.Must(
+    dateField.BeInRange(
+        <span class="code-keyword">new</span> DateTime(2023, 1, 1),
+        <span class="code-keyword">new</span> DateTime(2023, 12, 31)
+    )
+);
+</code>
+        </pre>
+
+        <h3>Проверка существования поля</h3>
+        <pre>
+<code>
+<span class="code-comment">// Поиск объектов, где заполнено поле "Описание"</span>
+<span class="code-keyword">var</span> descriptionField = ObjectFields.Description;
+<span class="code-keyword">var</span> query = queryBuilder.Must(
+    descriptionField.Exists()
+);
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Диапазон включает граничные значения (от <code>from</code> до <code>to</code> включительно)</li>
+                <li>Для строк используется лексикографическое сравнение</li>
+                <li>Методы возвращают <code>ISearchTerm</code> для использования в <code>IQueryBuilder</code></li>
+                <li>Тип <code>T</code> должен поддерживать операции сравнения</li>
+            </ul>
+        </div>
+
+        <h2>Рекомендации</h2>
+        <ul>
+            <li>Для дат используйте UTC-время во избежание ошибок временных зон</li>
+            <li>Проверяйте тип данных поля перед использованием в диапазоне</li>
+            <li>Сочетайте с <code>MustNot</code> для исключения диапазонов</li>
+            <li>Для строковых полей учитывайте регистр и культуру сравнения</li>
+        </ul>
+    </div>
+</body>
+</html>

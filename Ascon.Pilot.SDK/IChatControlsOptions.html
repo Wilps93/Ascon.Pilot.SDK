@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация IChatControlsOptions SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background-color: #f8d7da;
+            border-left: 4px solid #f5c6cb;
+            padding: 10px;
+            margin: 20px 0;
+            color: #721c24;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IChatControlsOptions</h1>
+        
+        <div class="note">
+            <strong>Fluent-интерфейс:</strong> Все методы возвращают <code>IChatControlsOptions</code>, 
+            позволяя использовать цепочки вызовов (method chaining).
+        </div>
+
+        <h2>Описание</h2>
+        <p>Предоставляет настройки отображения элементов управления чатом. 
+        Позволяет конфигурировать видимость различных UI-компонентов.</p>
+
+        <h2>Методы</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Параметр</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>WithShowChatInfo</td>
+                    <td>value (bool)</td>
+                    <td>Управляет отображением информации о чате (например, участники, дата создания)</td>
+                </tr>
+                <tr>
+                    <td>WithShowTabHeaders</td>
+                    <td>value (bool)</td>
+                    <td>Управляет видимостью заголовков вкладок в интерфейсе чата</td>
+                </tr>
+                <tr>
+                    <td>WithShowObjectCaption</td>
+                    <td>value (bool)</td>
+                    <td>Управляет отображением заголовков объектов в чате</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Пример использования</h2>
+        <pre>
+<code>
+<span class="code-keyword">var</span> chatOptions = <span class="code-keyword">new</span> ChatOptions()
+    .WithShowChatInfo(<span class="code-keyword">true</span>)
+    .WithShowTabHeaders(<span class="code-keyword">false</span>)
+    .WithShowObjectCaption(<span class="code-keyword">true</span>);
+
+<span class="code-comment">// Применение настроек к контролу чата</span>
+chatControl.ApplyOptions(chatOptions);
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Используйте цепочки вызовов для компактной настройки</li>
+                <li>Значения по умолчанию зависят от реализации</li>
+                <li>Методы не изменяют существующий экземпляр, а возвращают новый с обновленными настройками</li>
+            </ul>
+        </div>
+
+        <div class="warning">
+            <strong>Важно:</strong> Интерфейс является частью системы конфигурации и не содержит 
+            логики отображения - реализация должна быть предоставлена в конкретном классе.
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация класса LinkedTasksContext2</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7;
+            margin: 2rem auto;
+            max-width: 1000px;
+            padding: 0 20px;
+            color: #2d3436;
+        }
+
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 0.5rem;
+        }
+
+        h2 {
+            color: #34495e;
+            margin-top: 2rem;
+        }
+
+        .class-box {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1.5rem 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin: 1.5rem 0;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        pre {
+            background-color: #282a36;
+            color: #f8f8f2;
+            padding: 1rem;
+            border-radius: 6px;
+            overflow-x: auto;
+        }
+
+        .code-comment { color: #6272a4; }
+        .code-keyword { color: #ff79c6; }
+        .code-string { color: #50fa7b; }
+
+        .note {
+            background-color: #fff5b3;
+            border-left: 4px solid #ffee33;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background-color: #f5b7b1;
+            border-left: 4px solid #c0392b;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Класс LinkedTasksContext2</h1>
+    
+    <div class="note">
+        <strong>Обновленная версия:</strong> Рекомендуемый контекст для работы с задачами, заменяет устаревший <code>LinkedTasksContext</code>.
+    </div>
+
+    <h2>Назначение</h2>
+    <p>Предоставляет усовершенствованный контекст для работы с группой связанных задач. Использует обобщенный интерфейс <code>IDataObject</code> для большей гибкости.</p>
+
+    <h2>Наследование</h2>
+    <p>Наследуется от <code>MarshalByRefObject</code> для поддержки удаленного взаимодействия в распределенных системах.</p>
+
+    <h2>Конструктор</h2>
+    <div class="class-box">
+        <h3>LinkedTasksContext2</h3>
+        <p>Инициализирует новый экземпляр контекста</p>
+        
+        <h4>Параметры</h4>
+        <table>
+            <tr>
+                <td>selectedTasks</td>
+                <td>IEnumerable<IDataObject></td>
+                <td>Список выбранных задач/объектов для обработки</td>
+            </tr>
+            <tr>
+                <td>isContext</td>
+                <td>bool</td>
+                <td>Флаг режима выполнения операции в контексте</td>
+            </tr>
+        </table>
+    </div>
+
+    <h2>Свойства</h2>
+
+    <div class="class-box">
+        <h3>SelectedTasks</h3>
+        <p>Коллекция объектов, выбранных для операции</p>
+        <p><strong>Тип:</strong> IEnumerable<IDataObject> (только для чтения)</p>
+    </div>
+
+    <div class="class-box">
+        <h3>IsContext</h3>
+        <p>Определяет, выполняется ли операция в контекстном режиме</p>
+        <p><strong>Тип:</strong> bool (только для чтения)</p>
+    </div>
+
+    <h2>Примеры использования</h2>
+
+    <h3>Создание контекста</h3>
+    <pre>
+<code>
+<span class="code-keyword">var</span> dataObjects = new List<IDataObject> { task1, task2, document };
+<span class="code-keyword">var</span> context = new LinkedTasksContext2(dataObjects, isContext: true);
+
+<span class="code-comment">// Фильтрация задач</span>
+<span class="code-keyword">var</span> tasksOnly = context.SelectedTasks.OfType<ITaskObject>();
+</code>
+    </pre>
+
+    <h3>Обработка в контекстном режиме</h3>
+    <pre>
+<code>
+<span class="code-keyword">public void</span> ProcessContextOperation(LinkedTasksContext2 context)
+{
+    <span class="code-keyword">if</span> (context.IsContext)
+    {
+        <span class="code-keyword">foreach</span> (var obj in context.SelectedTasks)
+        {
+            <span class="code-comment">// Проверка типа объекта</span>
+            <span class="code-keyword">if</span> (obj is ITaskObject task)
+            {
+                ProcessTask(task);
+            }
+        }
+    }
+}
+</code>
+    </pre>
+
+    <h2>Особенности</h2>
+    <ul>
+        <li>Поддерживает любые объекты, реализующие <code>IDataObject</code></li>
+        <li>Совместим с существующими системами через наследование</li>
+        <li>Требует явного приведения типов для специфичных операций</li>
+        <li>Неизменяем после создания (свойства только для чтения)</li>
+    </ul>
+
+    <div class="warning">
+        <strong>Важно:</strong>
+        <ul>
+            <li>Заменяет устаревший <code>LinkedTasksContext</code></li>
+            <li>Проверяйте типы объектов в SelectedTasks перед использованием</li>
+            <li>Не храните ссылки на контекст длительное время</li>
+        </ul>
+    </div>
+
+    <div class="note">
+        <strong>Рекомендации:</strong>
+        <ul>
+            <li>Используйте для новых разработок вместо LinkedTasksContext</li>
+            <li>Для массовых операций проверяйте тип каждого объекта</li>
+            <li>Комбинируйте с фильтрами через LINQ (OfType<T>)</li>
+        </ul>
+    </div>
+</body>
+</html>

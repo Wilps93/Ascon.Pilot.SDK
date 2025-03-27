@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация перечисления WorkflowKind</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .deprecated {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Перечисление WorkflowKind <span class="deprecated">[Устаревший]</span></h1>
+        
+        <div class="note">
+            <strong>Важно:</strong> Это перечисление помечено как устаревшее (<code>[Obsolete]</code>). 
+            Рекомендуется использовать альтернативные подходы из текущей версии SDK.
+        </div>
+
+        <h2>Описание</h2>
+        <p>Определяет тип рабочего процесса (workflow). Используется в классе <code>Workflow</code> для указания категории процесса.</p>
+
+        <h2>Значения</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Имя</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Regular</td>
+                    <td>Обычный рабочий процесс (базовый тип)</td>
+                </tr>
+                <tr>
+                    <td>Agreement</td>
+                    <td>Процесс, связанный с согласованием документов</td>
+                </tr>
+                <tr>
+                    <td>Review</td>
+                    <td>Процесс, связанный с проверкой/ревизией</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Использование в классе Workflow</h2>
+        <pre>
+<code>
+<span class="code-keyword">public class</span> Workflow
+{
+    <span class="code-keyword">public</span> WorkflowKind Kind { <span class="code-keyword">get</span>; <span class="code-keyword">set</span>; }
+    <span class="code-comment">// ... остальные члены класса</span>
+}
+</code>
+        </pre>
+
+        <h2>Пример кода</h2>
+        <pre>
+<code>
+<span class="code-keyword">var</span> workflow = <span class="code-keyword">new</span> Workflow
+{
+    Kind = WorkflowKind.Agreement,
+    Title = <span class="code-string">"Согласование договора"</span>
+};
+
+<span class="code-keyword">if</span> (workflow.Kind == WorkflowKind.Agreement)
+{
+    <span class="code-comment">// Логика для процессов согласования</span>
+    Console.WriteLine(<span class="code-string">"Обработка согласования"</span>);
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важные замечания:</strong>
+            <ul>
+                <li>Значение этого перечисления участвует в вычислении хэш-кода и сравнении объектов <code>Workflow</code></li>
+                <li>При удалении/изменении элементов перечисления возможна поломка логики сравнения</li>
+                <li>Отсутствие XML-комментариев в исходном коде затрудняет точную интерпретацию значений</li>
+            </ul>
+        </div>
+
+        <h2>Рекомендации</h2>
+        <ul>
+            <li>Избегайте использование в новом коде из-за атрибута <code>[Obsolete]</code></li>
+            <li>При работе с устаревшим кодом проверяйте контекст использования в классе <code>Workflow</code></li>
+            <li>Учитывайте, что это перечисление может быть удалено в будущих версиях SDK</li>
+        </ul>
+    </div>
+</body>
+</html>

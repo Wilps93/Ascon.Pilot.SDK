@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация BoolAsInt32Field</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс BoolAsInt32Field</h1>
+        
+        <h2>Описание</h2>
+        <p>Класс для работы с булевыми полями, хранящимися в виде целых чисел (0 и 1) в поисковых запросах. Наследуется от <code>BoolField</code>.</p>
+
+        <h2>Наследование</h2>
+        <ul>
+            <li>System.Object</li>
+            <li>BoolField</li>
+            <li>BoolAsInt32Field</li>
+        </ul>
+
+        <h2>Конструктор</h2>
+        <pre>
+<code>
+<span class="code-keyword">internal</span> BoolAsInt32Field(string fieldName)
+</code>
+        </pre>
+        <p>Инициализирует новый экземпляр класса с указанием имени поля.</p>
+
+        <h2>Методы</h2>
+        
+        <h3>Be(bool value)</h3>
+        <pre>
+<code>
+<span class="code-keyword">public override</span> ISearchTerm Be(bool value)
+</code>
+        </pre>
+        <p>Создает поисковый термин для булева значения, преобразованного в целое число (0 или 1).</p>
+
+        <h3>WithPrefix(int value)</h3>
+        <pre>
+<code>
+<span class="code-keyword">private</span> string WithPrefix(int value)
+</code>
+        </pre>
+        <p>Добавляет пробел перед числовым значением для форматирования поискового запроса.</p>
+
+        <h2>Особенности реализации</h2>
+        <ul>
+            <li>Булевы значения преобразуются: false → 0, true → 1</li>
+            <li>Используется для полей, где логические значения хранятся как целые числа</li>
+            <li>Префикс "&#32;" (пробел) обеспечивает корректное форматирование запроса</li>
+        </ul>
+
+        <h2>Пример использования</h2>
+        <pre>
+<code>
+<span class="code-comment">// Создание условия поиска для булева поля</span>
+<span class="code-keyword">var</span> field = <span class="code-keyword">new</span> BoolAsInt32Field("IsActive");
+ISearchTerm term = field.Be(true);
+
+<span class="code-comment">// Результат: условие "IsActive: 1"</span>
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong> Класс имеет внутренний модификатор доступа 
+            (internal) и предназначен для использования внутри SDK. 
+            Не рекомендуется создавать экземпляры этого класса напрямую.
+        </div>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Используйте фабричные методы SDK для создания поисковых условий</li>
+                <li>Проверяйте документацию поисковой системы для формата хранения булевых значений</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

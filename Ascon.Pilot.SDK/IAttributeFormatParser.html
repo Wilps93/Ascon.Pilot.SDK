@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация IAttributeFormatParser SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background-color: #f8d7da;
+            border-left: 4px solid #f5c6cb;
+            padding: 10px;
+            margin: 20px 0;
+            color: #721c24;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IAttributeFormatParser</h1>
+        
+        <div class="warning">
+            <strong>Важно!</strong> Реализует <code>IDisposable</code> - всегда освобождайте ресурсы через <code>using</code> или явный вызов <code>Dispose()</code>.
+        </div>
+
+        <h2>Описание</h2>
+        <p>Предоставляет методы для работы с конфигурациями атрибутов, нумераторов и справочников. Позволяет парсить конфигурации, форматировать значения и получать предпросмотр.</p>
+
+        <h2>Методы</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Параметры</th>
+                    <th>Возвращает</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>TryParseNumeratorDeclaration</td>
+                    <td>
+                        <ul>
+                            <li>declaration (string) - строка конфигурации нумератора</li>
+                            <li>numeratorInfo (out IEnumerable<INumeratorInfo>) - результат парсинга</li>
+                        </ul>
+                    </td>
+                    <td>bool</td>
+                    <td>Проверяет и парсит конфигурацию нумератора</td>
+                </tr>
+                <tr>
+                    <td>TryParseReferenceBookConfiguration</td>
+                    <td>
+                        <ul>
+                            <li>configuration (string) - конфигурация справочника</li>
+                            <li>referenceBookConfiguration (out IReferenceBookConfiguration) - результат парсинга</li>
+                        </ul>
+                    </td>
+                    <td>bool</td>
+                    <td>Проверяет и парсит конфигурацию справочника</td>
+                </tr>
+                <tr>
+                    <td>PreviewNumeratorFormat</td>
+                    <td>
+                        <ul>
+                            <li>configuration (string) - конфигурация нумератора</li>
+                            <li>values (Dictionary<string, string>) - значения атрибутов</li>
+                        </ul>
+                    </td>
+                    <td>string</td>
+                    <td>Возвращает пример сформированного значения нумератора</td>
+                </tr>
+                <tr>
+                    <td>AttributesFormat</td>
+                    <td>
+                        <ul>
+                            <li>format (string) - строка форматирования</li>
+                            <li>attributes (Dictionary<string, object>) - значения атрибутов</li>
+                        </ul>
+                    </td>
+                    <td>string</td>
+                    <td>Форматирует атрибуты по заданному шаблону</td>
+                </tr>
+                <tr>
+                    <td>GetAttributeFormat</td>
+                    <td>
+                        <ul>
+                            <li>configuration (string) - конфигурация атрибута</li>
+                        </ul>
+                    </td>
+                    <td>string</td>
+                    <td>Извлекает формат атрибута из конфигурации</td>
+                </tr>
+                <tr>
+                    <td>GetAttributeFormatCulture</td>
+                    <td>
+                        <ul>
+                            <li>configuration (string) - конфигурация атрибута</li>
+                        </ul>
+                    </td>
+                    <td>string</td>
+                    <td>Извлекает культуру форматирования из конфигурации</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Парсинг нумератора</h3>
+        <pre>
+<code>
+<span class="code-keyword">using</span> (IAttributeFormatParser parser = GetParser())
+{
+    <span class="code-keyword">if</span> (parser.TryParseNumeratorDeclaration("NUM_001", out var numerators))
+    {
+        <span class="code-keyword">foreach</span> (var info in numerators)
+        {
+            <span class="code-comment">// Обработка информации о нумераторе</span>
+        }
+    }
+}
+</code>
+        </pre>
+
+        <h3>Форматирование атрибутов</h3>
+        <pre>
+<code>
+var attributes = new Dictionary<string, object>
+{
+    { "Name", "Тестовый объект" },
+    { "Code", 12345 }
+};
+
+string result = parser.AttributesFormat("Объект: {Name}, Код: {Code}", attributes);
+<span class="code-comment">// Результат: "Объект: Тестовый объект, Код: 12345"</span>
+</code>
+        </pre>
+
+        <h3>Предпросмотр нумератора</h3>
+        <pre>
+<code>
+string preview = parser.PreviewNumeratorFormat("YEAR-00001", new Dictionary<string, string>
+{
+    { "YEAR", "2023" }
+});
+<span class="code-comment">// Результат: "2023-00001"</span>
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Всегда проверяйте результаты методов TryParse перед использованием out-параметров</li>
+                <li>Для работы с культурами используйте GetAttributeFormatCulture совместно с глобализацией .NET</li>
+                <li>Не используйте экземпляры парсера после вызова Dispose()</li>
+            </ul>
+        </div>
+
+        <div class="warning">
+            <strong>Опечатка в документации:</strong>
+            В описании метода GetAttributeFormatCulture указано возвращаемое значение "Attribute configuration",
+            но по факту метод возвращает культуру форматирования (например, "ru-RU").
+        </div>
+    </div>
+</body>
+</html>

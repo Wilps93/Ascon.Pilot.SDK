@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация IFileSaver SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background-color: #f8d7da;
+            border-left: 4px solid #f5c6cb;
+            padding: 10px;
+            margin: 20px 0;
+            color: #721c24;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IFileSaver</h1>
+        
+        <h2>Описание</h2>
+        <p>Предоставляет функционал сохранения файлов с поддержкой логики объединения версий (Pilot-Ice SaveTo command). 
+        Позволяет сохранять данные из объектов системы в файлы с настраиваемыми опциями.</p>
+
+        <h2>Методы</h2>
+        
+        <h3>SaveFile (без опций)</h3>
+        <p>Сохраняет файл с базовыми настройками</p>
+        <table>
+            <tr>
+                <th>Параметр</th>
+                <th>Тип</th>
+                <th>Описание</th>
+            </tr>
+            <tr>
+                <td>dataObject</td>
+                <td>IDataObject</td>
+                <td>Исходный объект с данными для сохранения</td>
+            </tr>
+            <tr>
+                <td>outputFilePath</td>
+                <td>string</td>
+                <td>Полный путь для сохранения файла</td>
+            </tr>
+        </table>
+        <p><strong>Возвращает:</strong> Список путей к сохраненным файлам (может содержать несколько версий)</p>
+
+        <h3>SaveFile (с опциями)</h3>
+        <p>Сохраняет файл с расширенными настройками через <code>FileSaverOptions</code></p>
+        <table>
+            <tr>
+                <th>Параметр</th>
+                <th>Тип</th>
+                <th>Описание</th>
+            </tr>
+            <tr>
+                <td>dataObject</td>
+                <td>IDataObject</td>
+                <td>Исходный объект с данными</td>
+            </tr>
+            <tr>
+                <td>outputFilePath</td>
+                <td>string</td>
+                <td>Базовый путь для сохранения</td>
+            </tr>
+            <tr>
+                <td>options</td>
+                <td>FileSaverOptions</td>
+                <td>Настройки сохранения (формат, версионирование и др.)</td>
+            </tr>
+        </table>
+        <p><strong>Возвращает:</strong> Список путей ко всем сохраненным файлам/версиям</p>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Базовое сохранение</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> saver = GetFileSaver(); <span class="code-comment">// Получение экземпляра IFileSaver</span>
+IDataObject document = GetDocumentById("123");
+
+<span class="code-comment">// Сохранение в формате по умолчанию</span>
+IList<<span class="code-keyword">string</span>> savedPaths = saver.SaveFile(
+    document, 
+    @"C:\Exports\document.pdf"
+);
+
+Console.WriteLine($"Сохранено: {string.Join(", ", savedPaths)}");
+</code>
+        </pre>
+
+        <h3>Сохранение с опциями</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> options = <span class="code-keyword">new</span> FileSaverOptions
+{
+    Format = FileFormat.Docx,
+    OverwriteExisting = <span class="code-keyword">true</span>,
+    CreateBackup = <span class="code-keyword">true</span>,
+    Versioning = VersioningMode.Timestamp
+};
+
+IList<<span class="code-keyword">string</span>> paths = saver.SaveFile(
+    document,
+    @"C:\Exports\report",
+    options
+);
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Используйте перегрузку с <code>FileSaverOptions</code> для контроля версионирования</li>
+                <li>Проверяйте существование директории перед сохранением</li>
+                <li>Обрабатывайте возможные исключения ввода-вывода</li>
+                <li>Для пакетной обработки используйте транзакции</li>
+            </ul>
+        </div>
+
+        <div class="warning">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Реализация <code>FileSaverOptions</code> зависит от конкретной системы</li>
+                <li>Пути к файлам должны быть доступны для записи</li>
+                <li>Метод может создавать несколько файлов при включенной опции версионирования</li>
+            </ul>
+        </div>
+
+        <h2>Связь с другими компонентами</h2>
+        <ul>
+            <li>Работает с <code>IDataObject</code> для получения данных</li>
+            <li>Может использовать <code>IEventAggregator</code> для уведомлений о завершении сохранения</li>
+            <li>Интегрируется с <code>IFileProvider</code> для доступа к существующим файлам</li>
+        </ul>
+    </div>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация интерфейса IHotKeyCollection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IHotKeyCollection</h1>
+        
+        <h2>Назначение</h2>
+        <p>Предоставляет механизм регистрации горячих клавиш и связывания их с командами системы. Позволяет динамически добавлять новые комбинации клавиш для выполнения пользовательских действий.</p>
+
+        <h2>Методы</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Add(Key, ModifierKeys, commandId)</td>
+                    <td>
+                        Регистрирует новую горячую клавишу<br>
+                        <strong>Параметры:</strong>
+                        <ul>
+                            <li><code>key</code> - Основная клавиша (например, <code>Key.A</code>)</li>
+                            <li><code>modifierKeys</code> - Модификаторы (Ctrl, Shift и др.)</li>
+                            <li><code>commandId</code> - Уникальный идентификатор связанной команды</li>
+                        </ul>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Регистрация простой комбинации</h3>
+        <pre>
+<code>
+<span class="code-comment">// Регистрация Ctrl+Shift+A для команды "AddItem"</span>
+hotKeyCollection.Add(
+    Key.A, 
+    ModifierKeys.Control | ModifierKeys.Shift, 
+    "com.example.command.AddItem"
+);
+</code>
+        </pre>
+
+        <h3>Регистрация комбинации с проверкой</h3>
+        <pre>
+<code>
+<span class="code-keyword">try</span>
+{
+    hotKeyCollection.Add(
+        Key.F5, 
+        ModifierKeys.None, 
+        "com.example.command.Refresh"
+    );
+}
+<span class="code-keyword">catch</span> (ArgumentException ex)
+{
+    <span class="code-comment">// Обработка дублирующейся комбинации</span>
+    Console.WriteLine($"Ошибка регистрации: {ex.Message}");
+}
+</code>
+        </pre>
+
+        <h2>Особенности</h2>
+        <ul>
+            <li>Комбинации клавиш должны быть уникальными в пределах приложения</li>
+            <li>Модификаторы можно комбинировать через оператор <code>|</code> (например: <code>ModifierKeys.Control | ModifierKeys.Alt</code>)</li>
+            <li>Рекомендуется использовать префиксы в <code>commandId</code> для избежания конфликтов</li>
+        </ul>
+
+        <div class="note">
+            <strong>Важно:</strong> 
+            <ul>
+                <li>Не используйте системные комбинации (например, Ctrl+C/V)</li>
+                <li>Проверяйте доступность комбинации перед регистрацией</li>
+                <li>Для глобальных горячих клавиш требуется дополнительная настройка в ОС</li>
+            </ul>
+        </div>
+
+        <h2>Рекомендации</h2>
+        <ul>
+            <li>Группируйте связанные команды по префиксам (например: <code>app.edit.copy</code>, <code>app.edit.paste</code>)</li>
+            <li>Предоставляйте пользовательские настройки для переопределения горячих клавиш</li>
+            <li>Используйте <code>ModifierKeys.None</code> для одиночных клавиш</li>
+            <li>Логируйте регистрацию горячих клавиш для отладки</li>
+        </ul>
+    </div>
+</body>
+</html>

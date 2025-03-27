@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация XpsRenderClickPointContext SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .class-name {
+            color: #2b91af;
+            font-weight: bold;
+        }
+
+        .property-name {
+            color: #c7254e;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс XpsRenderClickPointContext</h1>
+        
+        <h2>Описание</h2>
+        <p>Контекст для обработки событий кликов в XPS-рендере с привязкой к координатам документа. Наследуется от <span class="class-name">XpsRenderContext</span>.</p>
+        
+        <h2>Наследование</h2>
+        <ul>
+            <li><span class="class-name">XpsRenderContext</span></li>
+            <li>→ <span class="class-name">XpsRenderClickPointContext</span></li>
+        </ul>
+
+        <h2>Конструктор</h2>
+        <pre>
+<code>
+<span class="code-keyword">public</span> XpsRenderClickPointContext(
+    IDataObject dataObject,
+    DateTime selectedVersion,
+    bool isDocumentLoaded,
+    Point clickPoint,
+    int pageNumber
+)
+</code>
+        </pre>
+        <table>
+            <thead>
+                <tr>
+                    <th>Параметр</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>dataObject</td>
+                    <td>Целевой объект данных, связанный с документом</td>
+                </tr>
+                <tr>
+                    <td>selectedVersion</td>
+                    <td>Временная метка выбранной версии документа</td>
+                </tr>
+                <tr>
+                    <td>isDocumentLoaded</td>
+                    <td>Флаг готовности документа в просмотрщике</td>
+                </tr>
+                <tr>
+                    <td>clickPoint</td>
+                    <td>Координаты клика в системе координат документа</td>
+                </tr>
+                <tr>
+                    <td>pageNumber</td>
+                    <td>Номер страницы, на которой произошел клик</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Свойство</th>
+                    <th>Тип</th>
+                    <th>Доступ</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="property-name">ClickPoint</td>
+                    <td>Point</td>
+                    <td>Только чтение</td>
+                    <td>Координаты клика в документе</td>
+                </tr>
+                <tr>
+                    <td class="property-name">PageNumber</td>
+                    <td>int</td>
+                    <td>Чтение/Запись</td>
+                    <td>Номер страницы документа</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Создание контекста</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> data = GetDocumentData();
+<span class="code-keyword">var</span> context = <span class="code-keyword">new</span> <span class="class-name">XpsRenderClickPointContext</span>(
+    data,
+    DateTime.Now,
+    isDocumentLoaded: true,
+    clickPoint: <span class="code-keyword">new</span> Point(150, 200),
+    pageNumber: 3
+);
+</code>
+        </pre>
+
+        <h3>Обработка координат</h3>
+        <pre>
+<code>
+<span class="code-keyword">void</span> HandleContextMenu(XpsRenderClickPointContext context)
+{
+    <span class="code-keyword">if</span> (context.IsDocumentLoaded)
+    {
+        Console.WriteLine($"Клик на странице {context.PageNumber} в точке ({context.ClickPoint.X}, {context.ClickPoint.Y})");
+    }
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Свойство <span class="property-name">ClickPoint</span> доступно только для чтения</li>
+                <li>Перед использованием необходимо проверять <code>IsDocumentLoaded</code></li>
+                <li>Номер страницы начинается с 0 или 1 в зависимости от реализации рендера</li>
+            </ul>
+        </div>
+
+        <h2>Рекомендации</h2>
+        <ul>
+            <li>Используйте для передачи координат в обработчики контекстного меню</li>
+            <li>Проверяйте актуальность версии документа через <code>SelectedVersion</code></li>
+            <li>Для сложной логики создавайте наследников этого класса</li>
+        </ul>
+    </div>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация UnloadedEventArgs SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .class-name {
+            color: #2b91af;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс UnloadedEventArgs</h1>
+        
+        <h2>Описание</h2>
+        <p>Событийные аргументы, уведомляющие о завершении выгрузки расширения из системы. Наследуется от <span class="class-name">MarshalByRefObject</span> для поддержки работы в распределенных средах.</p>
+        
+        <h2>Наследование</h2>
+        <ul>
+            <li><span class="class-name">System.MarshalByRefObject</span></li>
+            <li>→ <span class="class-name">UnloadedEventArgs</span></li>
+        </ul>
+
+        <h2>Использование</h2>
+        <p>Используется в событиях, связанных с жизненным циклом модулей/расширений:</p>
+        <ul>
+            <li>Подписка на событие выгрузки</li>
+            <li>Оповещение о завершении работы компонента</li>
+            <li>Очистка ресурсов</li>
+        </ul>
+
+        <h2>Примеры</h2>
+        
+        <h3>Подписка на событие</h3>
+        <pre>
+<code>
+<span class="code-keyword">public class</span> ExtensionManager 
+{
+    <span class="code-keyword">public event</span> EventHandler<<span class="class-name">UnloadedEventArgs</span>> Unloaded;
+
+    <span class="code-keyword">protected virtual void</span> OnUnloaded()
+    {
+        Unloaded?.Invoke(<span class="code-keyword">this</span>, <span class="code-keyword">new</span> <span class="class-name">UnloadedEventArgs</span>());
+    }
+}
+</code>
+        </pre>
+
+        <h3>Обработка события</h3>
+        <pre>
+<code>
+<span class="code-comment">// Подписка на событие выгрузки</span>
+extensionManager.Unloaded += (sender, args) => 
+{
+    <span class="code-comment">// Выполняем завершающие действия</span>
+    Console.WriteLine("Расширение выгружено из системы");
+};
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Класс не содержит дополнительных данных - служит маркером события</li>
+                <li>Наследование от <span class="class-name">MarshalByRefObject</span> позволяет использовать экземпляры в удаленных вызовах</li>
+                <li>Рекомендуется использовать в паре с <code>LoadedEventArgs</code> для полного цикла управления</li>
+            </ul>
+        </div>
+
+        <h2>Особенности</h2>
+        <ul>
+            <li>Не требует реализации дополнительных методов</li>
+            <li>Может использоваться как базовый класс для кастомных аргументов выгрузки</li>
+            <li>Поддерживает стандартные паттерны работы с событиями .NET</li>
+        </ul>
+    </div>
+</body>
+</html>

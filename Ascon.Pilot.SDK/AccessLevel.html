@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация AccessLevel SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Перечисление AccessLevel</h1>
+        
+        <h2>Описание</h2>
+        <p>Определяет уровни доступа к объектам системы. Перечисление поддерживает комбинации флагов для гибкого управления правами.</p>
+        
+        <h2>Значения</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Значение</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>None</td>
+                    <td>Доступ полностью запрещен</td>
+                </tr>
+                <tr>
+                    <td>Create</td>
+                    <td>Право создавать новые объекты</td>
+                </tr>
+                <tr>
+                    <td>Edit</td>
+                    <td>Право редактировать существующие объекты</td>
+                </tr>
+                <tr>
+                    <td>View</td>
+                    <td>Право просматривать объекты</td>
+                </tr>
+                <tr>
+                    <td>Freeze</td>
+                    <td>Право блокировать объекты (например, для предотвращения изменений)</td>
+                </tr>
+                <tr>
+                    <td>Agreement</td>
+                    <td>Право подтверждать или согласовывать объекты</td>
+                </tr>
+                <tr>
+                    <td>ViewCreate</td>
+                    <td>Комбинированный доступ: просмотр + создание</td>
+                </tr>
+                <tr>
+                    <td>ViewEdit</td>
+                    <td>Комбинированный доступ: просмотр + создание + редактирование</td>
+                </tr>
+                <tr>
+                    <td>ViewEditAgreement</td>
+                    <td>Комбинированный доступ: просмотр + создание + редактирование + согласование</td>
+                </tr>
+                <tr>
+                    <td>Full</td>
+                    <td>Полный доступ ко всем действиям</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Проверка прав</h3>
+        <pre>
+<code>
+<span class="code-keyword">AccessLevel</span> userAccess = AccessLevel.ViewEdit;
+<span class="code-keyword">if</span> ((userAccess & AccessLevel.Edit) == AccessLevel.Edit)
+{
+    <span class="code-comment">// Разрешено редактирование</span>
+}
+</code>
+        </pre>
+
+        <h3>Комбинирование прав</h3>
+        <pre>
+<code>
+<span class="code-keyword">AccessLevel</span> customAccess = AccessLevel.View | AccessLevel.Agreement;
+</code>
+        </pre>
+
+        <h3>Проверка на полный доступ</h3>
+        <pre>
+<code>
+<span class="code-keyword">if</span> (userAccess.HasFlag(AccessLevel.Full))
+{
+    <span class="code-comment">// Пользователь имеет все права</span>
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong> В значении ViewEditAgrement пропущена буква 'e' 
+            (корректное название: ViewEditAgreement). Убедитесь, что в коде 
+            используется правильное название.
+        </div>
+    </div>
+</body>
+</html>

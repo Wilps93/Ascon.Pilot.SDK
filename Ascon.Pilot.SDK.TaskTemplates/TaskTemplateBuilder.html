@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация TaskTemplateBuilder SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .obsolete {
+            color: #dc3545;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс TaskTemplateBuilder <span class="obsolete">[Устаревший]</span></h1>
+        
+        <h2>Описание</h2>
+        <p>Строитель шаблонов задач. <strong>Класс признан устаревшим</strong> - рекомендуется использовать современные альтернативы для новых разработок.</p>
+        <p>Позволяет конфигурировать рабочие процессы через fluent-интерфейс.</p>
+
+        <h2>Конструкторы</h2>
+        <h3>Инициализация новым workflow</h3>
+        <pre>
+<code>
+<span class="code-keyword">public</span> TaskTemplateBuilder(
+    WorkflowKind kind,
+    string title,
+    string description
+)
+</code>
+        </pre>
+        
+        <h3>Инициализация существующим workflow</h3>
+        <pre>
+<code>
+<span class="code-keyword">public</span> TaskTemplateBuilder(Workflow workflow)
+</code>
+        </pre>
+
+        <h2>Методы конфигурации</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>SetWorkflowTitle</td>
+                    <td>Устанавливает заголовок рабочего процесса</td>
+                </tr>
+                <tr>
+                    <td>SetWorkflowDescription</td>
+                    <td>Устанавливает описание рабочего процесса</td>
+                </tr>
+                <tr>
+                    <td>SetWorkflowKind</td>
+                    <td>Изменяет тип рабочего процесса</td>
+                </tr>
+                <tr>
+                    <td>AddStage</td>
+                    <td>Добавляет этап с исполнителями</td>
+                </tr>
+                <tr>
+                    <td>RemoveStage</td>
+                    <td>Удаляет этап по индексу</td>
+                </tr>
+                <tr>
+                    <td>AddAuditor</td>
+                    <td>Добавляет аудитора по ID позиции</td>
+                </tr>
+                <tr>
+                    <td>RemoveAuditor</td>
+                    <td>Удаляет аудитора по ID позиции</td>
+                </tr>
+                <tr>
+                    <td>AddAttachment</td>
+                    <td>Добавляет вложение</td>
+                </tr>
+                <tr>
+                    <td>RemoveAttachment</td>
+                    <td>Удаляет вложение по ID</td>
+                </tr>
+                <tr>
+                    <td>SetSignOptions</td>
+                    <td>Конфигурирует автоматическую подпись</td>
+                </tr>
+                <tr>
+                    <td>SetAdditionalRequests</td>
+                    <td>Включает/выключает дополнительные запросы</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Метод создания шаблона</h2>
+        <pre>
+<code>
+<span class="code-keyword">public</span> TaskTemplate CreateTemplate(
+    string name,
+    TaskTemplateKind templateKind
+)
+</code>
+        </pre>
+
+        <h2>Пример использования</h2>
+        <pre>
+<code>
+<span class="code-comment">// Создание шаблона задачи</span>
+<span class="code-keyword">var</span> builder = <span class="code-keyword">new</span> TaskTemplateBuilder(
+    WorkflowKind.Sequence,
+    "Document Approval Process",
+    "Standard approval workflow"
+);
+
+<span class="code-keyword">var</span> template = builder
+    .AddStage(
+        executors: <span class="code-keyword">new</span> List<Executor>
+        {
+            <span class="code-keyword">new</span> Executor { Role = "manager" }
+        },
+        TaskKind.Approval
+    )
+    .AddAuditor(101)
+    .SetSignOptions(isSign: true, "admin")
+    .CreateTemplate("DocApprovalTemplate", TaskTemplateKind.BusinessProcess);
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Все методы возвращают <code>this</code> для цепочечных вызовов</li>
+                <li>Метод <code>RemoveAttachment</code> содержит ошибку - вместо удаления добавляет вложение</li>
+                <li>Используемые классы (Workflow, Executor и др.) также устаревшие</li>
+                <li>Рекомендуется использовать <code>ITaskTemplateBuilderFactory</code> в новых проектах</li>
+            </ul>
+        </div>
+
+        <h2>Особенности реализации</h2>
+        <ul>
+            <li>Мутабельный builder - конфигурирует внутренний объект Workflow</li>
+            <li>Не thread-safe - должен использоваться в однопоточном контексте</li>
+            <li>Методы не проверяют корректность передаваемых данных</li>
+            <li>Созданный TaskTemplate содержит неизменяемые данные</li>
+        </ul>
+    </div>
+</body>
+</html>

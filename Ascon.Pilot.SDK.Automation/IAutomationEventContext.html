@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация IAutomationEventContext SDK</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7;
+            margin: 2rem auto;
+            max-width: 1200px;
+            padding: 0 20px;
+            color: #2d3436;
+        }
+
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #4a69bd;
+            padding-bottom: 0.5rem;
+        }
+
+        h2 {
+            color: #34495e;
+            margin-top: 2rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        th {
+            background-color: #4a69bd;
+            color: white;
+            padding: 1rem;
+            text-align: left;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        pre {
+            background-color: #f1f1f1;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+
+        .code-keyword {
+            color: #4a69bd;
+            font-weight: bold;
+        }
+
+        .code-comment {
+            color: #7f8c8d;
+            font-style: italic;
+        }
+
+        .alert {
+            background-color: #fff5cc;
+            border-left: 4px solid #f3d250;
+            padding: 1rem;
+            margin: 2rem 0;
+            border-radius: 4px;
+        }
+
+        .alert strong {
+            color: #e67e22;
+        }
+
+        .example {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 4px;
+            margin: 1rem 0;
+        }
+
+        .example h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+
+        .example pre {
+            margin: 0.5rem 0;
+        }
+
+        @media (max-width: 768px) {
+            th, td {
+                padding: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Интерфейс IAutomationEventContext</h1>
+    
+    <section>
+        <h2>Общее описание</h2>
+        <p>
+            Интерфейс <code>IAutomationEventContext</code> предоставляет контекстную информацию 
+            о событии автоматизации. Используется для:
+        </p>
+        <ul>
+            <li>Получения данных об исходном объекте события</li>
+            <li>Анализа изменений, вызвавших событие</li>
+            <li>Определения инициатора события</li>
+            <li>Работы с временной меткой события</li>
+        </ul>
+        <p>Является основным источником данных для обработчиков автоматизации.</p>
+    </section>
+
+    <section>
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Свойство</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Source</td>
+                    <td>IDataObject</td>
+                    <td>Объект, вызвавший событие (например, измененный документ)</td>
+                </tr>
+                <tr>
+                    <td>Changes</td>
+                    <td>IEnumerable<IChange></td>
+                    <td>Коллекция изменений, произошедших с объектом</td>
+                </tr>
+                <tr>
+                    <td>InitiatingPerson</td>
+                    <td>IPerson</td>
+                    <td>Пользователь, инициировавший событие (может быть null для системных событий)</td>
+                </tr>
+                <tr>
+                    <td>EventDate</td>
+                    <td>DateTime</td>
+                    <td>Дата и время возникновения события (UTC)</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <h2>Примеры использования</h2>
+        
+        <div class="example">
+            <h3>Анализ изменений объекта</h3>
+            <pre>
+<code>
+<span class="code-keyword">public async Task</span> ProcessChanges(IAutomationEventContext context)
+{
+    <span class="code-keyword">var</span> source = context.Source;
+    <span class="code-keyword">foreach</span> (<span class="code-keyword">var</span> change <span class="code-keyword">in</span> context.Changes)
+    {
+        Console.WriteLine($"Изменено свойство: {change.PropertyName}");
+        Console.WriteLine($"Старое значение: {change.OldValue}");
+        Console.WriteLine($"Новое значение: {change.NewValue}");
+    }
+}
+</code>
+            </pre>
+        </div>
+
+        <div class="example">
+            <h3>Логирование события</h3>
+            <pre>
+<code>
+<span class="code-keyword">public void</span> LogEvent(IAutomationEventContext context)
+{
+    <span class="code-keyword">var</span> user = context.InitiatingPerson?.Name ?? "Система";
+    <span class="code-keyword">var</span> eventTime = context.EventDate.ToLocalTime();
+    
+    Logger.Info($"Событие для объекта {context.Source.Id} " +
+                $"вызвано {user} в {eventTime}");
+}
+</code>
+            </pre>
+        </div>
+    </section>
+
+    <div class="alert">
+        <strong>Рекомендации:</strong>
+        <ul>
+            <li>Проверяйте <code>InitiatingPerson</code> на null для системных событий</li>
+            <li>Используйте <code>EventDate</code> в UTC для согласованности временных меток</li>
+            <li>Для анализа изменений используйте методы из <code>IChange</code></li>
+            <li>Не модифицируйте объект <code>Source</code> напрямую - используйте <code>IObjectModifier</code></li>
+        </ul>
+    </div>
+</body>
+</html>

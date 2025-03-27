@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация интерфейса IMenu<TMenuContext></title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IMenu<TMenuContext></h1>
+        
+        <h2>Назначение</h2>
+        <p>Позволяет динамически формировать меню и контекстные меню на основе передаваемого контекста. Используется для создания гибких UI-компонентов с зависимостью от текущего состояния приложения.</p>
+
+        <h2>Методы</h2>
+        
+        <h3>1. Построение меню</h3>
+        <pre><code>void Build(IMenuBuilder builder, TMenuContext context)</code></pre>
+        <p>Вызывается перед отображением меню. Используется для добавления/модификации элементов.</p>
+        
+        <h4>Параметры:</h4>
+        <ul>
+            <li><code>builder</code> - Объект для построения меню (<code>IMenuBuilder</code>)</li>
+            <li><code>context</code> - Контекст, специфичный для конкретного меню (например, выбранный объект)</li>
+        </ul>
+        
+        <h3>2. Обработка кликов</h3>
+        <pre><code>void OnMenuItemClick(string name, TMenuContext context)</code></pre>
+        <p>Вызывается при выборе пункта меню. Содержит логику обработки команд.</p>
+        
+        <h4>Параметры:</h4>
+        <ul>
+            <li><code>name</code> - Внутреннее имя элемента меню</li>
+            <li><code>context</code> - Контекст, переданный в <code>Build()</code></li>
+        </ul>
+
+        <h2>Пример реализации</h2>
+        <pre>
+<code>
+<span class="code-keyword">public class</span> DocumentMenu : IMenu<DocumentContext>
+{
+    <span class="code-keyword">public void</span> Build(IMenuBuilder builder, DocumentContext context)
+    {
+        builder.AddItem("doc.edit", 0)
+            .WithHeader("Редактировать")
+            .WithIsEnabled(context.HasEditAccess);
+            
+        <span class="code-keyword">if</span> (context.CanExport)
+        {
+            builder.AddCheckableItem("doc.export", 1)
+                .WithHeader("Экспорт")
+                .WithIsChecked(context.ExportEnabled);
+        }
+    }
+
+    <span class="code-keyword">public void</span> OnMenuItemClick(string name, DocumentContext context)
+    {
+        <span class="code-keyword">switch</span> (name)
+        {
+            <span class="code-keyword">case</span> "doc.edit":
+                context.StartEditing();
+                <span class="code-keyword">break</span>;
+            <span class="code-keyword">case</span> "doc.export":
+                context.ToggleExport();
+                <span class="code-keyword">break</span>;
+        }
+    }
+}
+</code>
+        </pre>
+
+        <h2>Особенности</h2>
+        <ul>
+            <li>Контекст <code>TMenuContext</code> позволяет передавать данные между <code>Build()</code> и <code>OnMenuItemClick()</code></li>
+            <li>Изменения в <code>Build()</code> применяются немедленно и влияют на UI</li>
+            <li>Поддерживает все методы <code>IMenuBuilder</code> для построения сложных структур</li>
+        </ul>
+
+        <h2>Рекомендации</h2>
+        <ul>
+            <li>Используйте контекст для передачи состояния (выбранные объекты, права доступа)</li>
+            <li>Кэшируйте результаты построения меню для улучшения производительности</li>
+            <li>Обрабатывайте исключения в <code>OnMenuItemClick()</code> для избежания краха приложения</li>
+            <li>Используйте <code>WithIsEnabled()</code> для управления доступностью элементов</li>
+        </ul>
+
+        <div class="note">
+            <strong>Важно:</strong> 
+            <ul>
+                <li>Не выполняйте долгие операции в <code>Build()</code> - это блокирует UI</li>
+                <li>Для асинхронных операций используйте паттерн async/await в обработчиках</li>
+                <li>Проверяйте актуальность контекста в момент клика</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

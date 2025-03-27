@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация AttributeFieldTypePrefixes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .code-type {
+            color: #2b91af;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс AttributeFieldTypePrefixes</h1>
+        
+        <h2>Описание</h2>
+        <p>Внутренний статический класс, содержащий префиксы типов для формирования ключей атрибутов в поисковых запросах.</p>
+        <p>Используется для генерации уникальных идентификаторов полей в формате <code>prefix.attributeName</code>.</p>
+
+        <h2>Константы типов</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Константа</th>
+                    <th>Значение</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>TEXT</td>
+                    <td>"t"</td>
+                    <td>Префикс для текстовых атрибутов</td>
+                </tr>
+                <tr>
+                    <td>STRING</td>
+                    <td>"s"</td>
+                    <td>Префикс для строковых атрибутов</td>
+                </tr>
+                <tr>
+                    <td>INT32</td>
+                    <td>"i32"</td>
+                    <td>Префикс для 32-битных целочисленных атрибутов</td>
+                </tr>
+                <tr>
+                    <td>INT64</td>
+                    <td>"i64"</td>
+                    <td>Префикс для 64-битных целочисленных атрибутов</td>
+                </tr>
+                <tr>
+                    <td>DOUBLE</td>
+                    <td>"d"</td>
+                    <td>Префикс для атрибутов с плавающей точкой</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Методы</h2>
+
+        <h3>Add</h3>
+        <pre>
+<code>
+<span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-type">string</span> Add(<span class="code-type">string</span> prefix, <span class="code-type">string</span> value)
+</code>
+        </pre>
+        <p>Формирует составной ключ из префикса и названия атрибута.</p>
+        <table>
+            <tr>
+                <th>Параметр</th>
+                <th>Описание</th>
+            </tr>
+            <tr>
+                <td>prefix</td>
+                <td>Префикс типа (например, "t" для текста)</td>
+            </tr>
+            <tr>
+                <td>value</td>
+                <td>Название атрибута</td>
+            </tr>
+        </table>
+        <p>Возвращает: Строка в формате <code>prefix.value</code></p>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Формирование ключа для текстового атрибута</h3>
+        <pre>
+<code>
+<span class="code-type">string</span> key = AttributeFieldTypePrefixes.Add(AttributeFieldTypePrefixes.TEXT, "Description");
+<span class="code-comment">// Результат: "t.Description"</span>
+</code>
+        </pre>
+
+        <h3>Создание ключа для числового атрибута</h3>
+        <pre>
+<code>
+<span class="code-type">string</span> numericKey = AttributeFieldTypePrefixes.Add("d", "Price");
+<span class="code-comment">// Результат: "d.Price"</span>
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Класс имеет модификатор <span class="code-keyword">internal</span> и не доступен за пределами сборки</li>
+                <li>Используется в связке с классом <span class="code-type">AttributeFields</span> для построения поисковых условий</li>
+                <li>Разделение префиксов позволяет избежать конфликтов имен между разными типами атрибутов</li>
+            </ul>
+        </div>
+
+        <h2>Связь с другими компонентами</h2>
+        <p>Префиксы этого класса используются в:</p>
+        <ul>
+            <li>Методах класса <span class="code-type">AttributeFields</span> для указания типов полей</li>
+            <li>Механизме поиска объектов через <span class="code-type">ISearchTerm</span></li>
+            <li>Системе метаданных атрибутов</li>
+        </ul>
+    </div>
+</body>
+</html>

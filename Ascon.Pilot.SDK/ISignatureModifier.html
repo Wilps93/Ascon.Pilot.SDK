@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация ISignatureModifier SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background-color: #f8d7da;
+            border-left: 4px solid #f5c6cb;
+            padding: 10px;
+            margin: 20px 0;
+            color: #721c24;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс ISignatureModifier</h1>
+        
+        <div class="warning">
+            <strong>Внимание!</strong> Работает с временными объектами ISignature, 
+            которые автоматически уничтожаются через 2 минуты.
+        </div>
+
+        <h2>Описание</h2>
+        <p>Модификатор для управления цифровыми подписями. Позволяет добавлять новые и удалять существующие подписи 
+        с использованием паттерна "Строитель" для настройки параметров.</p>
+
+        <h2>Методы</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Параметры</th>
+                    <th>Возвращает</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Add</td>
+                    <td>Guid id</td>
+                    <td>ISignatureBuilder</td>
+                    <td>Добавляет новую подпись с указанным идентификатором и возвращает строитель для её настройки</td>
+                </tr>
+                <tr>
+                    <td>Remove</td>
+                    <td>Predicate<ISignature> findSignature</td>
+                    <td>ISignatureModifier</td>
+                    <td>Удаляет подписи, соответствующие условию в предикате</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Добавление новой подписи</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> modifier = signatureModifierFactory.Create();
+<span class="code-keyword">ISignature</span> newSignature = modifier.Add(Guid.NewGuid())
+    .WithRole("Администратор")
+    .WithSign("X509_SIGNATURE_DATA")
+    .Build();
+</code>
+        </pre>
+
+        <h3>Удаление подписи по идентификатору</h3>
+        <pre>
+<code>
+<span class="code-keyword">Guid</span> signatureToRemove = ...;
+modifier.Remove(sig => sig.Id == signatureToRemove);
+</code>
+        </pre>
+
+        <h3>Массовое удаление подписей</h3>
+        <pre>
+<code>
+<span class="code-comment">// Удалить все подписи с ролью "Гость"</span>
+modifier.Remove(sig => sig.Role == "Гость");
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Для метода Remove используйте точные предикаты во избежание случайного удаления</li>
+                <li>После добавления подписи через Add() используйте её немедленно</li>
+                <li>Не сохраняйте ссылки на ISignature после завершения операций</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

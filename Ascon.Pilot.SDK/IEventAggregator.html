@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация IEventAggregator SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IEventAggregator</h1>
+        
+        <h2>Описание</h2>
+        <p>Реализует шаблон <strong>Издатель-Подписчик</strong> для организации слабосвязанного взаимодействия компонентов системы через события.</p>
+        
+        <h2>Методы</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Параметры</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Publish</td>
+                    <td>message: object</td>
+                    <td>Публикует событие для всех подписчиков, обрабатывающих данный тип сообщения</td>
+                </tr>
+                <tr>
+                    <td>Subscribe</td>
+                    <td>subscriber: object</td>
+                    <td>Регистрирует подписчика. Объект должен реализовывать интерфейс <code>IHandle<T></code></td>
+                </tr>
+                <tr>
+                    <td>Unsubscribe</td>
+                    <td>subscriber: object</td>
+                    <td>Удаляет подписку для указанного объекта</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Публикация события</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> eventAggregator = ... ; <span class="code-comment">// Получение экземпляра IEventAggregator</span>
+<span class="code-keyword">var</span> eventData = <span class="code-keyword">new</span> UserLoggedInEvent { UserId = 123 };
+eventAggregator.Publish(eventData);
+</code>
+        </pre>
+
+        <h3>Создание подписчика</h3>
+        <pre>
+<code>
+<span class="code-keyword">public class</span> UserActivityLogger : IHandle<UserLoggedInEvent>
+{
+    <span class="code-keyword">public void</span> Handle(UserLoggedInEvent message)
+    {
+        Console.WriteLine($"Пользователь {message.UserId} вошел в систему");
+    }
+}
+</code>
+        </pre>
+
+        <h3>Подписка на события</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> logger = <span class="code-keyword">new</span> UserActivityLogger();
+eventAggregator.Subscribe(logger);
+</code>
+        </pre>
+
+        <h3>Отмена подписки</h3>
+        <pre>
+<code>
+eventAggregator.Unsubscribe(logger);
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Подписчик должен реализовывать <code>IHandle<T></code> для каждого типа обрабатываемых событий</li>
+                <li>При публикации события вызываются все обработчики, соответствующие типу сообщения</li>
+                <li>Рекомендуется явно отписываться от событий при уничтожении объекта</li>
+                <li>Для фильтрации событий используйте разные типы сообщений</li>
+            </ul>
+        </div>
+
+        <h2>Схема работы</h2>
+        <ul>
+            <li>1. Подписчик реализует <code>IHandle<T></code></li>
+            <li>2. Выполняется подписка через <code>Subscribe()</code></li>
+            <li>3. Публикация события через <code>Publish()</code></li>
+            <li>4. Автоматическая маршрутизация события всем подходящим обработчикам</li>
+        </ul>
+    </div>
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация ISearchService</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс ISearchService</h1>
+        
+        <h2>Описание</h2>
+        <p>Основной интерфейс для работы с поиском в системе. Реализует <code>IDisposable</code> - требует явного освобождения ресурсов.</p>
+
+        <h2>Методы</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>GetSmartFolderQueryBuilder</td>
+                    <td>Получение билдера для поиска по "умным папкам" (сохраненным поискам)</td>
+                </tr>
+                <tr>
+                    <td>GetObjectQueryBuilder</td>
+                    <td>Билдер для поиска пользовательских объектов с предфильтрацией системных и удаленных объектов</td>
+                </tr>
+                <tr>
+                    <td>GetTaskQueryBuilder</td>
+                    <td><strong>Устаревший</strong> метод для поиска задач. Используйте универсальные методы</td>
+                </tr>
+                <tr>
+                    <td>GetEmptyQueryBuilder</td>
+                    <td>Пустой билдер для ручной настройки всех параметров поиска</td>
+                </tr>
+                <tr>
+                    <td>Search</td>
+                    <td>Выполнение поиска с возвратом асинхронных результатов</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Поиск пользовательских объектов</h3>
+        <pre>
+<code>
+<span class="code-keyword">using</span> (var searchService = GetSearchService())
+{
+    <span class="code-keyword">var</span> query = searchService.GetObjectQueryBuilder()
+        .Must(ObjectFields.Name.Be("Договор*"))
+        .SortBy(ObjectFields.CreatedDate, ListSortDirection.Descending);
+
+    <span class="code-keyword">var</span> results = searchService.Search(query)
+        .Subscribe(result => 
+        {
+            <span class="code-comment">// Обработка порции результатов</span>
+            ProcessBatch(result.Result);
+        });
+}
+</code>
+        </pre>
+
+        <h3>Работа с умными папками</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> smartQuery = searchService.GetSmartFolderQueryBuilder()
+    .InContext(smartFolderId)
+    .MaxResults(100);
+
+<span class="code-keyword">foreach</span> (var batch <span class="code-keyword">in</span> searchService.Search(smartQuery).ToEnumerable())
+{
+    <span class="code-comment">// Агрегация данных из разных партий</span>
+    AggregateData(batch);
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Критически важно:</strong>
+            <ul>
+                <li>Всегда оборачивайте в <code>using</code> для корректного освобождения ресурсов</li>
+                <li>Метод <code>GetTaskQueryBuilder</code> помечен как устаревший - используйте универсальные билдеры</li>
+                <li>Подписывайтесь на результаты <code>IObservable</code> с помощью <code>Subscribe</code></li>
+                <li>GetObjectQueryBuilder автоматически исключает системные объекты - не требует дополнительных условий</li>
+            </ul>
+        </div>
+
+        <h2>Рекомендации</h2>
+        <ul>
+            <li>Для долгих запросов используйте <code>MaxResults</code> с пакетной обработкой</li>
+            <li>В асинхронных сценариях используйте <code>await foreach</code> для обработки результатов</li>
+            <li>Проверяйте <code>SearchResult.Kind</code> для оптимизации повторных запросов</li>
+            <li>Избегайте вложенных запросов в обработчиках <code>Subscribe</code></li>
+            <li>Для сложных условий комбинируйте <code>Must</code>/<code>MustAnyOf</code>/<code>MustNot</code></li>
+        </ul>
+    </div>
+</body>
+</html>

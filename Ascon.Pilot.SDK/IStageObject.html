@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация IStageObject SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background-color: #f8d7da;
+            border-left: 4px solid #f5c6cb;
+            padding: 10px;
+            margin: 20px 0;
+            color: #721c24;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .obsolete {
+            text-decoration: line-through;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IStageObject</h1>
+        
+        <div class="warning">
+            <strong>Внимание!</strong> Этот интерфейс помечен как устаревший (Obsolete) и будет удален в будущих версиях.
+        </div>
+
+        <div class="warning">
+            <strong>Временный объект:</strong> Экземпляр этого интерфейса автоматически уничтожается через 2 минуты. 
+            Попытки обращения к свойствам после этого вызовут исключение.
+        </div>
+
+        <h2>Описание</h2>
+        <p>Представляет временный контейнер для передачи данных этапа (stage) и его атрибутов. 
+        Используется в связке с устаревшим интерфейсом <span class="obsolete">IStageChangeBuilder</span>.</p>
+
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Свойство</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Id</td>
+                    <td>Guid</td>
+                    <td>Уникальный идентификатор этапа</td>
+                </tr>
+                <tr>
+                    <td>Order</td>
+                    <td>int</td>
+                    <td>Порядковый номер этапа в рабочем процессе</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Пример использования (устаревший)</h2>
+        <pre>
+<code>
+<span class="code-comment">// Пример legacy-кода (не рекомендуется)</span>
+<span class="code-keyword">var</span> stageBuilder = stageChangeBuilderFactory.Create();
+stageBuilder.SetStageOrder(3);
+<span class="code-keyword">var</span> stage = stageBuilder.StageObject;
+
+<span class="code-comment">// Важно: используйте данные в течение 2 минут!</span>
+ProcessStageId(stage.Id);
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Избегайте использования в новом коде</li>
+                <li>Не сохраняйте ссылки на объекты этого типа</li>
+                <li>Проверьте документацию на наличие современных альтернатив</li>
+            </ul>
+        </div>
+
+        <div class="warning">
+            <strong>Критически важно:</strong> Все обращения к свойствам должны 
+            выполняться в течение первых 2 минут после создания объекта.
+        </div>
+    </div>
+</body>
+</html>

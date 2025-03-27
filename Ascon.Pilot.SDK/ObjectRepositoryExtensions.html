@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация ObjectRepositoryExtensions SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .code-string {
+            color: #a31515;
+        }
+
+        .generic-method {
+            font-weight: bold;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс ObjectRepositoryExtensions</h1>
+        
+        <h2>Описание</h2>
+        <p>
+            Статический класс с методами расширения для <code>IObjectsRepository</code>, 
+            предоставляющий дополнительные возможности работы с репозиторием объектов.
+        </p>
+
+        <h2>Методы</h2>
+        
+        <h3>1. GetUserStates</h3>
+        <p>Получает все пользовательские состояния, зарегистрированные в базе данных.</p>
+        <pre>
+<code>
+<span class="code-keyword">public</span> <span class="code-keyword">static</span> IEnumerable<IUserState> GetUserStates(
+    <span class="code-keyword">this</span> IObjectsRepository repository
+)
+</code>
+        </pre>
+        <p><strong>Возвращает:</strong> Коллекция пользовательских состояний</p>
+
+        <h3>2. GetUserStateMachines</h3>
+        <p>Получает все конечные автоматы состояний, зарегистрированные в системе.</p>
+        <pre>
+<code>
+<span class="code-keyword">public</span> <span class="code-keyword">static</span> IEnumerable<IUserStateMachine> GetUserStateMachines(
+    <span class="code-keyword">this</span> IObjectsRepository repository
+)
+</code>
+        </pre>
+
+        <h3>3. GetReportItems</h3>
+        <p>Получает все доступные отчеты для текущего пользователя.</p>
+        <pre>
+<code>
+<span class="code-keyword">public</span> <span class="code-keyword">static</span> IEnumerable<IReportItem> GetReportItems(
+    <span class="code-keyword">this</span> IObjectsRepository repository
+)
+</code>
+        </pre>
+
+        <h3>4. GetCurrentAccess</h3>
+        <p>Определяет уровень доступа пользователя к объекту.</p>
+        <pre>
+<code>
+<span class="code-keyword">public</span> <span class="code-keyword">static</span> AccessLevel GetCurrentAccess(
+    <span class="code-keyword">this</span> IObjectsRepository repository,
+    Guid objectId,
+    <span class="code-keyword">int</span> personId
+)
+</code>
+        </pre>
+        <table>
+            <thead>
+                <tr>
+                    <th>Параметр</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>objectId</td>
+                    <td>Guid</td>
+                    <td>Идентификатор объекта</td>
+                </tr>
+                <tr>
+                    <td>personId</td>
+                    <td>int</td>
+                    <td>Идентификатор пользователя</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>5. GetServerCommandProxy<T></h3>
+        <p>Получает прокси для выполнения серверных команд.</p>
+        <div class="note">
+            Требует предварительной регистрации команды на сервере через <code>IServerCommandApi</code>.
+        </div>
+        <h4>Перегрузки:</h4>
+        <pre>
+<code>
+<span class="generic-method">T</span> GetServerCommandProxy<T>(
+    <span class="code-keyword">this</span> IObjectsRepository repository
+) <span class="code-keyword">where</span> T : <span class="code-keyword">class</span>
+
+<span class="generic-method">T</span> GetServerCommandProxy<T>(
+    <span class="code-keyword">this</span> IObjectsRepository repository,
+    <span class="code-keyword">string</span> commandProcessorName
+) <span class="code-keyword">where</span> T : <span class="code-keyword">class</span>
+</code>
+        </pre>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Проверка уровня доступа</h3>
+        <pre>
+<code>
+AccessLevel access = repository.GetCurrentAccess(documentId, userId);
+<span class="code-keyword">if</span> (access.HasFlag(AccessLevel.Edit))
+{
+    Console.WriteLine("Редактирование разрешено");
+}
+</code>
+        </pre>
+
+        <h3>Выполнение серверной команды</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> command = repository.GetServerCommandProxy<ICustomCommand>("MyProcessor");
+command.Execute(parameters);
+</code>
+        </pre>
+
+        <h2>Важные замечания</h2>
+        <div class="note">
+            <ul>
+                <li>Методы используют reflection через <code>Extensions.InvokeMethod</code></li>
+                <li>Для обобщенных методов требуется явное указание типа интерфейса</li>
+                <li>При отсутствии прав методы могут возвращать пустые коллекции вместо ошибок</li>
+            </ul>
+        </div>
+
+        <h2>Рекомендации</h2>
+        <ul>
+            <li>Кэшируйте результаты <code>GetUserStates</code> и <code>GetUserStateMachines</code></li>
+            <li>Обрабатывайте возможные исключения при работе с серверными командами</li>
+            <li>Используйте <code>GetCurrentAccess</code> перед выполнением критических операций</li>
+        </ul>
+    </div>
+</body>
+</html>

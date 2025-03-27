@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация интерфейса IMenuBuilder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IMenuBuilder</h1>
+        
+        <h2>Назначение</h2>
+        <p>Предоставляет методы для динамического построения и модификации меню. Позволяет добавлять, удалять и управлять элементами меню, включая разделители и чекбоксы.</p>
+
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Имя</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>ItemNames</td>
+                    <td>IEnumerable<string></td>
+                    <td>Список внутренних имен существующих элементов меню</td>
+                </tr>
+                <tr>
+                    <td>Count</td>
+                    <td>int</td>
+                    <td>Количество элементов в меню</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Методы</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>AddSeparator(int index)</td>
+                    <td>Добавляет разделитель в указанную позицию</td>
+                </tr>
+                <tr>
+                    <td>AddItem(string name, int index)</td>
+                    <td>Добавляет новый элемент меню. Возвращает IMenuItemBuilder для настройки</td>
+                </tr>
+                <tr>
+                    <td>AddCheckableItem(string name, int index)</td>
+                    <td>Добавляет чекбокс/радио-элемент. Возвращает ICheckableMenuItemBuilder</td>
+                </tr>
+                <tr>
+                    <td>ReplaceItem(string name)</td>
+                    <td>Заменяет существующий элемент. Возвращает IMenuItemBuilder</td>
+                </tr>
+                <tr>
+                    <td>RemoveItem(string name)</td>
+                    <td>Удаляет элемент по имени</td>
+                </tr>
+                <tr>
+                    <td>GetItem(string name)</td>
+                    <td>Получает элемент меню для модификации</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Пример построения меню</h2>
+        <pre>
+<code>
+<span class="code-keyword">var</span> menuBuilder = ... ; <span class="code-comment">// Получение экземпляра IMenuBuilder</span>
+
+<span class="code-comment">// Добавление элементов</span>
+menuBuilder.AddSeparator(0);
+menuBuilder.AddItem("file.new", 1)
+    .WithText("Новый")
+    .WithIcon(Icons.New)
+    .WithCommand("file.new");
+    
+menuBuilder.AddCheckableItem("view.dark", 2)
+    .WithText("Темная тема")
+    .WithIsChecked(isDarkMode)
+    .WithCommand("theme.toggle");
+
+<span class="code-comment">// Замена элемента</span>
+menuBuilder.ReplaceItem("file.new")
+    .WithText("Создать")
+    .WithShortcut("Ctrl+N");
+
+<span class="code-comment">// Удаление элемента</span>
+menuBuilder.RemoveItem("old_item");
+</code>
+        </pre>
+
+        <h2>Особенности</h2>
+        <ul>
+            <li>Индексы начинаются с 0</li>
+            <li>При указании индекса больше текущего размера элемент добавляется в конец</li>
+            <li>Имена элементов должны быть уникальными в рамках меню</li>
+        </ul>
+
+        <h2>Рекомендации</h2>
+        <ul>
+            <li>Используйте осмысленные имена элементов (например: "file.save", "edit.undo")</li>
+            <li>Группируйте связанные элементы с помощью подменю</li>
+            <li>Для динамических меню используйте <code>GetItem()</code> для обновления состояний</li>
+            <li>Проверяйте существование элемента через <code>ItemNames</code> перед удалением</li>
+        </ul>
+
+        <div class="note">
+            <strong>Важно:</strong> 
+            <ul>
+                <li>Изменения применяются немедленно и влияют на UI</li>
+                <li>Для массовых изменений используйте пакетные операции</li>
+                <li>Обрабатывайте возможные исключения при работе с индексами</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

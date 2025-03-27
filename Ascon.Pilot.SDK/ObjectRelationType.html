@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация ObjectRelationType SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .code-string {
+            color: #a31515;
+        }
+
+        .numeric-code {
+            font-weight: bold;
+            color: #c7254e;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Перечисление ObjectRelationType</h1>
+        
+        <h2>Описание</h2>
+        <p>
+            Определяет типы связей между объектами в системе. 
+            Используется для управления вложениями и отношениями между документами, задачами и другими сущностями.
+        </p>
+
+        <h2>Значения</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Значение</th>
+                    <th>Числовой код</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>SourceFiles</td>
+                    <td class="numeric-code">1</td>
+                    <td>Связь документа с исходными файлами</td>
+                </tr>
+                <tr>
+                    <td>TaskInitiatorAttachments</td>
+                    <td class="numeric-code">223</td>
+                    <td>Вложения, добавленные инициатором задачи</td>
+                </tr>
+                <tr>
+                    <td>MessageAttachments</td>
+                    <td class="numeric-code">4</td>
+                    <td>Вложения сообщений внутри задачи</td>
+                </tr>
+                <tr>
+                    <td>Custom</td>
+                    <td class="numeric-code">225</td>
+                    <td>Пользовательский тип связи</td>
+                </tr>
+                <tr>
+                    <td>TaskAttachments</td>
+                    <td class="numeric-code">226</td>
+                    <td>Основные вложения задачи</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Особенности реализации</h2>
+        <div class="note">
+            <ul>
+                <li>Нестандартная нумерация: Значения не идут последовательно (1, 223, 4, 225, 226)</li>
+                <li><code>TaskInitiatorAttachments</code> и <code>TaskAttachments</code> имеют разные коды, но оба относятся к задачам</li>
+                <li>Для <code>Custom</code> необходимо реализовывать дополнительную логику определения типа</li>
+            </ul>
+        </div>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Определение типа связи</h3>
+        <pre>
+<code>
+<span class="code-keyword">void</span> CheckRelationType(ObjectRelationType relationType)
+{
+    <span class="code-keyword">switch</span> (relationType)
+    {
+        <span class="code-keyword">case</span> ObjectRelationType.SourceFiles:
+            Console.WriteLine("Работа с исходными файлами документа");
+            <span class="code-keyword">break</span>;
+            
+        <span class="code-keyword">case</span> ObjectRelationType.MessageAttachments:
+            Console.WriteLine("Обработка вложений сообщений");
+            <span class="code-keyword">break</span>;
+            
+        <span class="code-keyword">case</span> ObjectRelationType.Custom:
+            HandleCustomRelation();
+            <span class="code-keyword">break</span>;
+            
+        <span class="code-keyword">default</span>:
+            Console.WriteLine($"Неизвестный тип связи: {relationType}");
+            <span class="code-keyword">break</span>;
+    }
+}
+</code>
+        </pre>
+
+        <h3>Фильтрация вложений задачи</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> taskAttachments = relations
+    .Where(r => r.RelationType == ObjectRelationType.TaskAttachments)
+    .ToList();
+</code>
+        </pre>
+
+        <h2>Рекомендации</h2>
+        <ul>
+            <li>Используйте <code>Custom</code> только при необходимости расширения функционала</li>
+            <li>Проверяйте числовые коды при интеграции с внешними системами</li>
+            <li>Для задач разделяйте обработку <code>TaskInitiatorAttachments</code> и <code>TaskAttachments</code></li>
+        </ul>
+    </div>
+</body>
+</html>

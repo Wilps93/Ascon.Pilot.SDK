@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация интерфейса IObjectModifier</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IObjectModifier</h1>
+        
+        <h2>Описание</h2>
+        <p>Интерфейс для управления жизненным циклом объектов: создание, модификация, удаление и восстановление. 
+        Реализует <code>IDisposable</code> - требует явного освобождения ресурсов.</p>
+        
+        <h2>Группы методов</h2>
+        
+        <h3>1. Создание объектов</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Create(IDataObject, IType)</td>
+                    <td>Создает объект с указанием родителя и типа</td>
+                </tr>
+                <tr>
+                    <td>Create(Guid, IDataObject, IType)</td>
+                    <td>Создает объект с явным указанием идентификатора</td>
+                </tr>
+                <tr>
+                    <td>CreateById(Guid, Guid, IType)</td>
+                    <td>Создает объект по идентификаторам родителя и типа</td>
+                </tr>
+                <tr>
+                    <td>Create(Guid, IType)</td>
+                    <td>Создает объект по идентификатору родителя</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h3>2. Редактирование объектов</h3>
+        <table>
+            <tbody>
+                <tr>
+                    <td>Edit(IDataObject)</td>
+                    <td>Редактирует существующий объект</td>
+                </tr>
+                <tr>
+                    <td>EditById(Guid)</td>
+                    <td>Редактирует объект по его идентификатору</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h3>3. Управление расположением</h3>
+        <table>
+            <tbody>
+                <tr>
+                    <td>Move(IDataObject, IDataObject)</td>
+                    <td>Перемещает объект в новое родительское расположение</td>
+                </tr>
+                <tr>
+                    <td>MoveById(Guid, Guid)</td>
+                    <td>Перемещает объект по идентификаторам</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h3>4. Удаление и восстановление</h3>
+        <table>
+            <tbody>
+                <tr>
+                    <td>Delete(IDataObject)</td>
+                    <td>Удаляет объект в корзину</td>
+                </tr>
+                <tr>
+                    <td>DeleteById(Guid)</td>
+                    <td>Удаляет объект по идентификатору</td>
+                </tr>
+                <tr>
+                    <td>DeletePermanently(Guid)</td>
+                    <td>Полное удаление без возможности восстановления</td>
+                </tr>
+                <tr>
+                    <td>Restore(Guid, Guid)</td>
+                    <td>Восстанавливает объект из корзины</td>
+                </tr>
+                <tr>
+                    <td>RestorePermanentlyDeletedObject(Guid, Guid, IType)</td>
+                    <td>Восстанавливает полностью удаленный объект</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h3>5. Управление состоянием</h3>
+        <table>
+            <tbody>
+                <tr>
+                    <td>ChangeState(IDataObject, ObjectState)</td>
+                    <td>Изменяет состояние объекта</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h3>6. Работа с изменениями</h3>
+        <table>
+            <tbody>
+                <tr>
+                    <td>Apply()</td>
+                    <td>Применяет все накопленные изменения</td>
+                </tr>
+                <tr>
+                    <td>Clear()</td>
+                    <td>Отменяет все несохраненные изменения</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h3>7. Работа со связями</h3>
+        <table>
+            <tbody>
+                <tr>
+                    <td>CreateLink(IRelation, IRelation)</td>
+                    <td>Создает связь между объектами</td>
+                </tr>
+                <tr>
+                    <td>RemoveLink(IDataObject, IRelation)</td>
+                    <td>Удаляет указанную связь</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Создание объекта</h3>
+        <pre>
+<code>
+<span class="code-keyword">using</span> (var modifier = GetObjectModifier())
+{
+    modifier.Create(parentObject, objectType)
+        .SetName("New Object")
+        .SetProperty("Description", "Sample");
+    modifier.Apply();
+}
+</code>
+        </pre>
+
+        <h3>Редактирование объекта</h3>
+        <pre>
+<code>
+<span class="code-keyword">using</span> (var modifier = GetObjectModifier())
+{
+    modifier.EditById(existingObjectId)
+        .SetProperty("Status", "Updated");
+    modifier.Apply();
+}
+</code>
+        </pre>
+
+        <h3>Восстановление объекта</h3>
+        <pre>
+<code>
+modifier.Restore(deletedObjectId, newParentId)
+    .SetProperty("RestoredAt", DateTime.Now);
+modifier.Apply();
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Всегда используйте <code>using</code> или явный вызов <code>Dispose()</code></li>
+                <li>Изменения применяются только после вызова <code>Apply()</code></li>
+                <li>Параметры с именем <code>object</code> используют escape-синтаксис: <code>@object</code></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

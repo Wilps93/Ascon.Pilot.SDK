@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация TaskTemplateKind SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .obsolete {
+            color: #dc3545;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Перечисление TaskTemplateKind <span class="obsolete">[Устаревший]</span></h1>
+        
+        <h2>Описание</h2>
+        <p>Определяет типы шаблонов задач. <strong>Перечисление признано устаревшим</strong> - рекомендуется использовать современные альтернативы для новых разработок.</p>
+
+        <h2>Значения</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Значение</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Common</td>
+                    <td>Общий шаблон задачи (для группового использования)</td>
+                </tr>
+                <tr>
+                    <td>Personal</td>
+                    <td>Личный шаблон задачи (для индивидуального использования)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        <pre>
+<code>
+<span class="code-comment">// Создание шаблона задачи с типом Common</span>
+<span class="code-keyword">var</span> commonTemplate = <span class="code-keyword">new</span> TaskTemplate(
+    Guid.NewGuid(),
+    "General Approval",
+    workflow,
+    TaskTemplateKind.Common
+);
+
+<span class="code-comment">// Проверка типа шаблона</span>
+<span class="code-keyword">if</span> (template.Kind == TaskTemplateKind.Personal)
+{
+    <span class="code-comment">// Логика для личных шаблонов</span>
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Перечисление помечено как <code>[Obsolete]</code> - использование в новых проектах не рекомендуется</li>
+                <li>Значение Personal требует дополнительной настройки прав доступа</li>
+                <li>Рекомендуется использовать <code>ITaskTypeDefinition</code> в новых реализациях</li>
+            </ul>
+        </div>
+
+        <h2>Особенности реализации</h2>
+        <ul>
+            <li>Используется в связке с устаревшим классом <code>TaskTemplate</code></li>
+            <li>Не содержит методов расширения или дополнительной функциональности</li>
+            <li>Значения не имеют связанных атрибутов или метаданных</li>
+        </ul>
+    </div>
+</body>
+</html>

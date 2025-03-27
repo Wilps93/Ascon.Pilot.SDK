@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация AttributeValueChangedEventArgs</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс AttributeValueChangedEventArgs</h1>
+        
+        <h2>Описание</h2>
+        <p>Класс, предоставляющий данные о изменении значения атрибута объекта. Наследуется от <code>MarshalByRefObject</code> для поддержки маршалинга в распределенных средах.</p>
+        
+        <h2>Наследование</h2>
+        <ul>
+            <li>System.Object</li>
+            <li>System.MarshalByRefObject</li>
+            <li>AttributeValueChangedEventArgs</li>
+        </ul>
+
+        <h2>Конструктор</h2>
+        <pre>
+<code>
+<span class="code-keyword">public</span> AttributeValueChangedEventArgs(
+    <span class="code-keyword">object</span> oldValue,
+    <span class="code-keyword">object</span> newValue,
+    ObjectCardContext context
+)
+</code>
+        </pre>
+        <p>Инициализирует новый экземпляр класса.</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Параметр</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>oldValue</td>
+                    <td>Предыдущее значение атрибута</td>
+                </tr>
+                <tr>
+                    <td>newValue</td>
+                    <td>Новое значение атрибута</td>
+                </tr>
+                <tr>
+                    <td>context</td>
+                    <td>Контекст объекта, связанного с изменением</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Имя</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>OldValue</td>
+                    <td>object</td>
+                    <td>Предыдущее значение атрибута (только для чтения)</td>
+                </tr>
+                <tr>
+                    <td>NewValue</td>
+                    <td>object</td>
+                    <td>Новое значение атрибута (только для чтения)</td>
+                </tr>
+                <tr>
+                    <td>Context</td>
+                    <td>ObjectCardContext</td>
+                    <td>Контекст объекта (только для чтения)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Особенности</h2>
+        <ul>
+            <li>Объекты неизменяемы после создания</li>
+            <li>Поддерживает передачу между доменами приложений</li>
+            <li>Используется в событиях изменения атрибутов</li>
+        </ul>
+
+        <h2>Пример использования</h2>
+        <pre>
+<code>
+<span class="code-comment">// Обработчик события</span>
+<span class="code-keyword">void</span> OnAttributeValueChanged(<span class="code-keyword">object</span> sender, AttributeValueChangedEventArgs e)
+{
+    Console.WriteLine($"Старое значение: {e.OldValue}");
+    Console.WriteLine($"Новое значение: {e.NewValue}");
+    Console.WriteLine($"Контекст объекта: {e.Context.Id}");
+}
+
+<span class="code-comment">// Создание экземпляра</span>
+<span class="code-keyword">var</span> eventArgs = <span class="code-keyword">new</span> AttributeValueChangedEventArgs(
+    oldValue: 42,
+    newValue: 100,
+    context: currentContext
+);
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong> Для корректной работы в распределенных системах 
+            убедитесь, что типы <code>OldValue</code>/<code>NewValue</code> и 
+            <code>ObjectCardContext</code> поддерживают сериализацию.
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация GraphicLayerElementConstants</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .code-string {
+            color: #a31515;
+        }
+
+        .warning {
+            color: #dc3545;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс GraphicLayerElementConstants</h1>
+        
+        <h2>Описание</h2>
+        <p>Контейнер констант для работы с элементами графических слоев. Содержит стандартные идентификаторы, типы контента и версионные метки.</p>
+
+        <h2>Константы</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Константа</th>
+                    <th>Значение</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>GRAPHIC_LAYER_ELEMENT</td>
+                    <td>"PILOT_GRAPHIC_LAYER_ELEMENT_"</td>
+                    <td>Базовый префикс для идентификаторов графических элементов</td>
+                </tr>
+                <tr>
+                    <td>GRAPHIC_LAYER_ELEMENT_CONTENT</td>
+                    <td>"PILOT_CONTENT_GRAPHIC_LAYER_ELEMENT_"</td>
+                    <td>Префикс для контентных идентификаторов графических элементов</td>
+                </tr>
+                <tr>
+                    <td>XAML</td>
+                    <td>"xaml"</td>
+                    <td>Тип контента для XAML-данных</td>
+                </tr>
+                <tr>
+                    <td>BITMAP</td>
+                    <td>"bitmap"</td>
+                    <td>Тип контента для растровых изображений</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Поля</h2>
+        <table>
+            <tr>
+                <th>Поле</th>
+                <th>Тип</th>
+                <th>Значение</th>
+                <th>Описание</th>
+            </tr>
+            <tr>
+                <td>Version</td>
+                <td>string</td>
+                <td>"2"</td>
+                <td>Версия элементов графического слоя (может изменяться в runtime)</td>
+            </tr>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Формирование идентификатора</h3>
+        <pre>
+<code>
+<span class="code-keyword">string</span> elementId = GraphicLayerElementConstants.GRAPHIC_LAYER_ELEMENT + <span class="code-string">"SCHEMA_123"</span>;
+<span class="code-comment">// Результат: "PILOT_GRAPHIC_LAYER_ELEMENT_SCHEMA_123"</span>
+</code>
+        </pre>
+
+        <h3>Проверка типа контента</h3>
+        <pre>
+<code>
+<span class="code-keyword">if</span> (contentType == GraphicLayerElementConstants.XAML)
+{
+    <span class="code-comment">// Обработка XAML-контента</span>
+    ProcessXamlData(data);
+}
+</code>
+        </pre>
+
+        <h3>Работа с версией</h3>
+        <pre>
+<code>
+<span class="code-comment">// Проверка поддержки версии</span>
+<span class="code-keyword">if</span> (GraphicLayerElementConstants.Version == <span class="code-string">"2"</span>)
+{
+    EnableNewFeatures();
+}
+</code>
+        </pre>
+
+        <div class="note warning">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Поле <code>Version</code> доступно для записи - будьте осторожны при модификации</li>
+                <li>Константы содержат служебные префиксы - не изменяйте их вручную</li>
+                <li>Типы контента чувствительны к регистру</li>
+            </ul>
+        </div>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Используйте константы вместо хардкодных строк для обеспечения совместимости</li>
+                <li>Проверяйте версию перед использованием новых возможностей</li>
+                <li>Для кастомных типов контента создавайте собственные константы</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

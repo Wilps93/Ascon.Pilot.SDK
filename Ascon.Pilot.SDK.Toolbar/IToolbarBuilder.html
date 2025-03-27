@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация интерфейса IToolbarBuilder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .method-signature {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IToolbarBuilder</h1>
+        
+        <h2>Описание</h2>
+        <p>Предоставляет функционал для динамического построения и модификации панелей инструментов. Позволяет добавлять/удалять элементы, управлять их порядком и настраивать поведение.</p>
+
+        <h2>Методы</h2>
+        
+        <h3>Добавление элементов</h3>
+        <div class="method-signature">
+            <code>void AddSeparator(int index)</code>
+            <p>Добавляет разделитель в указанную позицию</p>
+        </div>
+        
+        <div class="method-signature">
+            <code>IToolbarButtonItemBuilder AddButtonItem(string name, int index)</code>
+            <p>Добавляет кнопку в указанную позицию. Возвращает билдер для настройки кнопки</p>
+        </div>
+        
+        <div class="method-signature">
+            <code>IToolbarMenuButtonItemBuilder AddMenuButtonItem(string name, int index)</code>
+            <p>Добавляет кнопку с меню в указанную позицию. Возвращает билдер для настройки</p>
+        </div>
+        
+        <div class="method-signature">
+            <code>IToolbarToggleButtonItemBuilder AddToggleButtonItem(string name, int index)</code>
+            <p>Добавляет переключатель в указанную позицию. Возвращает билдер для настройки</p>
+        </div>
+
+        <h3>Замена элементов</h3>
+        <div class="method-signature">
+            <code>IToolbarButtonItemBuilder ReplaceButtonItem(string name)</code>
+            <p>Заменяет существующую кнопку с указанным именем. Возвращает новый билдер</p>
+        </div>
+        
+        <div class="method-signature">
+            <code>IToolbarMenuButtonItemBuilder ReplaceMenuButtonItem(string name)</code>
+            <p>Заменяет существующую кнопку меню с указанным именем</p>
+        </div>
+        
+        <div class="method-signature">
+            <code>IToolbarToggleButtonItemBuilder ReplaceToggleButtonItem(string name)</code>
+            <p>Заменяет существующий переключатель с указанным именем</p>
+        </div>
+
+        <h3>Управление подменю</h3>
+        <div class="method-signature">
+            <code>void HandleMenuButtonItemSubmenu(string name, IToolbarItemSubmenuHandler handler)</code>
+            <p>Настраивает подменю для кнопки меню с указанным именем</p>
+        </div>
+
+        <h3>Удаление элементов</h3>
+        <div class="method-signature">
+            <code>void RemoveItem(string itemName)</code>
+            <p>Удаляет элемент с указанным именем из панели</p>
+        </div>
+
+        <h2>Свойства</h2>
+        <div class="method-signature">
+            <code>IEnumerable<string> ItemNames { get; }</code>
+            <p>Возвращает коллекцию имен всех элементов панели</p>
+        </div>
+        
+        <div class="method-signature">
+            <code>int Count { get; }</code>
+            <p>Возвращает количество элементов на панели</p>
+        </div>
+
+        <h2>Пример использования</h2>
+        <pre>
+<code>
+<span class="code-keyword">var</span> toolbarBuilder = ... ; <span class="code-comment">// Получение экземпляра билдера</span>
+
+<span class="code-comment">// Добавление простой кнопки</span>
+toolbarBuilder.AddButtonItem(<span class="code-string">"save_button"</span>, 0)
+    .SetText(<span class="code-string">"Сохранить"</span>)
+    .SetIcon(<span class="code-string">"save.png"</span>)
+    .SetCommand(() => SaveDocument());
+
+<span class="code-comment">// Добавление кнопки с меню</span>
+<span class="code-keyword">var</span> menuButton = toolbarBuilder.AddMenuButtonItem(<span class="code-string">"export_menu"</span>, 1);
+menuButton.SetText(<span class="code-string">"Экспорт"</span>);
+toolbarBuilder.HandleMenuButtonItemSubmenu(<span class="code-string">"export_menu"</span>, submenu => 
+{
+    submenu.AddItem(<span class="code-string">"pdf_export"</span>).SetText(<span class="code-string">"В PDF"</span>);
+    submenu.AddItem(<span class="code-string">"excel_export"</span>).SetText(<span class="code-string">"В Excel"</span>);
+});
+
+<span class="code-comment">// Удаление элемента</span>
+toolbarBuilder.RemoveItem(<span class="code-string">"old_button"</span>);
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важные замечания:</strong>
+            <ul>
+                <li>Индексы элементов начинаются с 0</li>
+                <li>Попытка замены/удаления несуществующего элемента может привести к ошибке</li>
+                <li>Имена элементов должны быть уникальными в пределах панели</li>
+                <li>Для вложенных элементов меню требуется отдельная настройка через <code>HandleMenuButtonItemSubmenu</code></li>
+            </ul>
+        </div>
+
+        <h2>Рекомендации</h2>
+        <ul>
+            <li>Используйте осмысленные имена элементов для упрощения поддержки</li>
+            <li>Группируйте связанные элементы через разделители для улучшения UX</li>
+            <li>Проверяйте существование элемента через <code>ItemNames</code> перед удалением/заменой</li>
+            <li>Для динамических панелей кэшируйте ссылки на билдеры элементов</li>
+        </ul>
+    </div>
+</body>
+</html>

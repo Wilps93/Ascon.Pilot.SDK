@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация ExpectedExtensionException</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .code-type {
+            color: #2b91af;
+        }
+
+        .important {
+            color: #dc3545;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс ExpectedExtensionException</h1>
+        
+        <h2>Описание</h2>
+        <p>Исключение, возникающее при ожидаемых ошибках, связанных с расширениями системы. Наследуется от <code>Exception</code> и поддерживает сериализацию для передачи между доменами приложений.</p>
+
+        <h2>Наследование</h2>
+        <pre>
+<code>
+<span class="code-type">System.Object</span>
+    <span class="code-type">System.Exception</span>
+        <span class="code-type">ExpectedExtensionException</span>
+</code>
+        </pre>
+
+        <h2>Конструкторы</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Конструктор</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>ExpectedExtensionException(string, string)</td>
+                    <td>Инициализирует исключение с указанием имени расширения и сообщения об ошибке</td>
+                </tr>
+                <tr>
+                    <td>ExpectedExtensionException(string, string, Exception)</td>
+                    <td>Инициализирует исключение с именем расширения, сообщением и внутренним исключением</td>
+                </tr>
+                <tr>
+                    <td>ExpectedExtensionException(SerializationInfo, StreamingContext)</td>
+                    <td>Конструктор для десериализации исключения</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Свойство</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>ExtensionName</td>
+                    <td>string</td>
+                    <td>Имя расширения, вызвавшего исключение</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Методы</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>GetObjectData(SerializationInfo, StreamingContext)</td>
+                    <td>Заполняет объект SerializationInfo данными для сериализации</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+
+        <h3>Генерация исключения</h3>
+        <pre>
+<code>
+<span class="code-keyword">try</span>
+{
+    <span class="code-comment">// Проверка наличия расширения</span>
+    <span class="code-keyword">if</span> (!CheckExtension(extensionName))
+    {
+        <span class="code-keyword">throw</span> <span class="code-keyword">new</span> ExpectedExtensionException(
+            extensionName,
+            $"Расширение {extensionName} не найдено"
+        );
+    }
+}
+<span class="code-keyword">catch</span> (ExpectedExtensionException ex)
+{
+    Logger.Log($"Ошибка расширения {ex.ExtensionName}: {ex.Message}");
+    <span class="code-comment">// Обработка ошибки</span>
+}
+</code>
+        </pre>
+
+        <h3>Обработка с внутренним исключением</h3>
+        <pre>
+<code>
+<span class="code-keyword">try</span>
+{
+    LoadExtension(extensionName);
+}
+<span class="code-keyword">catch</span> (Exception ex)
+{
+    <span class="code-keyword">throw</span> <span class="code-keyword">new</span> ExpectedExtensionException(
+        extensionName,
+        "Ошибка загрузки расширения",
+        ex
+    );
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Всегда проверяйте свойство <code>ExtensionName</code> при обработке исключения</li>
+                <li>Исключение поддерживает сериализацию - используйте <code>[Serializable]</code> при кастомной реализации</li>
+                <li>Для локализации сообщений используйте ресурсы вместо хардкода</li>
+            </ul>
+        </div>
+
+        <div class="note">
+            <strong>Особенности сериализации:</strong>
+            <ul>
+                <li>Метод <code>GetObjectData</code> требует разрешения <code>SecurityPermission</code></li>
+                <li>При десериализации имя расширения восстанавливается автоматически</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

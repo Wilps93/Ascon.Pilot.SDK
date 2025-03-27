@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация SystemAttributeNames SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .obsolete {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс SystemAttributeNames</h1>
+        
+        <h2>Описание</h2>
+        <p>Содержит предопределенные имена системных атрибутов для работы с объектами в Pilot.SDK. 
+        Каждый атрибут содержит уникальный идентификатор (GUID) для обеспечения целостности данных.</p>
+        
+        <div class="note">
+            <strong>Важно:</strong> Некоторые атрибуты помечены как устаревшие ([Obsolete]). 
+            Их использование в новом коде не рекомендуется.
+        </div>
+
+        <h2>Атрибуты</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Имя атрибута</th>
+                    <th>Описание</th>
+                    <th>Статус</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>DELETE_DATE</td>
+                    <td>Дата удаления объекта</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>DELETE_INITIATOR_PERSON</td>
+                    <td>Идентификатор пользователя, удалившего объект</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>DELETE_INITIATOR_POSITION</td>
+                    <td>Идентификатор должности пользователя, удалившего объект</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>SEARCH_CRITERIA</td>
+                    <td>Критерии поиска для умной папки</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>SMART_FOLDER_TITLE</td>
+                    <td>Название умной папки</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>SEARCH_CONTEXT_OBJECT_ID</td>
+                    <td>Идентификатор объекта-контекста для поиска</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>IS_HIDDEN</td>
+                    <td>Признак скрытого объекта в хранилище</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>PROJECT_ITEM_NAME</td>
+                    <td>Название файла/папки в хранилище</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>EXTENSION_FOLDER_NAME</td>
+                    <td>Название папки расширения</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>EXTENSION_NAME</td>
+                    <td>Название расширения</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>EXTENSION_ADDITIONAL</td>
+                    <td>Дополнительная информация о расширении</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>SHORTCUT_OBJECT_ID</td>
+                    <td>Идентификатор объекта, на который ссылается ярлык</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>REPORT_FOLDER_NAME</td>
+                    <td>Название папки отчета</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>REPORT_NAME</td>
+                    <td>Название отчета</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>REPORT_SOURCE_TYPES_NAMES</td>
+                    <td>Типы объектов, доступные как источники данных отчета</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>XTRA_REPORT_SOURCE_TYPES_NAMES</td>
+                    <td>Типы источников данных для Xtra-отчетов</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>CREATION_TIME</td>
+                    <td>Время создания объекта (только для внутреннего использования)</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>TASK_TEMPLATE_NAME</td>
+                    <td>Название шаблона задачи</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>TASK_TEMPLATE_VALUE</td>
+                    <td>Значение шаблона задачи</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>TASK_TEMPLATE_FOLDER_NAME</td>
+                    <td>Название папки шаблонов задач</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>TAGS</td>
+                    <td>Теги объекта</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>DELETE_SOURCE_PARENT</td>
+                    <td>Идентификатор родительского объекта до удаления</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>DEFAULT_PUBLISH_FILE_ID</td>
+                    <td>Идентификатор файла публикации по умолчанию</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>DOCUMENT_TEMPLATE_NAME</td>
+                    <td>Название шаблона документа</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>DOCUMENT_TEMPLATE_TYPE_ID</td>
+                    <td>Тип шаблона документа</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>DOCUMENT_TEMPLATE_FOLDER_NAME</td>
+                    <td>Название папки шаблонов документов</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>TASK_KIND</td>
+                    <td>Тип задачи (см. <code>TaskKind</code>)</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>PRELOAD_EXTENSION_FOLDER_NAME</td>
+                    <td>Название папки предзагрузки расширений</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>ALLOW_SIGNING_AT_NONE_STATE_NAME</td>
+                    <td>Разрешение подписи на неактивных этапах</td>
+                    <td></td>
+                </tr>
+                <tr class="obsolete">
+                    <td>TASK_EXECUTION_DEPARTMENT</td>
+                    <td>Отдел исполнителя задачи</td>
+                    <td>Устаревший</td>
+                </tr>
+                <tr class="obsolete">
+                    <td>TASK_IS_CHECKED_SIGN_ME_AS</td>
+                    <td>Состояние чекбокса "Подписать как"</td>
+                    <td>Устаревший</td>
+                </tr>
+                <tr class="obsolete">
+                    <td>TASK_SELECTED_ROLE</td>
+                    <td>Выбранная роль инициатора подписи</td>
+                    <td>Устаревший</td>
+                </tr>
+                <tr class="obsolete">
+                    <td>TASK_EXECUTOR_POSITION</td>
+                    <td>Должность исполнителя задачи</td>
+                    <td>Устаревший</td>
+                </tr>
+                <tr class="obsolete">
+                    <td>TASK_EXECUTOR_ROLE</td>
+                    <td>Роль исполнителя задачи</td>
+                    <td>Устаревший</td>
+                </tr>
+                <tr class="obsolete">
+                    <td>TASK_STATE</td>
+                    <td>Состояние задачи</td>
+                    <td>Устаревший</td>
+                </tr>
+                <tr class="obsolete">
+                    <td>TASK_DEADLINE_DATE</td>
+                    <td>Срок выполнения задачи</td>
+                    <td>Устаревший</td>
+                </tr>
+                <tr class="obsolete">
+                    <td>TASK_RELATIVE_DEADLINE</td>
+                    <td>Относительный срок задачи</td>
+                    <td>Устаревший</td>
+                </tr>
+                <tr class="obsolete">
+                    <td>TASK_WITH_VALIDATION_PHASE</td>
+                    <td>Признак задачи с этапом проверки</td>
+                    <td>Устаревший</td>
+                </tr>
+                <tr class="obsolete">
+                    <td>TASK_INITIATOR_POSITION</td>
+                    <td>Должность инициатора задачи</td>
+                    <td>Устаревший</td>
+                </tr>
+                <tr class="obsolete">
+                    <td>TASK_TITLE</td>
+                    <td>Заголовок задачи</td>
+                    <td>Устаревший</td>
+                </tr>
+                <tr class="obsolete">
+                    <td>TASK_DESCRIPTION</td>
+                    <td>Описание задачи</td>
+                    <td>Устаревший</td>
+                </tr>
+                <tr class="obsolete">
+                    <td>TASK_STAGE_ORDER</td>
+                    <td>Порядок этапов задачи</td>
+                    <td>Устаревший</td>
+                </tr>
+                <tr class="obsolete">
+                    <td>TASK_DATE_OF_ASSIGNMENT</td>
+                    <td>Дата назначения задачи</td>
+                    <td>Устаревший</td>
+                </tr>
+                <tr class="obsolete">
+                    <td>TASK_MESSAGE_TEXT_ATTRIBUTE_NAME</td>
+                    <td>Текст сообщения задачи</td>
+                    <td>Устаревший</td>
+                </tr>
+                <tr class="obsolete">
+                    <td>TASK_AGREEMENT</td>
+                    <td>Признак согласовательной задачи</td>
+                    <td>Устаревший</td>
+                </tr>
+                <tr class="obsolete">
+                    <td>TASK_AUDITORS</td>
+                    <td>Аудиторы задачи (не реализовано)</td>
+                    <td>Устаревший</td>
+                </tr>
+                <tr class="obsolete">
+                    <td>TASK_IS_VERSION</td>
+                    <td>Признак версионности задачи</td>
+                    <td>Устаревший</td>
+                </tr>
+                <tr class="obsolete">
+                    <td>TASK_DATE_OF_COMPLETION</td>
+                    <td>Дата завершения задачи</td>
+                    <td>Устаревший</td>
+                </tr>
+                <tr class="obsolete">
+                    <td>TASK_DATE_OF_START</td>
+                    <td>Дата начала задачи</td>
+                    <td>Устаревший</td>
+                </tr>
+                <tr class="obsolete">
+                    <td>TASK_DATE_OF_REVOKATION</td>
+                    <td>Дата отзыва задачи</td>
+                    <td>Устаревший</td>
+                </tr>
+                <tr class="obsolete">
+                    <td>TASK_STATE_IS_AUTO_SWITCHED</td>
+                    <td>Признак автоматического переключения состояния</td>
+                    <td>Устаревший</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Особенности</h2>
+        <ul>
+            <li>Имена атрибутов содержат уникальные GUID для предотвращения конфликтов</li>
+            <li>Атрибуты с постфиксом <code>_DEPRECATED</code> сохранены для обратной совместимости</li>
+            <li>Используйте <code>SystemAttributeNames</code> вместо строковых литералов для повышения type safety</li>
+        </ul>
+
+        <h2>Примеры использования</h2>
+        <pre>
+<code>
+<span class="code-comment">// Получение значения атрибута</span>
+<span class="code-keyword">string</span> deleteDate = object.Attributes[SystemAttributeNames.DELETE_DATE];
+
+<span class="code-comment">// Проверка устаревших атрибутов</span>
+<span class="code-keyword">if</span> (object.Attributes.ContainsKey(SystemAttributeNames.TASK_EXECUTION_DEPARTMENT))
+{
+    <span class="code-comment">// Обработка устаревшего атрибута</span>
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Избегайте использования устаревших атрибутов в новом коде</li>
+                <li>Для работы с задачами используйте новые API вместо атрибутов Task*</li>
+                <li>Проверяйте актуальность атрибутов в документации последней версии SDK</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

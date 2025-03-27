@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация TargetType SDK</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7;
+            margin: 2rem auto;
+            max-width: 1200px;
+            padding: 0 20px;
+            color: #2d3436;
+        }
+
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #4a69bd;
+            padding-bottom: 0.5rem;
+        }
+
+        h2 {
+            color: #34495e;
+            margin-top: 2rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        th {
+            background-color: #4a69bd;
+            color: white;
+            padding: 1rem;
+            text-align: left;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        pre {
+            background-color: #f1f1f1;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+
+        .code-keyword {
+            color: #4a69bd;
+            font-weight: bold;
+        }
+
+        .code-comment {
+            color: #7f8c8d;
+            font-style: italic;
+        }
+
+        .alert {
+            background-color: #fff5cc;
+            border-left: 4px solid #f3d250;
+            padding: 1rem;
+            margin: 2rem 0;
+            border-radius: 4px;
+        }
+
+        .alert strong {
+            color: #e67e22;
+        }
+
+        .example {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 4px;
+            margin: 1rem 0;
+        }
+
+        .example h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+
+        .example pre {
+            margin: 0.5rem 0;
+        }
+
+        @media (max-width: 768px) {
+            th, td {
+                padding: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Перечисление TargetType</h1>
+    
+    <section>
+        <h2>Общее описание</h2>
+        <p>
+            Перечисление <code>TargetType</code> определяет тип целевого объекта 
+            для операций автоматизации. Используется для:
+        </p>
+        <ul>
+            <li>Указания области применения автоматизированных действий</li>
+            <li>Настройки правил обработки связанных объектов</li>
+            <li>Определения контекста выполнения активностей</li>
+        </ul>
+        <p>Ключевой компонент для конфигурации целевых объектов в рабочих процессах.</p>
+    </section>
+
+    <section>
+        <h2>Значения перечисления</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Значение</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Self</td>
+                    <td>Целевой объект - текущий объект, вызвавший событие</td>
+                </tr>
+                <tr>
+                    <td>Relations</td>
+                    <td>Целевые объекты - связанные с текущим объекты (например, дочерние элементы)</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <h2>Примеры использования</h2>
+        
+        <div class="example">
+            <h3>Конфигурация активности</h3>
+            <pre>
+<code>
+<span class="code-keyword">var</span> activityConfig = <span class="code-keyword">new</span> Dictionary<<span class="code-keyword">string</span>, <span class="code-keyword">object</span>>
+{
+    { AutomationDefaults.Target, TargetType.Relations },
+    { AutomationDefaults.RelationType, ObjectRelationType.Child }
+};
+</code>
+            </pre>
+        </div>
+
+        <div class="example">
+            <h3>Проверка типа цели</h3>
+            <pre>
+<code>
+<span class="code-keyword">if</span> (activity.Target == TargetType.Self)
+{
+    ProcessCurrentObject(context.Source);
+}
+<span class="code-keyword">else</span>
+{
+    ProcessRelatedObjects(context.Source.GetRelations());
+}
+</code>
+            </pre>
+        </div>
+    </section>
+
+    <div class="alert">
+        <strong>Важно:</strong>
+        <ul>
+            <li>Значение <code>Relations</code> требует указания типа связи через <code>RelationType</code></li>
+            <li>Для <code>Self</code> не требуется дополнительных конфигураций связей</li>
+            <li>Используйте в сочетании с <code>IAutomationActivity.SourceTypes</code> для фильтрации</li>
+        </ul>
+    </div>
+</body>
+</html>

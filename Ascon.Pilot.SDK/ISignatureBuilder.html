@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация ISignatureBuilder SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background-color: #f8d7da;
+            border-left: 4px solid #f5c6cb;
+            padding: 10px;
+            margin: 20px 0;
+            color: #721c24;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс ISignatureBuilder</h1>
+        
+        <div class="warning">
+            <strong>Внимание!</strong> Создаваемый объект ISignature будет автоматически 
+            уничтожен через 2 минуты. Убедитесь, что все операции выполняются в этом временном промежутке.
+        </div>
+
+        <h2>Описание</h2>
+        <p>Строитель для создания новых цифровых подписей с использованием паттерна "Builder". 
+        Позволяет настраивать параметры подписи через цепочку методов.</p>
+
+        <h2>Методы</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Параметры</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>WithDatabaseId</td>
+                    <td>Guid databaseId</td>
+                    <td>Устанавливает идентификатор базы данных</td>
+                </tr>
+                <tr>
+                    <td>WithPositionId</td>
+                    <td>int positionId</td>
+                    <td>Устанавливает идентификатор позиции подписывающего лица</td>
+                </tr>
+                <tr>
+                    <td>WithRole</td>
+                    <td>string role</td>
+                    <td>Устанавливает роль подписывающего (например, "Администратор")</td>
+                </tr>
+                <tr>
+                    <td>WithSign</td>
+                    <td>string sign</td>
+                    <td>Устанавливает цифровую подпись в виде строки</td>
+                </tr>
+                <tr>
+                    <td>WithRequestSigner</td>
+                    <td>string requestSigner</td>
+                    <td>Устанавливает отображаемое имя запрошенного подписывающего</td>
+                </tr>
+                <tr>
+                    <td>WithIsAdditional</td>
+                    <td>bool value</td>
+                    <td>Устанавливает флаг виртуального запроса подписи</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Создание подписи через цепочку методов</h3>
+        <pre>
+<code>
+<span class="code-keyword">ISignature</span> signature = signatureBuilderFactory.Create()
+    .WithDatabaseId(Guid.NewGuid())
+    .WithPositionId(123)
+    .WithRole("Директор")
+    .WithSign("X509_SIGNATURE_DATA")
+    .WithRequestSigner("Иванов И.И.")
+    .WithIsAdditional(<span class="code-keyword">false</span>)
+    .Build();
+</code>
+        </pre>
+
+        <h3>Проверка обязательных параметров</h3>
+        <pre>
+<code>
+<span class="code-keyword">public</span> ISignature CreateValidSignature()
+{
+    <span class="code-keyword">var</span> builder = signatureBuilderFactory.Create();
+    
+    <span class="code-comment">// Обязательные поля</span>
+    builder.WithDatabaseId(Guid.NewGuid());
+    builder.WithSign("REQUIRED_SIGNATURE_DATA");
+    
+    <span class="code-comment">// Необязательные поля</span>
+    builder.WithRole("Менеджер");
+    
+    <span class="code-keyword">return</span> builder.Build();
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Всегда проверяйте наличие обязательных параметров (DatabaseId, Sign)</li>
+                <li>Используйте валидацию перед вызовом Build()</li>
+                <li>Обрабатывайте возможные исключения ObjectDisposedException при работе с результатом</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

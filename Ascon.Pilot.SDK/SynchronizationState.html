@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация SynchronizationState SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Перечисление SynchronizationState</h1>
+        
+        <h2>Описание</h2>
+        <p>Определяет состояние синхронизации измененного объекта данных с сервером.</p>
+        
+        <h2>Значения</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Состояние</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Synchronized</td>
+                    <td>Объект успешно синхронизирован с сервером</td>
+                </tr>
+                <tr>
+                    <td>AwaitingForSynchronization</td>
+                    <td>Объект ожидает отправки изменений на сервер</td>
+                </tr>
+                <tr>
+                    <td>SynchronizationAborted</td>
+                    <td>Синхронизация прервана из-за ошибки или отклонения сервером</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Жизненный цикл синхронизации</h2>
+        <pre>
+Создание/изменение → AwaitingForSynchronization → [Синхронизация] → Synchronized
+                          ↑                               ↓
+                          └─── SynchronizationAborted ←─ Error
+        </pre>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Проверка состояния</h3>
+        <pre>
+<code>
+<span class="code-keyword">SynchronizationState</span> state = GetSyncState();
+<span class="code-keyword">switch</span> (state)
+{
+    <span class="code-keyword">case</span> SynchronizationState.Synchronized:
+        Console.WriteLine("Данные актуальны");
+        break;
+    <span class="code-keyword">case</span> SynchronizationState.AwaitingForSynchronization:
+        TrySyncAgain();
+        break;
+    <span class="code-keyword">case</span> SynchronizationState.SynchronizationAborted:
+        HandleSyncError();
+        break;
+}
+</code>
+        </pre>
+
+        <h3>Обработка ошибок синхронизации</h3>
+        <pre>
+<code>
+<span class="code-keyword">if</span> (objectState == SynchronizationState.SynchronizationAborted)
+{
+    <span class="code-comment">// Логирование ошибки и уведомление пользователя</span>
+    ShowError("Синхронизация прервана. Проверьте данные и повторите попытку.");
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Перечисление не поддерживает комбинации флагов - каждая операция имеет строго одно состояние</li>
+                <li>Состояние <code>SynchronizationAborted</code> требует обязательного вмешательства пользователя/разработчика</li>
+                <li>После исправления данных объект автоматически возвращается в состояние <code>AwaitingForSynchronization</code></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

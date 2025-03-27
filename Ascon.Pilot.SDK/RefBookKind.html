@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация перечисления RefBookKind</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 2rem;
+            color: #2d3436;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        pre {
+            background-color: #2d3436;
+            color: #ffffff;
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .code-keyword {
+            color: #55efc4;
+        }
+
+        .code-comment {
+            color: #81ecec;
+        }
+
+        .note {
+            background-color: #fff1e6;
+            border-left: 4px solid #ff9900;
+            padding: 1rem;
+            margin: 2rem 0;
+            border-radius: 3px;
+        }
+
+        .scenario-table {
+            background-color: #f8f9fa;
+            margin: 2rem 0;
+            padding: 1rem;
+            border-radius: 5px;
+        }
+
+        .scenario-table th:first-child {
+            width: 25%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Перечисление RefBookKind</h1>
+        
+        <h2>Описание</h2>
+        <p>Определяет тип источника данных для справочников в системе. 
+           Контролирует, каким образом заполняются значения в справочнике.</p>
+
+        <h2>Значения перечисления</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Значение</th>
+                    <th>Описание</th>
+                    <th>Источник данных</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Enum</td>
+                    <td>Статический справочник с фиксированным набором значений</td>
+                    <td>Предопределенный список констант</td>
+                </tr>
+                <tr>
+                    <td>Object</td>
+                    <td>Динамический справочник, связанный с объектами системы</td>
+                    <td>Дочерние объекты указанного родителя</td>
+                </tr>
+                <tr>
+                    <td>OrgUnit</td>
+                    <td>Справочник организационной структуры</td>
+                    <td>Элементы из иерархии организации (подразделения, должности)</td>
+                </tr>
+                <tr>
+                    <td>Type</td>
+                    <td>Справочник типов объектов</td>
+                    <td>Метаданные системы (типы документов, классы объектов)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Сценарии использования</h2>
+        <table class="scenario-table">
+            <tr>
+                <th>Сценарий</th>
+                <th>Рекомендуемый тип</th>
+            </tr>
+            <tr>
+                <td>Страны/валюты/статусы</td>
+                <td>Enum</td>
+            </tr>
+            <tr>
+                <td>Дерево объектов проекта</td>
+                <td>Object</td>
+            </tr>
+            <tr>
+                <td>Подразделения компании</td>
+                <td>OrgUnit</td>
+            </tr>
+            <tr>
+                <td>Типы документов в системе</td>
+                <td>Type</td>
+            </tr>
+        </table>
+
+        <h2>Примеры настройки</h2>
+        
+        <h3>Создание справочника типа Enum</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> statusRefBook = <span class="code-keyword">new</span> ReferenceBookConfig
+{
+    Kind = RefBookKind.Enum,
+    Values = <span class="code-keyword">new</span>[] { <span class="code-string">"New"</span>, <span class="code-string">"In Progress"</span>, <span class="code-string">"Completed"</span> }
+};
+</code>
+        </pre>
+
+        <h3>Связь с организационной структурой</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> departmentRefBook = <span class="code-keyword">new</span> ReferenceBookConfig
+{
+    Kind = RefBookKind.OrgUnit,
+    Source = OrganisationUnitKind.Department
+};
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Тип <code>Object</code> требует указания родительского объекта</li>
+                <li><code>OrgUnit</code> зависит от текущей организационной структуры</li>
+                <li>Изменения в <code>Type</code> отражаются на всей системе</li>
+            </ul>
+        </div>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Для <code>Enum</code> используйте не более 50 значений</li>
+                <li>Тип <code>Type</code> подходит для системных настроек</li>
+                <li>Для <code>OrgUnit</code> настройте фильтры доступа</li>
+            </ul>
+        </div>
+
+        <h2>Связанные компоненты</h2>
+        <ul>
+            <li><a href="RefBookEditorType.html">Перечисление RefBookEditorType</a></li>
+            <li><a href="IReferenceBook.html">Интерфейс IReferenceBook</a></li>
+            <li><a href="OrganisationUnitExtensions.html">Класс OrganisationUnitExtensions</a></li>
+        </ul>
+    </div>
+</body>
+</html>

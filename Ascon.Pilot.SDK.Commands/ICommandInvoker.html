@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация интерфейса ICommandInvoker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс ICommandInvoker</h1>
+        
+        <h2>Описание</h2>
+        <p>Предоставляет механизм вызова зарегистрированных команд и получения списка доступных операций. 
+        Является связующим звеном между клиентским кодом и обработчиками команд (<code>ICommandHandler</code>).</p>
+        
+        <h2>Методы интерфейса</h2>
+        
+        <h3>1. Получение доступных команд</h3>
+        <pre><code>IEnumerable<CommandDescription> GetAvailableCommands()</code></pre>
+        <p>Возвращает коллекцию описаний всех зарегистрированных команд. Каждый элемент содержит:</p>
+        <ul>
+            <li><code>CommandId</code> - Уникальный идентификатор команды</li>
+            <li><code>Description</code> - Человекочитаемое описание команды</li>
+        </ul>
+
+        <h3>2. Вызов команды</h3>
+        <pre><code>byte[] Invoke(Guid commandId, byte[] args)</code></pre>
+        <p>Выполняет команду по её идентификатору. Принимает и возвращает данные в виде бинарного массива.</p>
+        <p>Порядок работы:</p>
+        <ol>
+            <li>Поиск зарегистрированного обработчика по <code>commandId</code></li>
+            <li>Вызов метода <code>Handle()</code> соответствующего обработчика</li>
+            <li>Возврат результата выполнения</li>
+        </ol>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Получение списка команд</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> commands = commandInvoker.GetAvailableCommands();
+<span class="code-keyword">foreach</span> (var cmd <span class="code-keyword">in</span> commands)
+{
+    Console.WriteLine($"[{cmd.CommandId}] {cmd.Description}");
+}
+</code>
+        </pre>
+
+        <h3>Выполнение команды</h3>
+        <pre>
+<code>
+<span class="code-keyword">try</span>
+{
+    <span class="code-keyword">var</span> commandId = <span class="code-keyword">new</span> Guid("A1B2C3D4-E5F6-7890-GHIJ-KLMNOPQRSTUV");
+    <span class="code-keyword">byte</span>[] args = SerializeParameters(myData);
+    <span class="code-keyword">byte</span>[] result = commandInvoker.Invoke(commandId, args);
+    
+    <span class="code-comment">// Обработка результата</span>
+    ProcessResult(result);
+}
+<span class="code-keyword">catch</span> (InvalidOperationException ex)
+{
+    <span class="code-comment">// Обработка ошибки: команда не найдена</span>
+    Console.WriteLine($"Ошибка: {ex.Message}");
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong> Метод Invoke выбрасывает исключение <code>InvalidOperationException</code>,
+            если команда с указанным <code>commandId</code> не зарегистрирована.
+        </div>
+
+        <h2>Рекомендации</h2>
+        <ul>
+            <li>Используйте <code>GetAvailableCommands()</code> для динамического обнаружения команд</li>
+            <li>Реализуйте собственную сериализацию/десериализацию аргументов</li>
+            <li>Добавляйте обработку исключений при вызове команд</li>
+            <li>Для асинхронных операций используйте обертки с async/await</li>
+        </ul>
+    </div>
+</body>
+</html>

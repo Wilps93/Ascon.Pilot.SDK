@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация интерфейса IToolbarItemSubmenuHandler</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .method-signature {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IToolbarItemSubmenuHandler</h1>
+        
+        <h2>Описание</h2>
+        <p>Предоставляет механизм для динамического построения подменю элементов панели инструментов. Используется совместно с <code>IToolbarBuilder</code> для создания вложенных структур меню.</p>
+
+        <h2>Метод</h2>
+        <div class="method-signature">
+            <code>void OnSubmenuRequested(IToolbarBuilder builder)</code>
+            <p>Вызывается при запросе отображения подменю. Позволяет настроить содержимое меню через переданный билдер.</p>
+            <ul>
+                <li><strong>builder</strong> - Экземпляр <code>IToolbarBuilder</code> для построения подменю</li>
+            </ul>
+        </div>
+
+        <h2>Пример использования</h2>
+        <pre>
+<code>
+<span class="code-comment">// Реализация обработчика подменю</span>
+<span class="code-keyword">public class</span> DynamicSubMenuHandler : IToolbarItemSubmenuHandler
+{
+    <span class="code-keyword">public void</span> OnSubmenuRequested(IToolbarBuilder builder)
+    {
+        builder.AddButtonItem(<span class="code-string">"dynamic_item_1"</span>, 0)
+            .WithHeader(<span class="code-string">"Динамический элемент 1"</span>)
+            .WithIcon(LoadIcon(<span class="code-string">"icon1.svg"</span>));
+
+        builder.AddSeparator(1);
+
+        builder.AddToggleButtonItem(<span class="code-string">"dynamic_toggle"</span>, 2)
+            .WithHeader(<span class="code-string">"Переключатель"</span>)
+            .WithIsEnabled(<span class="code-keyword">true</span>);
+    }
+}
+
+<span class="code-comment">// Регистрация обработчика в панели инструментов</span>
+toolbarBuilder.HandleMenuButtonItemSubmenu(
+    <span class="code-string">"main_menu"</span>, 
+    <span class="code-keyword">new</span> DynamicSubMenuHandler()
+);
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важные замечания:</strong>
+            <ul>
+                <li>Метод вызывается каждый раз при открытии подменю, что позволяет реализовать динамическое обновление содержимого</li>
+                <li>Для статических меню рекомендуется кэшировать элементы</li>
+                <li>Изменения, внесенные через билдер, применяются только к текущему экземпляру подменю</li>
+                <li>Порядок добавления элементов определяет их расположение в меню</li>
+            </ul>
+        </div>
+
+        <h2>Связь с IToolbarBuilder</h2>
+        <p>Используется в методе:</p>
+        <div class="method-signature">
+            <code>void HandleMenuButtonItemSubmenu(string name, IToolbarItemSubmenuHandler handler)</code>
+        </div>
+        <p>Пример интеграции:</p>
+        <pre>
+<code>
+toolbarBuilder.HandleMenuButtonItemSubmenu(
+    <span class="code-string">"export_menu"</span>, 
+    <span class="code-keyword">new</span> ExportMenuHandler()
+);
+</code>
+        </pre>
+
+        <h2>Рекомендации</h2>
+        <ul>
+            <li>Для часто используемых подменю реализуйте кэширование элементов</li>
+            <li>Используйте разделители для визуальной группировки элементов</li>
+            <li>Добавляйте проверки прав доступа внутри обработчика</li>
+            <li>Для асинхронной загрузки данных используйте паттерн async/await</li>
+        </ul>
+    </div>
+</body>
+</html>

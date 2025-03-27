@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация класса Int32To64Field</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7;
+            color: #2d3436;
+            margin: 2rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #4a69bd;
+            padding-bottom: 0.5rem;
+        }
+
+        h2 {
+            color: #34495e;
+            margin-top: 2rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin: 1.5rem 0;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f0f3f5;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 1.2rem;
+            border-radius: 4px;
+            overflow-x: auto;
+            border: 1px solid #e1e1e1;
+        }
+
+        .code-keyword {
+            color: #3498db;
+        }
+
+        .code-comment {
+            color: #7f8c8d;
+        }
+
+        .note {
+            background-color: #fff9e6;
+            border: 1px solid #ffe58c;
+            border-left: 4px solid #ffd700;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        .prefix-example {
+            color: #e67e22;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс Int32To64Field</h1>
+        
+        <h2>Общее описание</h2>
+        <p>Внутренний класс для работы с 32-битными целочисленными полями, 
+        преобразованными для хранения в 64-битном формате. Добавляет специальный 
+        префикс к значениям для корректной обработки в поисковых запросах.</p>
+
+        <h3>Иерархия наследования</h3>
+        <ul>
+            <li><code>FieldBase</code></li>
+            <li>→ <code>Int32Field</code></li>
+            <li>→ <code>Int32To64Field</code></li>
+        </ul>
+
+        <h2>Конструктор</h2>
+        <pre>
+<code>
+<span class="code-keyword">internal</span> Int32To64Field(<span class="code-keyword">string</span> fieldName)
+</code>
+        </pre>
+        <p>Инициализирует экземпляр с экранированным именем поля.</p>
+        <p><strong>Особенности:</strong> Доступен только внутри текущей сборки.</p>
+
+        <h2>Методы</h2>
+        
+        <h3>WithPrefix (переопределенный)</h3>
+        <pre>
+<code>
+<span class="code-keyword">protected override</span> <span class="code-keyword">string</span> WithPrefix(<span class="code-keyword">int</span> value)
+</code>
+        </pre>
+        <p>Формирует строковое представление числа с префиксом для поискового индекса.</p>
+        <p><strong>Преобразование:</strong> <code>123 → "&#64;123"</code></p>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Преобразование значения</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> field = <span class="code-keyword">new</span> Int32To64Field("numeric_field");
+<span class="code-keyword">string</span> result = field.WithPrefix(456);
+<span class="code-comment">// Результат: "&#64;456"</span>
+</code>
+        </pre>
+
+        <h3>Интеграция с поисковыми терминами</h3>
+        <pre>
+<code>
+ISearchTerm term = field.Be(789);
+<span class="code-comment">// Генерирует термин: "numeric_field":"&#64;789"</span>
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Класс предназначен для внутреннего использования в SDK</li>
+                <li>Префикс "&#64;" обеспечивает корректную обработку 32-битных чисел в 64-битных индексах</li>
+                <li>Для внешних запросов используйте публичные классы вроде <code>Int32Field</code></li>
+            </ul>
+        </div>
+
+        <h2>Особенности</h2>
+        <ul>
+            <li>Автоматическое добавление специального префикса к числовым значениям</li>
+            <li>Наследует базовую функциональность от <code>Int32Field</code></li>
+            <li>Обеспечивает совместимость с 64-битными хранилищами данных</li>
+        </ul>
+    </div>
+</body>
+</html>

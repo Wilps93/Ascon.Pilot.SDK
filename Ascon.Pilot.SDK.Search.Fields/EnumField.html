@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация класса EnumField<T></title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7;
+            color: #2d3436;
+            margin: 2rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #4a69bd;
+            padding-bottom: 0.5rem;
+        }
+
+        h2 {
+            color: #34495e;
+            margin-top: 2rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin: 1.5rem 0;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f0f3f5;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 1.2rem;
+            border-radius: 4px;
+            overflow-x: auto;
+            border: 1px solid #e1e1e1;
+        }
+
+        .code-keyword {
+            color: #3498db;
+        }
+
+        .code-comment {
+            color: #7f8c8d;
+        }
+
+        .note {
+            background-color: #fff9e6;
+            border: 1px solid #ffe58c;
+            border-left: 4px solid #ffd700;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        .flag-combination {
+            font-weight: bold;
+            color: #4a69bd;
+        }
+
+        .access-level-description {
+            margin-top: 0.5rem;
+            display: block;
+            font-size: 0.9em;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс EnumField<T></h1>
+        
+        <h2>Общее описание</h2>
+        <p>Абстрактный класс для работы с полями перечислений в поисковых запросах. 
+        Реализует базовую функциональность для точного совпадения, проверки существования 
+        и поиска по нескольким значениям перечислений.</p>
+        
+        <h3>Иерархия наследования</h3>
+        <ul>
+            <li><code>FieldBase</code></li>
+            <li>→ <code>EnumField<T></code></li>
+        </ul>
+
+        <h2>Конструктор</h2>
+        <pre>
+<code>
+<span class="code-keyword">protected</span> EnumField(<span class="code-keyword">string</span> fieldName)
+</code>
+        </pre>
+        <p>Инициализирует новый экземпляр класса с указанным именем поля.</p>
+
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Название</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>FieldName</td>
+                    <td>string</td>
+                    <td>Возвращает имя связанного поля в индексе</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Методы</h2>
+        
+        <h3>Be(T value)</h3>
+        <pre>
+<code>
+<span class="code-keyword">public</span> ISearchTerm Be(T value)
+</code>
+        </pre>
+        <p>Создает условие точного совпадения значения перечисления.</p>
+        <p><strong>Возвращает:</strong> Поисковый термин для точного совпадения</p>
+
+        <h3>Exists()</h3>
+        <pre>
+<code>
+<span class="code-keyword">public</span> ISearchTerm Exists()
+</code>
+        </pre>
+        <p>Проверяет наличие поля в документе.</p>
+        <p><strong>Возвращает:</strong> Поисковый термин для проверки существования</p>
+
+        <h3>BeAnyOf(params T[] values)</h3>
+        <pre>
+<code>
+<span class="code-keyword">public</span> ISearchTerm BeAnyOf(<span class="code-keyword">params</span> T[] values)
+</code>
+        </pre>
+        <p>Создает условие для поиска по нескольким значениям перечисления.</p>
+        <p><strong>Возвращает:</strong> Поисковый термин для множественного выбора</p>
+
+        <h3>WithPrefix(T value)</h3>
+        <pre>
+<code>
+<span class="code-keyword">protected abstract</span> <span class="code-keyword">string</span> WithPrefix(T value)
+</code>
+        </pre>
+        <p>Абстрактный метод для преобразования значения перечисления в формат индекса 
+        (например, добавление префиксов). Должен быть реализован в наследниках.</p>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Точное совпадение</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> statusField = <span class="code-keyword">new</span> StatusEnumField("status");
+ISearchTerm term = statusField.Be(Status.Completed);
+</code>
+        </pre>
+
+        <h3>Проверка существования</h3>
+        <pre>
+<code>
+ISearchTerm existsTerm = statusField.Exists();
+</code>
+        </pre>
+
+        <h3>Поиск по нескольким значениям</h3>
+        <pre>
+<code>
+ISearchTerm anyOfTerm = statusField.BeAnyOf(Status.New, Status.InProgress);
+</code>
+        </pre>
+
+        <h3>Реализация WithPrefix</h3>
+        <pre>
+<code>
+<span class="code-keyword">protected override</span> <span class="code-keyword">string</span> WithPrefix(Status value)
+{
+    <span class="code-keyword">return</span> $"status_{value}";
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong> Класс является абстрактным - для использования 
+            необходимо создать наследника и реализовать метод <code>WithPrefix()</code>. 
+            Этот метод отвечает за преобразование значений перечисления в формат, 
+            используемый в индексе поисковой системы.
+        </div>
+
+        <h2>Особенности</h2>
+        <ul>
+            <li>Поддерживает работу с любыми типами перечислений (enum)</li>
+            <li>Реализует паттерн построения поисковых запросов через fluent-интерфейс</li>
+            <li>Методы возвращают объекты <code>ISearchTerm</code> для комбинирования условий</li>
+        </ul>
+    </div>
+</body>
+</html>

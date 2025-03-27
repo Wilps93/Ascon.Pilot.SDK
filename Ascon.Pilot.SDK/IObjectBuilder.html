@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация интерфейса IObjectBuilder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .deprecated {
+            text-decoration: line-through;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IObjectBuilder</h1>
+        
+        <h2>Назначение</h2>
+        <p>Флюент-интерфейс для модификации объектов системы. Позволяет выполнять цепочки операций с поддержкой строгой типизации.</p>
+
+        <h2>Основные возможности</h2>
+        <ul>
+            <li>Управление атрибутами объекта</li>
+            <li>Работа с файлами и версиями</li>
+            <li>Настройка прав доступа</li>
+            <li>Управление подписками и состоянием объекта</li>
+        </ul>
+
+        <h2>Методы</h2>
+
+        <h3>1. Управление атрибутами</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Параметры</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>SetAttribute</td>
+                    <td>name (string), value (T)</td>
+                    <td>Устанавливает атрибут указанного типа (string, int, double, DateTime, decimal, long, Guid, int[])</td>
+                </tr>
+                <tr>
+                    <td>RemoveAttribute</td>
+                    <td>name (string)</td>
+                    <td>Удаляет атрибут по имени</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>2. Работа с файлами</h3>
+        <table>
+            <tbody>
+                <tr>
+                    <td>AddFile</td>
+                    <td>path (string) / stream (Stream)</td>
+                    <td>Добавляет файл из пути или потока с метаданными</td>
+                </tr>
+                <tr>
+                    <td>CreateFileSnapshot</td>
+                    <td>reason (string)</td>
+                    <td>Создает снимок файлов объекта</td>
+                </tr>
+                <tr>
+                    <td>MakeSnapshotActual</td>
+                    <td>reason (string), snapshot (IFilesSnapshot)</td>
+                    <td>Актуализирует версию файлов</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>3. Права доступа</h3>
+        <table>
+            <tbody>
+                <tr>
+                    <td>SetAccessRights</td>
+                    <td>positionId, level, validThrough, isInheritable</td>
+                    <td>Назначает права доступа для должности</td>
+                </tr>
+                <tr>
+                    <td>RemoveAccessRights</td>
+                    <td>positionId</td>
+                    <td>Удаляет права доступа</td>
+                </tr>
+                <tr>
+                    <td>MakeSecret/MakePublic</td>
+                    <td>-</td>
+                    <td>Изменяет уровень конфиденциальности</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>4. Управление состоянием</h3>
+        <table>
+            <tbody>
+                <tr>
+                    <td>SetIsDeleted</td>
+                    <td>isDeleted (bool)</td>
+                    <td>Помечает объект как удаленный</td>
+                </tr>
+                <tr>
+                    <td>SetParent</td>
+                    <td>parentId (Guid)</td>
+                    <td>Изменяет родительский объект</td>
+                </tr>
+                <tr>
+                    <td>Lock/Unlock</td>
+                    <td>-</td>
+                    <td>Блокировка/разблокировка файлов</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>5. Подписки</h3>
+        <table>
+            <tbody>
+                <tr>
+                    <td>AddSubscriber</td>
+                    <td>personId (int)</td>
+                    <td>Добавляет подписчика на изменения</td>
+                </tr>
+                <tr>
+                    <td>RemoveSubscriber</td>
+                    <td>personId (int)</td>
+                    <td>Удаляет подписчика</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Пример использования</h2>
+        <pre>
+<code>
+<span class="code-keyword">var</span> builder = object.GetBuilder();
+builder
+    .SetAttribute("Name", "Новый объект")
+    .SetAttribute("Price", 150.50m)
+    .AddFile("C:\\file.txt")
+    .SetAccessRights(123, AccessLevel.Edit, DateTime.Now.AddYears(1), true)
+    .SaveHistoryItem();
+
+<span class="code-keyword">var</span> modifiedObject = builder.DataObject;
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Методы возвращают <code>IObjectBuilder</code> для цепных вызовов</li>
+                <li>Изменения применяются к объекту только после вызова <code>DataObject</code></li>
+                <li>Методы с пометкой <span class="deprecated">Obsolete</span> будут удалены в будущих версиях</li>
+            </ul>
+        </div>
+
+        <div class="note" style="background-color: #ffebee; border-color: #ffcdd2;">
+            <strong>Предупреждение:</strong>
+            <ul>
+                <li>Метод <code>SetType</code> следует использовать только для восстановления удаленных объектов</li>
+                <li>При работе с файлами всегда проверяйте права доступа</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

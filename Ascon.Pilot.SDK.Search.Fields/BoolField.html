@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация BoolField</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Абстрактный класс BoolField</h1>
+        
+        <h2>Описание</h2>
+        <p>Базовый класс для работы с булевыми полями в поисковых запросах. Является частью системы типизированных полей для формирования условий поиска.</p>
+
+        <h2>Наследование</h2>
+        <ul>
+            <li>System.Object</li>
+            <li>FieldBase</li>
+            <li>BoolField</li>
+            <ul>
+                <li>BoolAsInt32Field</li>
+                <li>BoolAsInt64Field</li>
+                <li>BoolAsStringAttributeField</li>
+            </ul>
+        </ul>
+
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Имя</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>FieldName</td>
+                    <td>string</td>
+                    <td>Имя связанного поля в данных</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Методы</h2>
+        
+        <h3>Be(bool value)</h3>
+        <pre>
+<code>
+<span class="code-keyword">public abstract</span> ISearchTerm Be(bool value)
+</code>
+        </pre>
+        <p>Создает условие точного совпадения булева значения. Реализация зависит от наследника.</p>
+
+        <h3>Exists()</h3>
+        <pre>
+<code>
+<span class="code-keyword">public</span> ISearchTerm Exists()
+</code>
+        </pre>
+        <p>Проверяет наличие поля в данных. Возвращает <code>ExistsTerm</code>.</p>
+
+        <h2>Особенности</h2>
+        <ul>
+            <li>Абстрактный класс - требует реализации метода <code>Be()</code></li>
+            <li>Используется для типобезопасного построения условий</li>
+            <li>Поддерживает три представления булевых значений: строковое, 32-битное и 64-битное целое</li>
+        </ul>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Проверка существования поля</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> field = <span class="code-keyword">new</span> BoolAsStringAttributeField("IsActive");
+ISearchTerm existsTerm = field.Exists();
+</code>
+        </pre>
+
+        <h3>Создание условия через наследника</h3>
+        <pre>
+<code>
+<span class="code-comment">// Для числового представления</span>
+<span class="code-keyword">var</span> intField = <span class="code-keyword">new</span> BoolAsInt32Field("IsPublished");
+ISearchTerm term = intField.Be(true);
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong> Непосредственное создание экземпляров 
+            <code>BoolField</code> невозможно. Используйте специализированные 
+            наследники для конкретных типов данных.
+        </div>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Для строковых значений используйте <code>BoolAsStringAttributeField</code></li>
+                <li>Для числовых значений выбирайте между <code>BoolAsInt32Field</code> и <code>BoolAsInt64Field</code></li>
+                <li>Проверяйте поддержку типов данных в вашей СУБД</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

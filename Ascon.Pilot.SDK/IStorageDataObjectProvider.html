@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация IStorageDataObjectProvider SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background-color: #f8d7da;
+            border-left: 4px solid #f5c6cb;
+            padding: 10px;
+            margin: 20px 0;
+            color: #721c24;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IStorageDataObjectProvider</h1>
+        
+        <h2>Описание</h2>
+        <p>Предоставляет методы для получения информации о хранилище Pilot-Storage и его объектах. 
+        Позволяет работать с путями файловой системы хранилища и получать метаданные объектов.</p>
+
+        <h2>Методы</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Параметры</th>
+                    <th>Возвращает</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>GetStoragePath()</td>
+                    <td>-</td>
+                    <td>string</td>
+                    <td>Возвращает корневой путь Pilot-Storage</td>
+                </tr>
+                <tr>
+                    <td>GetStoragePath(Guid objId)</td>
+                    <td>Guid objId</td>
+                    <td>string</td>
+                    <td>Возвращает путь объекта по его идентификатору. 
+                        Возвращает null, если объект не найден</td>
+                </tr>
+                <tr>
+                    <td>GetStorageItem</td>
+                    <td>string absolutePath</td>
+                    <td>IStorageDataObject</td>
+                    <td>Возвращает объект хранилища по абсолютному пути. 
+                        Возвращает null для несуществующих путей</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Получение корневого пути</h3>
+        <pre>
+<code>
+<span class="code-keyword">string</span> rootPath = storageProvider.GetStoragePath();
+Console.WriteLine($"Корень хранилища: {rootPath}");
+</code>
+        </pre>
+
+        <h3>Поиск объекта по ID</h3>
+        <pre>
+<code>
+<span class="code-keyword">Guid</span> objectId = ...; <span class="code-comment">// Идентификатор нужного объекта</span>
+<span class="code-keyword">string</span> objectPath = storageProvider.GetStoragePath(objectId);
+
+<span class="code-keyword">if</span> (objectPath != <span class="code-keyword">null</span>)
+{
+    <span class="code-comment">// Обработка существующего объекта</span>
+    ProcessPath(objectPath);
+}
+</code>
+        </pre>
+
+        <h3>Получение объекта по пути</h3>
+        <pre>
+<code>
+<span class="code-keyword">string</span> path = @"\projects\document.docx";
+IStorageDataObject storageItem = storageProvider.GetStorageItem(path);
+
+<span class="code-keyword">if</span> (storageItem != <span class="code-keyword">null</span>)
+{
+    Console.WriteLine($"Тип объекта: {storageItem.IsDirectory}");
+    <span class="code-comment">// Работа с DataObject</span>
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Всегда проверяйте возвращаемые значения на null</li>
+                <li>Для работы с IStorageDataObject используйте безопасное копирование свойств</li>
+                <li>Пути в Pilot-Storage используют формат "\\папка\\подпапка\\файл"</li>
+            </ul>
+        </div>
+
+        <div class="warning">
+            <strong>Важно:</strong> Объекты IStorageDataObject, возвращаемые GetStorageItem(),
+            автоматически уничтожаются через 2 минуты. Не сохраняйте ссылки на них!
+        </div>
+    </div>
+</body>
+</html>

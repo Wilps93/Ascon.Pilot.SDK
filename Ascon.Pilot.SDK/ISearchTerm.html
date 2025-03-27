@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация ISearchTerm</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс ISearchTerm</h1>
+        
+        <h2>Описание</h2>
+        <p>Представляет поисковый термин, преобразуемый в формат Lucene. Используется для построения условий в поисковых запросах через <code>IQueryBuilder</code>.</p>
+
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Свойство</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>FieldName</td>
+                    <td>string</td>
+                    <td>Имя поля, для которого создан термин (например: "Name", "CreatedDate")</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Методы</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Возвращаемый тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>ToLuceneString</td>
+                    <td>string</td>
+                    <td>Преобразует термин в строку, совместимую с синтаксисом Lucene</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Создание простого термина</h3>
+        <pre>
+<code>
+<span class="code-comment">// Создание термина для поиска по имени объекта</span>
+ISearchTerm term = ObjectFields.Name.Be("Договор*");
+Console.WriteLine(term.ToLuceneString()); <span class="code-comment">// Выведет: "Name:Договор*"</span>
+</code>
+        </pre>
+
+        <h3>Использование в поисковом запросе</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> query = searchService.GetObjectQueryBuilder()
+    .Must(ObjectFields.Description.Contain("важный"))
+    .MustNot(ObjectFields.Status.Be("Удален"));
+
+<span class="code-keyword">var</span> results = searchService.Search(query).Subscribe(result => 
+{
+    <span class="code-comment">// Обработка результатов</span>
+});
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Термины создаются через статические методы классов <code>ObjectFields</code>, <code>TaskFields</code> и др.</li>
+                <li>Символы Lucene (<code>*</code>, <code>?</code>, <code>+</code>) требуют экранирования при ручном использовании</li>
+                <li><code>ToLuceneString</code> не включает операторы логики (AND/OR) - они формируются в <code>IQueryBuilder</code></li>
+                <li>Для полнотекстового поиска используйте <code>ObjectFields.AllText</code></li>
+            </ul>
+        </div>
+
+        <h2>Рекомендации</h2>
+        <ul>
+            <li>Используйте <code>Be()</code>, <code>Contain()</code> и другие методы из <code>ObjectFields</code> для создания терминов</li>
+            <li>Проверяйте корректность <code>FieldName</code> через отладчик перед выполнением запроса</li>
+            <li>Для сложных условий комбинируйте термины через <code>IQueryBuilder.Must()</code>/<code>MustAnyOf()</code></li>
+            <li>Тестируйте <code>ToLuceneString()</code> для понимания генерируемого синтаксиса</li>
+            <li>Избегайте ручного создания терминов - используйте встроенные билдеры</li>
+        </ul>
+    </div>
+</body>
+</html>

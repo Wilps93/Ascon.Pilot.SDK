@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация TasksViewContext SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .obsolete {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс TasksViewContext <span class="obsolete">[Устаревший]</span></h1>
+        
+        <div class="note">
+            <strong>Важно:</strong> 
+            <ul>
+                <li>Класс помечен как устаревший - рекомендуется использовать <code>TasksViewContext2</code></li>
+                <li>Наследуется от <code>MarshalByRefObject</code> для поддержки удаленных вызовов</li>
+                <li>Свойство <code>SelectedTasks</code> доступно только для чтения после инициализации</li>
+            </ul>
+        </div>
+
+        <h2>Описание</h2>
+        <p>Контекст для работы с представлением задач. Содержит коллекцию выбранных задач и методы доступа к их идентификаторам.</p>
+
+        <h2>Конструктор</h2>
+        <pre>
+<code>
+<span class="code-keyword">public</span> TasksViewContext(IEnumerable<ITaskObject> selectedTasks)
+</code>
+        </pre>
+        <p>Инициализирует контекст с выбранными задачами.</p>
+        <table>
+            <tr>
+                <th>Параметр</th>
+                <th>Тип</th>
+                <th>Описание</th>
+            </tr>
+            <tr>
+                <td>selectedTasks</td>
+                <td>IEnumerable<ITaskObject></td>
+                <td>Коллекция выбранных задач для контекста</td>
+            </tr>
+        </table>
+
+        <h2>Свойства</h2>
+        <table>
+            <tr>
+                <th>Свойство</th>
+                <th>Тип</th>
+                <th>Доступ</th>
+                <th>Описание</th>
+            </tr>
+            <tr>
+                <td>SelectedTasks</td>
+                <td>IEnumerable<ITaskObject></td>
+                <td>Только чтение</td>
+                <td>Коллекция задач, переданных в конструкторе</td>
+            </tr>
+        </table>
+
+        <h2>Методы</h2>
+        <h3>GetSelectedTaskIds()</h3>
+        <pre>
+<code>
+<span class="code-keyword">public</span> IEnumerable<Guid> GetSelectedTaskIds()
+</code>
+        </pre>
+        <p>Возвращает список идентификаторов выбранных задач.</p>
+        <ul>
+            <li>Создает новый список при каждом вызове</li>
+            <li>Итерирует коллекцию <code>SelectedTasks</code></li>
+            <li>Бросает <code>ArgumentNullException</code> при обращении к null-коллекции</li>
+        </ul>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Создание контекста</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> tasks = GetSelectedTasks();
+<span class="code-keyword">var</span> context = new TasksViewContext(tasks);
+
+<span class="code-comment">// Получение идентификаторов задач</span>
+foreach (var taskId <span class="code-keyword">in</span> context.GetSelectedTaskIds())
+{
+    ProcessTask(taskId);
+}
+</code>
+        </pre>
+
+        <h3>Обработка коллекции задач</h3>
+        <pre>
+<code>
+<span class="code-keyword">foreach</span> (var task <span class="code-keyword">in</span> context.SelectedTasks)
+{
+    <span class="code-keyword">if</span> (task.State == State.Completed)
+    {
+        ArchiveTask(task.Id);
+    }
+}
+</code>
+        </pre>
+
+        <div class="note warning">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Используйте <code>TasksViewContext2</code> в новых проектах</li>
+                <li>Проверяйте коллекцию на null перед использованием</li>
+                <li>Для массовых операций кэшируйте результат <code>GetSelectedTaskIds()</code></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

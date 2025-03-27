@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация DataState</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .code-type {
+            color: #2b91af;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Перечисление DataState</h1>
+        
+        <h2>Описание</h2>
+        <p>Определяет состояние загрузки данных объекта в системе. Используется для отслеживания текущего статуса объекта в процессе работы с данными.</p>
+
+        <h2>Значения</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Значение</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Unknown</td>
+                    <td>Начальное состояние. Информация о загрузке не определена</td>
+                </tr>
+                <tr>
+                    <td>NoData</td>
+                    <td>Объект не был закэширован и в данный момент загружается с сервера</td>
+                </tr>
+                <tr>
+                    <td>Loaded</td>
+                    <td>Объект успешно загружен и доступен для работы</td>
+                </tr>
+                <tr>
+                    <td>NonExistent</td>
+                    <td>Объект отсутствует на сервере (удален или не существовал)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Проверка состояния объекта</h3>
+        <pre>
+<code>
+<span class="code-type">DataState</span> state = GetDataState();
+<span class="code-keyword">switch</span> (state)
+{
+    <span class="code-keyword">case</span> DataState.Unknown:
+        Console.WriteLine("Состояние не определено");
+        <span class="code-keyword">break</span>;
+    <span class="code-keyword">case</span> DataState.NoData:
+        ShowLoadingIndicator();
+        <span class="code-keyword">break</span>;
+    <span class="code-keyword">case</span> DataState.Loaded:
+        ProcessData();
+        <span class="code-keyword">break</span>;
+    <span class="code-keyword">case</span> DataState.NonExistent:
+        ShowNotFoundError();
+        <span class="code-keyword">break</span>;
+}
+</code>
+        </pre>
+
+        <h3>Обработка отсутствующего объекта</h3>
+        <pre>
+<code>
+<span class="code-keyword">if</span> (dataObject.State == DataState.NonExistent)
+{
+    <span class="code-comment">// Логика для несуществующего объекта</span>
+    Logger.Warn("Попытка доступа к несуществующему объекту");
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Состояние NoData требует повторной попытки загрузки или отображения индикатора прогресса</li>
+                <li>NonExistent не всегда означает ошибку - может указывать на корректное удаление объекта</li>
+                <li>Используйте проверку состояния перед выполнением операций с объектом</li>
+            </ul>
+        </div>
+
+        <h2>Связь с системой</h2>
+        <p>Интегрирован с:</p>
+        <ul>
+            <li>Механизмами кэширования данных</li>
+            <li>Системой асинхронной загрузки объектов</li>
+            <li>Обработчиками ошибок и валидации</li>
+            <li>Интерфейсными компонентами для отображения состояния</li>
+        </ul>
+    </div>
+</body>
+</html>

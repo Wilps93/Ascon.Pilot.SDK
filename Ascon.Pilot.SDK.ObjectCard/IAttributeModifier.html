@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация IAttributeModifier</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IAttributeModifier</h1>
+        
+        <h2>Описание</h2>
+        <p>Интерфейс для модификации атрибутов объектной карточки. Предоставляет набор методов для установки значений различных типов.</p>
+
+        <h2>Методы</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>SetValue(string name, string value)</td>
+                    <td>Устанавливает строковое значение атрибута</td>
+                </tr>
+                <tr>
+                    <td>SetValue(string name, long value)</td>
+                    <td>Устанавливает целочисленное значение (64-bit)</td>
+                </tr>
+                <tr>
+                    <td>SetValue(string name, double value)</td>
+                    <td>Устанавливает значение с плавающей точкой</td>
+                </tr>
+                <tr>
+                    <td>SetValue(string name, DateTime value)</td>
+                    <td>Устанавливает дату/время</td>
+                </tr>
+                <tr>
+                    <td>SetValue(string name, decimal value)</td>
+                    <td>Устанавливает десятичное значение</td>
+                </tr>
+                <tr>
+                    <td>SetValue(string name, Guid value)</td>
+                    <td>Устанавливает уникальный идентификатор</td>
+                </tr>
+                <tr>
+                    <td>SetValue(string name, int[] value)</td>
+                    <td>Устанавливает массив целых чисел (32-bit)</td>
+                </tr>
+                <tr>
+                    <td>SetValue(string name, Guid[] value)</td>
+                    <td>Устанавливает массив уникальных идентификаторов</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Особенности</h2>
+        <ul>
+            <li>Поддерживает строгую типизацию для различных типов данных</li>
+            <li>Работает с простыми типами и массивами</li>
+            <li>Позволяет модифицировать атрибуты в объектной карточке</li>
+        </ul>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Установка простых типов</h3>
+        <pre>
+<code>
+<span class="code-keyword">public void</span> ModifyAttributes(IAttributeModifier modifier)
+{
+    modifier.SetValue("Name", "Новое название");
+    modifier.SetValue("Quantity", 100L);
+    modifier.SetValue("Price", 99.95m);
+    modifier.SetValue("ReleaseDate", DateTime.Now);
+    modifier.SetValue("UniqueId", Guid.NewGuid());
+}
+</code>
+        </pre>
+
+        <h3>Работа с массивами</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> ids = <span class="code-keyword">new</span> Guid[] 
+{ 
+    Guid.NewGuid(), 
+    Guid.NewGuid() 
+};
+
+modifier.SetValue("RelatedIds", ids);
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong> В оригинальных комментариях к методам 
+            для массивов (int[] и Guid[]) указано описание "New decimal value". 
+            Это техническая опечатка, реальные типы соответствуют сигнатуре метода.
+        </div>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Проверяйте типы данных перед установкой значений</li>
+                <li>Для массивов используйте только одномерные массивы</li>
+                <li>Убедитесь в корректности имен атрибутов</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

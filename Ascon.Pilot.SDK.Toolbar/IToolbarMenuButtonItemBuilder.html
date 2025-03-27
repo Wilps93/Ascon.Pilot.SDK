@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация интерфейса IToolbarMenuButtonItemBuilder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .method-signature {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IToolbarMenuButtonItemBuilder</h1>
+        
+        <h2>Описание</h2>
+        <p>Представляет кнопку с выпадающим меню на панели инструментов. Наследует функционал базового билдера кнопок и добавляет возможность настройки подменю.</p>
+
+        <h2>Наследование</h2>
+        <div class="method-signature">
+            <code>public interface IToolbarMenuButtonItemBuilder : IToolbarButtonItemBuilder</code>
+        </div>
+        <p>Наследует все методы из <code>IToolbarButtonItemBuilder</code> для базовой конфигурации кнопки.</p>
+
+        <h2>Методы</h2>
+        
+        <div class="method-signature">
+            <code>IToolbarMenuButtonItemBuilder WithMenu(IToolbarItemSubmenuHandler handler)</code>
+            <p>Задает обработчик для построения выпадающего меню</p>
+            <ul>
+                <li><strong>handler</strong> - Объект для динамического формирования подменю</li>
+                <li>Возвращает текущий экземпляр билдера для цепочки вызовов</li>
+            </ul>
+        </div>
+
+        <h2>Пример использования</h2>
+        <pre>
+<code>
+<span class="code-comment">// Создание кнопки меню с динамическим подменю</span>
+toolbarBuilder.AddMenuButtonItem(<span class="code-string">"settings_menu"</span>, 0)
+    .WithHeader(<span class="code-string">"Настройки"</span>)
+    .WithIcon(File.ReadAllBytes(<span class="code-string">"settings.svg"</span>))
+    .WithMenu(<span class="code-keyword">new</span> SettingsSubMenuHandler());
+
+<span class="code-comment">// Реализация обработчика подменю</span>
+<span class="code-keyword">public class</span> SettingsSubMenuHandler : IToolbarItemSubmenuHandler
+{
+    <span class="code-keyword">public void</span> OnSubmenuRequested(IToolbarBuilder builder)
+    {
+        builder.AddButtonItem(<span class="code-string">"user_settings"</span>, 0)
+            .WithHeader(<span class="code-string">"Пользователь"</span>)
+            .WithIcon(LoadIcon(<span class="code-string">"user.svg"</span>));
+
+        builder.AddButtonItem(<span class="code-string">"system_settings"</span>, 1)
+            .WithHeader(<span class="code-string">"Система"</span>)
+            .WithIcon(LoadIcon(<span class="code-string">"system.svg"</span>));
+    }
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важные замечания:</strong>
+            <ul>
+                <li>Выпадающее меню строится динамически при каждом открытии</li>
+                <li>Обработчик подменю может использовать любые методы <code>IToolbarBuilder</code></li>
+                <li>Кнопка сохраняет все свойства базового билдера (заголовок, иконка и т.д.)</li>
+                <li>Для статических меню рекомендуется кэшировать элементы в обработчике</li>
+            </ul>
+        </div>
+
+        <h2>Связь с IToolbarButtonItemBuilder</h2>
+        <p>Наследует все методы базового билдера:</p>
+        <ul>
+            <li>WithHeader()</li>
+            <li>WithIcon()</li>
+            <li>WithIsEnabled()</li>
+            <li>WithShowHeader()</li>
+            <li>WithHint()</li>
+        </ul>
+
+        <h2>Рекомендации</h2>
+        <ul>
+            <li>Группируйте связанные функции в подменю для улучшения UX</li>
+            <li>Используйте вложенные разделители для сложных меню</li>
+            <li>Добавляйте иконки для всех элементов подменю</li>
+            <li>Проверяйте права доступа в обработчике подменю</li>
+        </ul>
+    </div>
+</body>
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация TaskFields SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .obsolete {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс TaskFields <span class="obsolete">[Устаревший]</span></h1>
+        
+        <div class="note">
+            <strong>Важно:</strong> Этот класс помечен как устаревший. 
+            Рекомендуется использовать обновленные API для работы с задачами.
+        </div>
+
+        <h2>Описание</h2>
+        <p>Статический класс для создания условий поиска задач через интерфейс <code>ISearchQueryBuilder</code>. 
+        Содержит предопределенные поля для фильтрации и поиска объектов типа "Задача".</p>
+        
+        <h2>Поля</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Свойство</th>
+                    <th>Тип поля</th>
+                    <th>Идентификатор</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Id</td>
+                    <td>GuidField</td>
+                    <td>"DObject.Id"</td>
+                    <td>Уникальный идентификатор задачи</td>
+                </tr>
+                <tr>
+                    <td>InitiatorPositionId</td>
+                    <td>Int32Field</td>
+                    <td>"Initiator CEA10431..."</td>
+                    <td>Идентификатор должности инициатора</td>
+                </tr>
+                <tr>
+                    <td>ExecutorPositionId</td>
+                    <td>Int32Field</td>
+                    <td>"Executor 7620B1D4..."</td>
+                    <td>Идентификатор должности исполнителя</td>
+                </tr>
+                <tr>
+                    <td>CreatedDate</td>
+                    <td>DateTimeField</td>
+                    <td>"DObject.Created"</td>
+                    <td>Дата создания задачи</td>
+                </tr>
+                <tr>
+                    <td>State</td>
+                    <td>EnumField<State></td>
+                    <td>"TaskState B65D6C5B..."</td>
+                    <td>Состояние задачи (см. <code>State</code> перечисление)</td>
+                </tr>
+                <tr>
+                    <td>Title</td>
+                    <td>StringField</td>
+                    <td>"Title 578C65E3..."</td>
+                    <td>Заголовок задачи</td>
+                </tr>
+                <tr>
+                    <td>Description</td>
+                    <td>StringField</td>
+                    <td>"Description 6589B3AC..."</td>
+                    <td>Описание задачи</td>
+                </tr>
+                <tr>
+                    <td>DeadlineDate</td>
+                    <td>DateTimeField</td>
+                    <td>"TaskDeadlineDate DE08B9D6..."</td>
+                    <td>Срок выполнения задачи</td>
+                </tr>
+                <tr>
+                    <td>DateOfAssignment</td>
+                    <td>DateTimeField</td>
+                    <td>"DateOfAssignment B8A06EEF..."</td>
+                    <td>Дата назначения задачи</td>
+                </tr>
+                <tr>
+                    <td>DateOfCompletion</td>
+                    <td>DateTimeField</td>
+                    <td>"DateOfCompletion_C8FEC8EC..."</td>
+                    <td>Дата завершения задачи</td>
+                </tr>
+                <tr>
+                    <td>DateOfStart</td>
+                    <td>DateTimeField</td>
+                    <td>"DateOfStart_697B8750..."</td>
+                    <td>Дата начала выполнения</td>
+                </tr>
+                <tr>
+                    <td>AllText</td>
+                    <td>StringField</td>
+                    <td>"DObject.AllText"</td>
+                    <td>Полнотекстовый поиск по задаче</td>
+                </tr>
+                <tr>
+                    <td>TaskIsVersion</td>
+                    <td>BoolField</td>
+                    <td>"TaskIsVersion_EECBDB6A..."</td>
+                    <td>Признак версионности задачи</td>
+                </tr>
+                <tr>
+                    <td>Kind</td>
+                    <td>EnumField<TaskKind></td>
+                    <td>"TaskKind_A87C8C5E..."</td>
+                    <td>Тип задачи (см. <code>TaskKind</code>)</td>
+                </tr>
+                <tr>
+                    <td>Tag</td>
+                    <td>StringField</td>
+                    <td>"Tags_BCA19031..."</td>
+                    <td>Теги задачи</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Особенности</h2>
+        <ul>
+            <li>Использует <code>Int32To64Field</code> для преобразования 32-битных идентификаторов в 64-битные</li>
+            <li>Поля <code>State</code> и <code>Kind</code> работают с перечислениями через <code>EnumAsInt64Field</code></li>
+            <li>Содержит ссылки на устаревшие атрибуты из <code>SystemAttributeNames</code></li>
+        </ul>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Поиск задач по статусу</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> query = SearchQueryBuilder.Create()
+    .Where(TaskFields.State.EqualTo(State.Completed))
+    .Execute();
+</code>
+        </pre>
+
+        <h3>Фильтрация по дате дедлайна</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> overdueTasks = SearchQueryBuilder.Create()
+    .Where(TaskFields.DeadlineDate.LessThan(DateTime.Now))
+    .ToList();
+</code>
+        </pre>
+
+        <div class="note warning">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Избегайте использования в новых проектах - класс устарел</li>
+                <li>Для полнотекстового поиска используйте <code>AllText.Contains("текст")</code></li>
+                <li>Проверяйте актуальность перечислений <code>State</code> и <code>TaskKind</code></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

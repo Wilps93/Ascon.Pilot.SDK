@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация интерфейса IMenuHost</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .param-table {
+            margin-top: 10px;
+        }
+
+        .param-table td {
+            padding: 8px;
+            vertical-align: top;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IMenuHost</h1>
+        
+        <h2>Описание</h2>
+        <p>Предоставляет функционал для управления элементами главного меню или контекстного меню приложения. 
+        Позволяет добавлять новые пункты, подпункты, разделители и получать информацию о существующих элементах.</p>
+
+        <h2>Методы</h2>
+
+        <h3>1. GetItems</h3>
+        <p>Возвращает список элементов меню</p>
+        <table class="param-table">
+            <tr>
+                <td><strong>Параметры</strong></td>
+                <td>
+                    parentName (string) - Имя родительского пункта. Если null, возвращаются корневые элементы
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Возвращает</strong></td>
+                <td>IEnumerable<string> - Коллекция имен элементов</td>
+            </tr>
+        </table>
+
+        <h3>2. AddItem</h3>
+        <p>Добавляет новый пункт меню</p>
+        <table class="param-table">
+            <tr>
+                <td><strong>Параметры</strong></td>
+                <td>
+                    <ul>
+                        <li>name (string) - Внутреннее имя пункта</li>
+                        <li>displayName (string) - Отображаемое название</li>
+                        <li>icon (byte[]) - Иконка в формате SVG или PNG</li>
+                        <li>index (int) - Позиция в меню</li>
+                        <li>isEnabled (bool) - Состояние доступности (для перегрузки)</li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+
+        <h3>3. AddSubItem</h3>
+        <p>Добавляет вложенный пункт меню</p>
+        <table class="param-table">
+            <tr>
+                <td><strong>Параметры</strong></td>
+                <td>
+                    <ul>
+                        <li>parentName (string) - Имя родительского пункта</li>
+                        <li>name (string) - Внутреннее имя подпункта</li>
+                        <li>displayName (string) - Отображаемое название</li>
+                        <li>icon (byte[]) - Иконка</li>
+                        <li>index (int) - Позиция</li>
+                        <li>isEnabled (bool) - Состояние доступности (для перегрузки)</li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+
+        <h3>4. AddSeparator</h3>
+        <p>Добавляет разделитель в меню</p>
+        <table class="param-table">
+            <tr>
+                <td><strong>Параметры</strong></td>
+                <td>index (int) - Позиция разделителя</td>
+            </tr>
+        </table>
+
+        <h2>Примеры использования</h2>
+
+        <h3>Добавление пункта меню</h3>
+        <pre>
+<code>
+menuHost.AddItem(
+    name: "custom_item",
+    displayName: "Мой пункт",
+    icon: File.ReadAllBytes("icon.svg"),
+    index: 0,
+    isEnabled: true
+);
+</code>
+        </pre>
+
+        <h3>Добавление вложенного пункта</h3>
+        <pre>
+<code>
+menuHost.AddSubItem(
+    parentName: "existing_item",
+    name: "sub_item",
+    displayName: "Подпункт",
+    icon: null,
+    index: 1,
+    isEnabled: false
+);
+</code>
+        </pre>
+
+        <h3>Добавление разделителя</h3>
+        <pre>
+<code>
+menuHost.AddSeparator(index: 2);
+</code>
+        </pre>
+
+        <h2>Важные особенности</h2>
+        <ul>
+            <li>Иконки для объектных меню должны быть в формате SVG</li>
+            <li>Для pilot-storage требуется PNG-иконка</li>
+            <li>Индексы определяют порядок элементов (начинаются с 0)</li>
+            <li>Попытка добавить подпункт несуществующему родителю вызовет ошибку</li>
+        </ul>
+
+        <div class="note">
+            <strong>Примечание:</strong> Для корректной работы с иконками 
+            убедитесь, что изображения имеют правильный формат и размеры, 
+            рекомендованные в руководстве по стилю приложения
+        </div>
+    </div>
+</body>
+</html>

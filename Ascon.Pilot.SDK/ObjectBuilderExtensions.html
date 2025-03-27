@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация ObjectBuilderExtensions SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .code-string {
+            color: #a31515;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс ObjectBuilderExtensions</h1>
+        
+        <h2>Описание</h2>
+        <p>
+            Статический класс, расширяющий функциональность <code>IObjectBuilder</code> 
+            методами для управления файлами объектов.
+        </p>
+
+        <h2>Методы</h2>
+        <h3>RemoveFile</h3>
+        <p>Удаляет файл из текущего снимка объекта по его идентификатору.</p>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Параметр</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>objectBuilder</td>
+                    <td>IObjectBuilder</td>
+                    <td>Билдер объекта, с которым выполняется операция</td>
+                </tr>
+                <tr>
+                    <td>fileId</td>
+                    <td>Guid</td>
+                    <td>Уникальный идентификатор удаляемого файла</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Возвращаемое значение</h3>
+        <p>
+            Возвращает модифицированный экземпляр <code>IObjectBuilder</code>, 
+            позволяя использовать метод в цепочке вызовов (fluent interface).
+        </p>
+
+        <h2>Пример использования</h2>
+        <pre>
+<code>
+<span class="code-keyword">public</span> <span class="code-keyword">void</span> RemoveFileExample(IObjectBuilder builder, Guid fileId)
+{
+    <span class="code-comment">// Удаление файла и сохранение изменений</span>
+    builder
+        .RemoveFile(fileId)
+        .SaveChanges(); <span class="code-comment">// Важно сохранить изменения!</span>
+}
+</code>
+        </pre>
+
+        <h2>Важные замечания</h2>
+        <div class="note">
+            <ul>
+                <li>Метод модифицирует текущий снимок объекта, но не сохраняет изменения в базе данных</li>
+                <li>Необходимо вызывать <code>SaveChanges()</code> после операции для сохранения результатов</li>
+                <li>Если файл с указанным <code>fileId</code> не существует, метод не генерирует исключение</li>
+            </ul>
+        </div>
+
+        <h2>Рекомендации</h2>
+        <ul>
+            <li>Проверяйте наличие файла в объекте перед удалением через <code>builder.Files.Contains(fileId)</code></li>
+            <li>Используйте блок try-catch при работе с критически важными данными</li>
+        </ul>
+    </div>
+</body>
+</html>

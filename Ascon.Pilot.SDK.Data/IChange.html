@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация интерфейса IChange</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IChange</h1>
+        
+        <h2>Назначение</h2>
+        <p>Представляет информацию об изменении объекта данных. Используется для отслеживания состояний объекта до и после модификации, а также связи с историей изменений.</p>
+        
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Имя</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Old</td>
+                    <td>IDataObject</td>
+                    <td>Состояние объекта до изменения</td>
+                </tr>
+                <tr>
+                    <td>New</td>
+                    <td>IDataObject</td>
+                    <td>Состояние объекта после изменения</td>
+                </tr>
+                <tr>
+                    <td>HistoryItemId</td>
+                    <td>Guid</td>
+                    <td>Идентификатор записи в истории изменений</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Пример реализации</h2>
+        <pre>
+<code>
+<span class="code-keyword">public class</span> DataChange : IChange
+{
+    <span class="code-keyword">public</span> IDataObject Old { get; }
+    <span class="code-keyword">public</span> IDataObject New { get; }
+    <span class="code-keyword">public</span> Guid HistoryItemId { get; }
+
+    <span class="code-keyword">public</span> DataChange(IDataObject oldState, IDataObject newState, Guid historyId)
+    {
+        Old = oldState;
+        New = newState;
+        HistoryItemId = historyId;
+    }
+}
+</code>
+        </pre>
+
+        <h2>Пример использования</h2>
+        <pre>
+<code>
+<span class="code-keyword">void</span> ProcessChange(IChange change)
+{
+    Console.WriteLine($"Изменение #{change.HistoryItemId}:");
+    
+    <span class="code-comment">// Сравнение состояний</span>
+    <span class="code-keyword">foreach</span> (var property <span class="code-keyword">in</span> change.Old.Properties)
+    {
+        <span class="code-keyword">var</span> oldValue = change.Old[property];
+        <span class="code-keyword">var</span> newValue = change.New[property];
+        
+        <span class="code-keyword">if</span> (!oldValue.Equals(newValue))
+        {
+            Console.WriteLine($"  {property}: {oldValue} → {newValue}");
+        }
+    }
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong> Для корректной работы необходимо:
+            <ul>
+                <li>Гарантировать неизменяемость объектов Old и New после создания</li>
+                <li>Убедиться в наличии валидного Guid в HistoryItemId</li>
+                <li>Обрабатывать возможные null-значения в Old (для новых объектов)</li>
+            </ul>
+        </div>
+
+        <h2>Типовые сценарии</h2>
+        <ul>
+            <li>Аудит изменений данных</li>
+            <li>Откат к предыдущим версиям объектов</li>
+            <li>Синхронизация данных между системами</li>
+            <li>Логирование изменений для отчетности</li>
+        </ul>
+    </div>
+</body>
+</html>

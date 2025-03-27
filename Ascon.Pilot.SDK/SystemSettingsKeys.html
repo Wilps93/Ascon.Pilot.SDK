@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация SystemSettingsKeys SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .warning {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс SystemSettingsKeys</h1>
+        
+        <h2>Описание</h2>
+        <p>Статический класс, содержащий предопределенные ключи системных настроек Pilot.SDK. 
+        Каждый ключ представляет собой строку в формате <code>"Название-GUID"</code> для уникальной идентификации функциональных настроек.</p>
+        
+        <div class="note">
+            <strong>Важно:</strong> Все ключи доступны только для чтения и не должны изменяться вручную.
+        </div>
+
+        <h2>Ключи настроек</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Свойство</th>
+                    <th>Значение (ключ)</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>FavoritesFeatureKey</td>
+                    <td>"Favorites-880e609e-54f9-4463-9c5e-f2b742a944dc"</td>
+                    <td>Ключ для функции избранных элементов</td>
+                </tr>
+                <tr>
+                    <td>PilotStorageDriveLetter</td>
+                    <td>"PilotStorageDriveLetter-880e609e..."</td>
+                    <td>Буква диска для Pilot Storage</td>
+                </tr>
+                <tr>
+                    <td>AgreementRolesFeatureKey</td>
+                    <td>"AgreementRoles-0a782ccd..."</td>
+                    <td>Ключ для настройки ролей согласования</td>
+                </tr>
+                <tr>
+                    <td>AnnotationStatusesFeatureKey</td>
+                    <td>"AnnotationStatuses-BFCDFFBC..."</td>
+                    <td>Статусы аннотаций</td>
+                </tr>
+                <tr>
+                    <td>TasksFiltersFeatureKey</td>
+                    <td>"TasksFilters-deab09c1..."</td>
+                    <td>Фильтры задач</td>
+                </tr>
+                <tr>
+                    <td>MountedItemsList</td>
+                    <td>"MountedItems-29eff31a..."</td>
+                    <td>Список подключенных элементов</td>
+                </tr>
+                <tr>
+                    <td>WorkfoldersList</td>
+                    <td>"Workfolders-C4A424C8..."</td>
+                    <td>Рабочие папки Pilot-Storage</td>
+                </tr>
+                <tr>
+                    <td>TabsState</td>
+                    <td>"TabsState-9b9e6a36..."</td>
+                    <td>Состояние вкладок DocumentsExplorer</td>
+                </tr>
+                <tr>
+                    <td>AutoBlockingFileExtensionsFeatureKey</td>
+                    <td>"AutoBlockingFileExtensions-1bb027f4..."</td>
+                    <td>Автоблокировка расширений файлов</td>
+                </tr>
+                <tr>
+                    <td>AutoCommitingFileExtensionsFeatureKey</td>
+                    <td>"AutoCommitingFileExtensions-2d0de5a1..."</td>
+                    <td>Автокоммит изменений файлов</td>
+                </tr>
+                <tr>
+                    <td>AutoUpdatingFilesFeatureKey</td>
+                    <td>"AutoUpdatingFileExtensions-6FB5DE6C..."</td>
+                    <td>Автообновление файлов</td>
+                </tr>
+                <tr>
+                    <td>AutoPublishingExtensionsFeatureKey</td>
+                    <td>"AutoPublishingExtensions-F6FF1869..."</td>
+                    <td>Автопубликация расширений</td>
+                </tr>
+                <tr>
+                    <td>EmlAttributesDictionaryKeyFeatureKey</td>
+                    <td>"EmlAttributesDictionary-354AB75D..."</td>
+                    <td>Словарь атрибутов EML-файлов</td>
+                </tr>
+                <tr>
+                    <td>DocsAutoFillFeatureKey</td>
+                    <td>"DocsAutoFillFeatureKey-d19b557b..."</td>
+                    <td>Автозаполнение документов</td>
+                </tr>
+                <tr>
+                    <td>TempFileMasksFeatureKey</td>
+                    <td>"TempFileMasksFeatureKey-388BD8A4..."</td>
+                    <td>Маски временных файлов</td>
+                </tr>
+                <tr>
+                    <td>ExportImportFeatureKey</td>
+                    <td>"ExportImportFeatureKey-4697EA6F..."</td>
+                    <td>Настройки экспорта/импорта</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Особенности</h2>
+        <ul>
+            <li>Формат ключей: <code>"Название-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"</code></li>
+            <li>Ключи используются для доступа к настройкам через API конфигурации</li>
+            <li>GUID обеспечивают уникальность и предотвращают конфликты имен</li>
+        </ul>
+
+        <h2>Пример использования</h2>
+        <pre>
+<code>
+<span class="code-comment">// Получение ключа настроек</span>
+<span class="code-keyword">string</span> autoPublishKey = SystemSettingsKeys.AutoPublishingExtensionsFeatureKey;
+
+<span class="code-comment">// Использование ключа для доступа к конфигурации</span>
+<span class="code-keyword">var</span> settings = ConfigurationManager.GetSetting(autoPublishKey);
+</code>
+        </pre>
+
+        <div class="note warning">
+            <strong>Предупреждения:</strong>
+            <ul>
+                <li>В ключе <code>AutoCommitingFileExtensionsFeatureKey</code> присутствует лишний пробел в начале значения</li>
+                <li>Название <code>AgreementRolesFeatureKey</code> повторяется с разными GUID - требует уточнения</li>
+                <li>Избегайте прямого редактирования значений - используйте API конфигурации</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

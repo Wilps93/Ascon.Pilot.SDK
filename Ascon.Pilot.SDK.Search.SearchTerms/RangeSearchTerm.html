@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация класса RangeSearchTerm</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7;
+            color: #2d3436;
+            margin: 2rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #4a69bd;
+            padding-bottom: 0.5rem;
+        }
+
+        h2 {
+            color: #34495e;
+            margin-top: 2rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin: 1.5rem 0;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f0f3f5;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 1.2rem;
+            border-radius: 4px;
+            overflow-x: auto;
+            border: 1px solid #e1e1e1;
+        }
+
+        .code-keyword {
+            color: #3498db;
+        }
+
+        .code-comment {
+            color: #7f8c8d;
+        }
+
+        .note {
+            background-color: #fff9e6;
+            border: 1px solid #ffe58c;
+            border-left: 4px solid #ffd700;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        .lucene-query {
+            color: #27ae60;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс RangeSearchTerm</h1>
+        
+        <h2>Общее описание</h2>
+        <p>Внутренний класс для создания поисковых условий по диапазону значений. 
+        Генерирует Lucene-запросы с включением границ диапазона (от <strong>from</strong> до <strong>to</strong>).</p>
+
+        <h3>Иерархия наследования</h3>
+        <ul>
+            <li><code>MarshalByRefObject</code></li>
+            <li>→ <code>RangeSearchTerm</code> (реализует <code>ISearchTerm</code>)</li>
+        </ul>
+
+        <h2>Конструктор</h2>
+        <pre>
+<code>
+<span class="code-keyword">internal</span> RangeSearchTerm(<span class="code-keyword">string</span> fieldName, <span class="code-keyword">string</span> from, <span class="code-keyword">string</span> to)
+</code>
+        </pre>
+        <p>Инициализирует условие поиска по диапазону.</p>
+        <p><strong>Параметры:</strong></p>
+        <ul>
+            <li><code>fieldName</code> - Имя индексированного поля</li>
+            <li><code>from</code> - Начальное значение диапазона (включительно)</li>
+            <li><code>to</code> - Конечное значение диапазона (включительно)</li>
+        </ul>
+
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Название</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>FieldName</td>
+                    <td>string</td>
+                    <td>Возвращает имя связанного поля</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Методы</h2>
+        
+        <h3>ToLuceneString()</h3>
+        <pre>
+<code>
+<span class="code-keyword">string</span> ISearchTerm.ToLuceneString()
+</code>
+        </pre>
+        <p>Генерирует Lucene-запрос для поиска в диапазоне.</p>
+        <p><strong>Формат запроса:</strong> <span class="lucene-query">"fieldName:[from TO to]"</span></p>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Поиск по числовому диапазону</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> term = <span class="code-keyword">new</span> RangeSearchTerm("year", "2010", "2020");
+<span class="code-keyword">string</span> query = term.ToLuceneString();
+<span class="code-comment">// Результат: "year:[2010 TO 2020]"</span>
+</code>
+        </pre>
+
+        <h3>Поиск по датам</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> dateTerm = <span class="code-keyword">new</span> RangeSearchTerm("created", "20230101", "20231231");
+<span class="code-keyword">string</span> dateQuery = dateTerm.ToLuceneString();
+<span class="code-comment">// Результат: "created:[20230101 TO 20231231]"</span>
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Класс доступен только внутри текущей сборки SDK</li>
+                <li>Значения <code>from</code> и <code>to</code> должны быть предварительно отформатированы для Lucene</li>
+                <li>Диапазон включает граничные значения (используются квадратные скобки)</li>
+                <li>Для внешнего использования применяйте методы вроде <code>Int64Field.BeInRange()</code></li>
+            </ul>
+        </div>
+
+        <h2>Особенности</h2>
+        <ul>
+            <li>Поддержка всех типов данных, представимых в строковом формате</li>
+            <li>Интеграция с системой маршалинга .NET</li>
+            <li>Работа с индексами, поддерживающими диапазонные запросы</li>
+            <li>Отсутствие валидации входных параметров (проверка на null и формат возлагается на вызывающий код)</li>
+        </ul>
+    </div>
+</body>
+</html>

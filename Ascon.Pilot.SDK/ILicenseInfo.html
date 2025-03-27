@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация ILicenseInfo SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background-color: #f8d7da;
+            border-left: 4px solid #f5c6cb;
+            padding: 10px;
+            margin: 20px 0;
+            color: #721c24;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс ILicenseInfo</h1>
+        
+        <h2>Описание</h2>
+        <p>Предоставляет информацию о лицензионном статусе продукта. Используется для проверки подлинности, срока действия и условий использования лицензии.</p>
+
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Свойство</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>ProductId</td>
+                    <td>int</td>
+                    <td>Уникальный числовой код продукта (идентификатор лицензии)</td>
+                </tr>
+                <tr>
+                    <td>IsExpired</td>
+                    <td>bool</td>
+                    <td>True - лицензия просрочена, False - действительна</td>
+                </tr>
+                <tr>
+                    <td>IsCheated</td>
+                    <td>bool</td>
+                    <td>True - обнаружен несанкционированный доступ/взлом</td>
+                </tr>
+                <tr>
+                    <td>ExpirationDate</td>
+                    <td>DateTime</td>
+                    <td>Дата и время истечения лицензии (UTC)</td>
+                </tr>
+                <tr>
+                    <td>MaxLicensesCount</td>
+                    <td>int</td>
+                    <td>Максимальное количество разрешенных лицензий. 0 = лицензия отсутствует</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Проверка лицензии</h3>
+        <pre>
+<code>
+<span class="code-keyword">void</span> CheckLicense(ILicenseInfo license)
+{
+    <span class="code-keyword">if</span> (license.MaxLicensesCount == 0)
+    {
+        Console.WriteLine("Лицензия не найдена");
+        <span class="code-keyword">return</span>;
+    }
+
+    <span class="code-keyword">if</span> (license.IsCheated)
+        Console.WriteLine("Обнаружен подозрительный доступ!");
+
+    <span class="code-keyword">if</span> (license.IsExpired)
+        Console.WriteLine($"Лицензия истекла: {license.ExpirationDate:yyyy-MM-dd}");
+    <span class="code-keyword">else</span>
+        Console.WriteLine("Лицензия действительна");
+}
+</code>
+        </pre>
+
+        <h3>Определение типа лицензии</h3>
+        <pre>
+<code>
+<span class="code-keyword">string</span> GetLicenseType(ILicenseInfo license)
+{
+    <span class="code-keyword">if</span> (license.MaxLicensesCount == 1)
+        <span class="code-keyword">return</span> "Однопользовательская";
+        
+    <span class="code-keyword">if</span> (license.MaxLicensesCount > 1)
+        <span class="code-keyword">return</span> $"Многопользовательская ({license.MaxLicensesCount} лицензий)";
+        
+    <span class="code-keyword">return</span> "Не лицензировано";
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Проверяйте MaxLicensesCount перед проверкой срока действия</li>
+                <li>Всегда учитывайте IsCheated для предотвращения несанкционированного доступа</li>
+                <li>Храните ExpirationDate в UTC для корректного сравнения</li>
+                <li>Регулярно проверяйте лицензию в фоновых процессах</li>
+            </ul>
+        </div>
+
+        <div class="warning">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Изменение свойств невозможно - интерфейс только для чтения</li>
+                <li>MaxLicensesCount = 0 означает отсутствие лицензии</li>
+                <li>IsCheated требует немедленного реагирования системы безопасности</li>
+            </ul>
+        </div>
+
+        <h2>Связь с другими компонентами</h2>
+        <ul>
+            <li>Интегрируется с <code>ILicenseValidator</code> для проверки подлинности</li>
+            <li>Используется совместно с <code>ILicensingService</code> для управления лицензиями</li>
+            <li>Может взаимодействовать с <code>IEventAggregator</code> для уведомлений об истечении</li>
+        </ul>
+    </div>
+</body>
+</html>

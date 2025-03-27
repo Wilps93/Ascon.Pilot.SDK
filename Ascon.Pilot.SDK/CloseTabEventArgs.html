@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация CloseTabEventArgs</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .code-type {
+            color: #2b91af;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс CloseTabEventArgs</h1>
+        
+        <h2>Описание</h2>
+        <p>Класс события, уведомляющий о закрытии вкладки с указанием её заголовка и идентификатора. 
+        Наследуется от <span class="code-type">MarshalByRefObject</span> для поддержки кросс-доменного взаимодействия.</p>
+
+        <h2>Иерархия наследования</h2>
+        <ul>
+            <li>System.Object</li>
+            <li>System.MarshalByRefObject</li>
+            <li>Ascon.Pilot.SDK.CloseTabEventArgs</li>
+        </ul>
+
+        <h2>Конструктор</h2>
+        <pre>
+<code>
+<span class="code-keyword">public</span> CloseTabEventArgs(<span class="code-type">string</span> tabTitle, <span class="code-type">Guid</span> tabId)
+</code>
+        </pre>
+        <p>Инициализирует новый экземпляр события закрытия вкладки.</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Параметр</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>tabTitle</td>
+                    <td>Заголовок закрытой вкладки</td>
+                </tr>
+                <tr>
+                    <td>tabId</td>
+                    <td>Уникальный идентификатор закрытой вкладки (тип <span class="code-type">Guid</span>)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Свойство</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>TabTitle</td>
+                    <td>string</td>
+                    <td>Заголовок вкладки (доступно только для чтения)</td>
+                </tr>
+                <tr>
+                    <td>TabId</td>
+                    <td>Guid</td>
+                    <td>Идентификатор вкладки (доступно только для чтения)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Обработка события закрытия вкладки</h3>
+        <pre>
+<code>
+<span class="code-keyword">void</span> OnTabClosed(<span class="code-type">object</span> sender, CloseTabEventArgs e)
+{
+    Console.WriteLine($"Закрыта вкладка: {e.TabTitle} (ID: {e.TabId})");
+    <span class="code-comment">// Логика обработки закрытия</span>
+    CleanupTabResources(e.TabId);
+}
+</code>
+        </pre>
+
+        <h3>Создание экземпляра события</h3>
+        <pre>
+<code>
+<span class="code-type">Guid</span> closedTabId = Guid.NewGuid();
+CloseTabEventArgs eventArgs = <span class="code-keyword">new</span> CloseTabEventArgs("Документ 1", closedTabId);
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Свойства TabTitle и TabId доступны только для чтения после создания объекта</li>
+                <li>Используется в связке с событиями интерфейса (например, закрытие вкладки в UI)</li>
+                <li>Наследование от MarshalByRefObject позволяет использовать объект в сценариях удаленного взаимодействия</li>
+            </ul>
+        </div>
+
+        <h2>Связь с системой</h2>
+        <p>Интегрирован с:</p>
+        <ul>
+            <li>Менеджером вкладок интерфейса</li>
+            <li>Системой событий приложения</li>
+            <li>Механизмами маршалинга при кросс-доменном взаимодействии</li>
+        </ul>
+    </div>
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация интерфейса IReportItem</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IReportItem</h1>
+        
+        <h2>Назначение</h2>
+        <p>Представляет элемент отчета, содержащий метаданные и информацию о связях с исходными типами данных. Используется для организации системы наблюдения и анализа данных.</p>
+        
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Имя</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Id</td>
+                    <td>Guid</td>
+                    <td>Уникальный идентификатор отчета</td>
+                </tr>
+                <tr>
+                    <td>Name</td>
+                    <td>string</td>
+                    <td>Человекочитаемое название отчета</td>
+                </tr>
+                <tr>
+                    <td>Type</td>
+                    <td>IType</td>
+                    <td>Тип отчета (определяет структуру и поведение)</td>
+                </tr>
+                <tr>
+                    <td>SourceTypesNames</td>
+                    <td>HashSet<string></td>
+                    <td>Множество имен типов данных, которые используются в отчете</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Пример реализации</h2>
+        <pre>
+<code>
+<span class="code-keyword">public class</span> ReportItem : IReportItem
+{
+    <span class="code-keyword">public</span> Guid Id { get; }
+    <span class="code-keyword">public</span> string Name { get; }
+    <span class="code-keyword">public</span> IType Type { get; }
+    <span class="code-keyword">public</span> HashSet<string> SourceTypesNames { get; }
+
+    <span class="code-keyword">public</span> ReportItem(Guid id, string name, IType type, IEnumerable<string> sourceTypes)
+    {
+        Id = id;
+        Name = name;
+        Type = type;
+        SourceTypesNames = <span class="code-keyword">new</span> HashSet<string>(sourceTypes);
+    }
+}
+</code>
+        </pre>
+
+        <h2>Пример использования</h2>
+        <pre>
+<code>
+<span class="code-keyword">void</span> AnalyzeReport(IReportItem report)
+{
+    Console.WriteLine($"Отчет: {report.Name} (ID: {report.Id})");
+    
+    <span class="code-comment">// Проверка типа отчета</span>
+    <span class="code-keyword">if</span> (report.Type.Name == "SalesReport")
+    {
+        <span class="code-comment">// Обработка специфичных для типа данных</span>
+        ProcessSalesReport(report);
+    }
+
+    <span class="code-comment">// Работа с исходными типами</span>
+    Console.WriteLine("Источники данных:");
+    <span class="code-keyword">foreach</span> (var sourceType <span class="code-keyword">in</span> report.SourceTypesNames)
+    {
+        Console.WriteLine($"- {sourceType}");
+    }
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Свойство <code>SourceTypesNames</code> может быть пустым - всегда проверяйте на null</li>
+                <li>Реализация <code>IType</code> определяется конкретной системой</li>
+                <li>Для сложных отчетов используйте паттерн Builder</li>
+            </ul>
+        </div>
+
+        <h2>Рекомендации</h2>
+        <ul>
+            <li>Кэшируйте результаты анализа <code>SourceTypesNames</code> при многократном использовании</li>
+            <li>Используйте <code>Id</code> для уникальной идентификации отчетов в журналах</li>
+            <li>Проверяйте версионность через связанный интерфейс <code>IType</code></li>
+            <li>Для сериализации используйте глубокое копирование коллекций</li>
+        </ul>
+    </div>
+</body>
+</html>

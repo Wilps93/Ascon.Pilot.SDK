@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация ITaskTemplateItem SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background-color: #f8d7da;
+            border-left: 4px solid #f5c6cb;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс ITaskTemplateItem</h1>
+        
+        <div class="warning">
+            <strong>Внимание!</strong>
+            <ul>
+                <li>Объект автоматически уничтожается через 2 минуты</li>
+                <li>Любые обращения к свойствам/методам после уничтожения вызовут исключение</li>
+                <li>Не сохраняйте ссылки на объект в плагинах</li>
+            </ul>
+        </div>
+
+        <h2>Описание</h2>
+        <p>Контейнер для временного хранения шаблонов задач и их структуры. 
+        Используется для передачи данных о шаблонах между компонентами системы.</p>
+
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Свойство</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>TypeId</td>
+                    <td>int</td>
+                    <td>Идентификатор типа создаваемого элемента</td>
+                </tr>
+                <tr>
+                    <td>Children</td>
+                    <td>IEnumerable<ITaskTemplateItem></td>
+                    <td>Дочерние элементы (этапы или задачи). Для конечных задач - пустая коллекция</td>
+                </tr>
+                <tr>
+                    <td>Attributes</td>
+                    <td>IDictionary<string, object></td>
+                    <td>Атрибуты элемента шаблона</td>
+                </tr>
+                <tr>
+                    <td>Attachments</td>
+                    <td>IEnumerable<Guid></td>
+                    <td>Идентификаторы вложений элемента</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Пример использования</h2>
+        <pre>
+<code>
+<span class="code-keyword">public void</span> ProcessTemplate(ITaskTemplateItem templateItem)
+{
+    <span class="code-comment">// Создаем копию данных</span>
+    <span class="code-keyword">var</span> templateCopy = <span class="code-keyword">new</span> TemplateCopy
+    {
+        TypeId = templateItem.TypeId,
+        Attributes = <span class="code-keyword">new</span> Dictionary<string, object>(templateItem.Attributes),
+        Attachments = <span class="code-keyword">new</span> List<Guid>(templateItem.Attachments)
+    };
+
+    <span class="code-comment">// Обрабатываем дочерние элементы</span>
+    <span class="code-keyword">foreach</span> (<span class="code-keyword">var</span> child <span class="code-keyword">in</span> templateItem.Children)
+    {
+        templateCopy.Children.Add(ProcessTemplate(child));
+    }
+
+    <span class="code-keyword">return</span> templateCopy;
+}
+
+<span class="code-keyword">public class</span> TemplateCopy
+{
+    <span class="code-keyword">public</span> int TypeId { get; set; }
+    <span class="code-keyword">public</span> IDictionary<string, object> Attributes { get; set; }
+    <span class="code-keyword">public</span> IList<Guid> Attachments { get; set; } = <span class="code-keyword">new</span> List<Guid>();
+    <span class="code-keyword">public</span> IList<TemplateCopy> Children { get; set; } = <span class="code-keyword">new</span> List<TemplateCopy>();
+}
+</code>
+        </pre>
+
+        <h2>Рекомендации</h2>
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Создавайте глубокие копии данных вместо сохранения ссылок</li>
+                <li>Проверяйте наличие дочерних элементов через <code>Children.Any()</code></li>
+                <li>Используйте <code>Attachments</code> только для чтения - модификация не сохранится</li>
+                <li>Не используйте объект после истечения 2 минут с момента получения</li>
+            </ul>
+        </div>
+
+        <div class="note">
+            <strong>Особенности:</strong>
+            <ul>
+                <li>Дерево элементов строится через вложенность <code>Children</code></li>
+                <li>Конечные задачи всегда содержат пустой список <code>Children</code></li>
+                <li>Атрибуты могут содержать типизированные значения (проверяйте приведение типов)</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

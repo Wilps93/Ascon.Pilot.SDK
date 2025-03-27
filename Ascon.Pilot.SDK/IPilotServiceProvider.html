@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация интерфейса IPilotServiceProvider</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background-color: #f8d7da;
+            border-left: 4px solid #f5c6cb;
+            padding: 10px;
+            margin: 20px 0;
+            color: #721c24;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IPilotServiceProvider</h1>
+        
+        <h2>Описание</h2>
+        <p>Контейнер для регистрации и получения сервисов, включая сервисы, зарегистрированные другими модулями системы. 
+        Реализует паттерн <em>Service Locator</em> для управления зависимостями.</p>
+        
+        <h2>Методы</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>GetServices<TService>()</td>
+                    <td>Получает все зарегистрированные сервисы указанного типа</td>
+                </tr>
+                <tr>
+                    <td>Register<TService>(TService)</td>
+                    <td>Регистрирует экземпляр сервиса</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Регистрация сервиса</h3>
+        <pre>
+<code>
+<span class="code-keyword">public class</span> MyService : IMyService 
+{
+    <span class="code-comment">// Реализация сервиса</span>
+}
+
+<span class="code-keyword">var</span> serviceProvider = GetServiceProvider();
+serviceProvider.Register<IMyService>(<span class="code-keyword">new</span> MyService());
+</code>
+        </pre>
+
+        <h3>Получение сервисов</h3>
+        <pre>
+<code>
+IEnumerable<IMyService> services = serviceProvider.GetServices<IMyService>();
+<span class="code-keyword">foreach</span> (var service <span class="code-keyword">in</span> services)
+{
+    service.Execute();
+}
+</code>
+        </pre>
+
+        <h3>Работа с несколькими реализациями</h3>
+        <pre>
+<code>
+serviceProvider.Register<ILogger>(<span class="code-keyword">new</span> FileLogger());
+serviceProvider.Register<ILogger>(<span class="code-keyword">new</span> DatabaseLogger());
+
+<span class="code-keyword">foreach</span> (var logger <span class="code-keyword">in</span> serviceProvider.GetServices<ILogger>())
+{
+    logger.Log("Сообщение");
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Примечания:</strong>
+            <ul>
+                <li>Поддерживает регистрацию множественных реализаций одного интерфейса</li>
+                <li>Сервисы регистрируются в глобальном контексте приложения</li>
+                <li>Рекомендуется регистрировать сервисы при инициализации модуля</li>
+            </ul>
+        </div>
+
+        <div class="warning">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Не регистрируйте сервисы с состоянием (stateful) без управления жизненным циклом</li>
+                <li>Проверяйте наличие сервисов перед использованием: <code>GetServices<T>().Any()</code></li>
+                <li>Для синглтонов регистрируйте один экземпляр, для transient-сервисов - фабричный метод</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

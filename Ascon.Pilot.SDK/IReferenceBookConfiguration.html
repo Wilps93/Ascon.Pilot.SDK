@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация IReferenceBookConfiguration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IReferenceBookConfiguration</h1>
+        
+        <h2>Описание</h2>
+        <p>Конфигурация справочника для работы с данными. <strong>Важно:</strong> Объект автоматически удаляется через 2 минуты после создания. Попытка доступа к его методам после этого вызовет исключение.</p>
+
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Свойство</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Source</td>
+                    <td>Guid</td>
+                    <td>Идентификатор объекта-источника данных (используется при Kind = Source)</td>
+                </tr>
+                <tr>
+                    <td>ElementsTypes</td>
+                    <td>IEnumerable<string></td>
+                    <td>Список типов элементов для фильтрации данных</td>
+                </tr>
+                <tr>
+                    <td>IsEditable</td>
+                    <td>bool</td>
+                    <td>Разрешено ли редактирование выбранного значения</td>
+                </tr>
+                <tr>
+                    <td>StringFormat</td>
+                    <td>string</td>
+                    <td>Формат отображения значений (например: "{0:dd.MM.yyyy}")</td>
+                </tr>
+                <tr>
+                    <td>EditorType</td>
+                    <td>RefBookEditorType</td>
+                    <td>Тип редактора для выбора значений (ComboBox, TextBox и т.д.)</td>
+                </tr>
+                <tr>
+                    <td>Kind</td>
+                    <td>RefBookKind</td>
+                    <td>Тип источника данных: Source (объект) или Values (предопределенные значения)</td>
+                </tr>
+                <tr>
+                    <td>Values</td>
+                    <td>IEnumerable<string></td>
+                    <td>Предопределенные значения справочника (используется при Kind = Values)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Проверка типа источника</h3>
+        <pre>
+<code>
+<span class="code-keyword">if</span> (config.Kind == RefBookKind.Source)
+{
+    <span class="code-comment">// Работа с объектом-источником</span>
+    ProcessSource(config.Source);
+}
+<span class="code-keyword">else</span>
+{
+    <span class="code-comment">// Работа с предопределенными значениями</span>
+    <span class="code-keyword">foreach</span> (var value <span class="code-keyword">in</span> config.Values)
+    {
+        Console.WriteLine(value);
+    }
+}
+</code>
+        </pre>
+
+        <h3>Настройка отображения</h3>
+        <pre>
+<code>
+<span class="code-keyword">if</span> (!string.IsNullOrEmpty(config.StringFormat))
+{
+    <span class="code-comment">// Применение формата к значению</span>
+    formattedValue = string.Format(config.StringFormat, rawValue);
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Критически важно:</strong>
+            <ul>
+                <li>Объект существует только 120 секунд - сохраняйте нужные данные сразу</li>
+                <li>Проверяйте <code>Kind</code> перед использованием <code>Source</code> или <code>Values</code></li>
+                <li>Для длительного хранения конфигурации создавайте копию данных</li>
+                <li>Попытка доступа к удаленному объекту вызовет <code>ObjectDisposedException</code></li>
+            </ul>
+        </div>
+
+        <h2>Рекомендации</h2>
+        <ul>
+            <li>Используйте <code>?.</code> при доступе к свойствам для избежания NullReferenceException</li>
+            <li>Для ElementsTypes проверяйте <code>Any()</code> перед использованием</li>
+            <li>При IsEditable = false блокируйте соответствующие UI-элементы</li>
+            <li>Кэшируйте StringFormat для многократного использования</li>
+        </ul>
+    </div>
+</body>
+</html>

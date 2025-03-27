@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация IPrintHandler</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IPrintHandler</h1>
+        
+        <h2>Описание</h2>
+        <p>Интерфейс для обработки документов, отправленных на печать через Pilot-XPS принтер или автоимпорт. 
+        Позволяет перехватывать и обрабатывать документы до их сохранения в системе.</p>
+
+        <h2>Метод Handle</h2>
+        <p>Основной метод обработки печатных документов</p>
+        
+        <h3>Параметры</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Параметр</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>printedDocInfo</td>
+                    <td>IPrintedDocumentInfo</td>
+                    <td>Объект с информацией о документе и настройках печати</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Возвращаемое значение</h3>
+        <p>
+            <code>bool</code> - Флаг, указывающий, требуется ли выполнить стандартную 
+            обработку автоимпорта после пользовательской обработки:
+            <ul>
+                <li><code>true</code> - Выполнить стандартную обработку</li>
+                <li><code>false</code> - Пропустить стандартную обработку</li>
+            </ul>
+        </p>
+
+        <h2>Примеры реализации</h2>
+        
+        <h3>Базовая обработка документа</h3>
+        <pre>
+<code>
+<span class="code-keyword">public bool</span> Handle(IPrintedDocumentInfo printedDocInfo)
+{
+    <span class="code-keyword">try</span>
+    {
+        <span class="code-comment">// Логирование информации о документе</span>
+        Logger.Log($"Обработка документа ID: {printedDocInfo.DocumentId}");
+        
+        <span class="code-comment">// Кастомная обработка потока</span>
+        ProcessDocument(printedDocInfo.DocumentStream);
+        
+        <span class="code-comment">// Разрешаем стандартную обработку</span>
+        <span class="code-keyword">return true</span>;
+    }
+    <span class="code-keyword">catch</span> (Exception ex)
+    {
+        <span class="code-comment">// Обработка ошибок</span>
+        Logger.Error("Ошибка обработки документа", ex);
+        <span class="code-keyword">return false</span>;
+    }
+}
+</code>
+        </pre>
+
+        <h3>Работа с временными файлами</h3>
+        <pre>
+<code>
+<span class="code-keyword">public bool</span> Handle(IPrintedDocumentInfo printedDocInfo)
+{
+    <span class="code-keyword">string</span> tempFilePath = Path.GetTempFileName();
+    
+    <span class="code-keyword">try</span>
+    {
+        <span class="code-comment">// Сохраняем поток во временный файл</span>
+        <span class="code-keyword">using</span> (var fileStream = File.Create(tempFilePath))
+        {
+            printedDocInfo.DocumentStream.CopyTo(fileStream);
+        }
+        
+        <span class="code-comment">// Обработка файла внешней системой</span>
+        ExternalSystem.Process(tempFilePath);
+        
+        <span class="code-comment">// Удаляем временный файл</span>
+        File.Delete(tempFilePath);
+        
+        <span class="code-keyword">return true</span>;
+    }
+    <span class="code-keyword">catch</span>
+    {
+        File.Delete(tempFilePath);
+        <span class="code-keyword">throw</span>;
+    }
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Временные файлы автоимпорта должны быть удалены вручную</li>
+                <li>DocumentStream может быть потоком файла во временной директории</li>
+                <li>В XML-комментарии опечатка: "auto-import directory" вместо "autoimport"</li>
+                <li>Реализация должна быть потокобезопасной</li>
+            </ul>
+        </div>
+
+        <h2>Рекомендации</h2>
+        <ul>
+            <li>Используйте <code>using</code> для работы с DocumentStream</li>
+            <li>Всегда обрабатывайте исключения для избежания утечек ресурсов</li>
+            <li>Проверяйте DocumentId на соответствие ожидаемым документам</li>
+            <li>Для длительных операций используйте асинхронную обработку</li>
+        </ul>
+    </div>
+</body>
+</html>

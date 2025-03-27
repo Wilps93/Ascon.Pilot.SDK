@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация IHandle SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background-color: #f8d7da;
+            border-left: 4px solid #f5c6cb;
+            padding: 10px;
+            margin: 20px 0;
+            color: #721c24;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IHandle</h1>
+        
+        <h2>Описание</h2>
+        <p>Маркерный интерфейс для идентификации классов, которые могут выступать подписчиками событийной системы. 
+        Используется в связке с <code>IEventAggregator</code> для управления подписками.</p>
+
+        <div class="note">
+            <strong>Особенности:</strong>
+            <ul>
+                <li>Не содержит методов - служит исключительно для маркировки</li>
+                <li>Позволяет системе находить обработчики событий через рефлексию</li>
+                <li>Обычно используется совместно с <code>IHandle<T></code> для конкретных типов сообщений</li>
+            </ul>
+        </div>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Базовая реализация</h3>
+        <pre>
+<code>
+<span class="code-keyword">public class</span> NotificationHandler : IHandle, IHandle<UserNotification>
+{
+    <span class="code-keyword">public void</span> Handle(UserNotification message)
+    {
+        Console.WriteLine($"Получено уведомление: {message.Text}");
+    }
+}
+</code>
+        </pre>
+
+        <h3>Регистрация обработчика</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> handler = <span class="code-keyword">new</span> NotificationHandler();
+eventAggregator.Subscribe(handler);
+</code>
+        </pre>
+
+        <div class="warning">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Для обработки сообщений необходимо реализовать <code>IHandle<T></code> для конкретных типов</li>
+                <li>Маркерный интерфейс сам по себе не обеспечивает функциональность</li>
+                <li>Не забывайте отписываться от событий при уничтожении объекта</li>
+            </ul>
+        </div>
+
+        <h2>Связь с другими компонентами</h2>
+        <ul>
+            <li>Используется совместно с <code>IEventAggregator</code> для управления подписками</li>
+            <li>Дополняется специфичными <code>IHandle<TMessage></code> для обработки конкретных событий</li>
+            <li>Может интегрироваться с DI-контейнерами для автоматической регистрации обработчиков</li>
+        </ul>
+    </div>
+</body>
+</html>

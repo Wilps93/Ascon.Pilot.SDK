@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация перечисления SearchMode</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 2rem;
+            color: #2d3436;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        pre {
+            background-color: #2d3436;
+            color: #ffffff;
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .code-keyword {
+            color: #55efc4;
+        }
+
+        .code-comment {
+            color: #81ecec;
+        }
+
+        .note {
+            background-color: #fff1e6;
+            border-left: 4px solid #ff9900;
+            padding: 1rem;
+            margin: 2rem 0;
+            border-radius: 3px;
+        }
+
+        .flag-values {
+            margin: 2rem 0;
+            padding: 1rem;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+
+        .flag-values span {
+            display: inline-block;
+            margin: 0.25rem;
+            padding: 0.5rem 1rem;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 15px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Перечисление SearchMode</h1>
+        
+        <h2>Описание</h2>
+        <p>Определяет режимы поиска в системе. Поддерживает комбинации флагов для гибкой настройки области поиска.</p>
+
+        <div class="flag-values">
+            <span>Базовые значения:</span>
+            <span>Attributes (1)</span>
+            <span>Files (2)</span>
+        </div>
+
+        <h2>Значения перечисления</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Значение</th>
+                    <th>Числовое представление</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Attributes</td>
+                    <td>1</td>
+                    <td>Поиск по атрибутам объектов</td>
+                </tr>
+                <tr>
+                    <td>Files</td>
+                    <td>2</td>
+                    <td>Поиск по содержимому файлов</td>
+                </tr>
+                <tr>
+                    <td>Attributes | Files</td>
+                    <td>3</td>
+                    <td>Комбинированный поиск по атрибутам и файлам</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Поиск по атрибутам</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> searchMode = SearchMode.Attributes;
+searchService.PerformSearch(query, searchMode);
+</code>
+        </pre>
+
+        <h3>Комбинированный поиск</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> mode = SearchMode.Attributes | SearchMode.Files;
+<span class="code-keyword">var</span> results = searchService.Find(pattern, mode);
+</code>
+        </pre>
+
+        <h3>Проверка флагов</h3>
+        <pre>
+<code>
+<span class="code-keyword">if</span> ((currentMode & SearchMode.Files) == SearchMode.Files)
+{
+    <span class="code-comment">// Включена индексация файлов</span>
+    EnableFileIndexing();
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Используйте оператор <code>|</code> для комбинации режимов</li>
+                <li>Проверяйте флаги через битовые операции <code>&</code></li>
+                <li>Значение <code>0</code> означает отсутствие режимов (поиск не выполняется)</li>
+            </ul>
+        </div>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Для полнотекстового поиска используйте <code>Files</code></li>
+                <li>Для метаданных и свойств объектов - <code>Attributes</code></li>
+                <li>Комбинированный режим увеличивает время выполнения запроса</li>
+            </ul>
+        </div>
+
+        <h2>Связанные компоненты</h2>
+        <ul>
+            <li><a href="ISearchService.html">Интерфейс ISearchService</a></li>
+            <li><a href="SearchResult.html">Класс SearchResult</a></li>
+            <li><a href="SearchOptions.html">Класс SearchOptions</a></li>
+        </ul>
+    </div>
+</body>
+</html>

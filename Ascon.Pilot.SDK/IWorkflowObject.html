@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация интерфейса IWorkflowObject</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7;
+            margin: 2rem auto;
+            max-width: 1000px;
+            padding: 0 20px;
+            color: #2d3436;
+        }
+
+        h1 {
+            color: #e74c3c;
+            border-bottom: 2px solid #e74c3c;
+            padding-bottom: 0.5rem;
+        }
+
+        h2 {
+            color: #34495e;
+            margin-top: 2rem;
+        }
+
+        .warning {
+            background-color: #f5b7b1;
+            border-left: 4px solid #c0392b;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin: 1.5rem 0;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        pre {
+            background-color: #282a36;
+            color: #f8f8f2;
+            padding: 1rem;
+            border-radius: 6px;
+            overflow-x: auto;
+        }
+
+        .code-comment { color: #6272a4; }
+        .code-keyword { color: #ff79c6; }
+        .code-string { color: #50fa7b; }
+    </style>
+</head>
+<body>
+    <h1>Интерфейс IWorkflowObject</h1>
+    
+    <div class="warning">
+        <strong>Важное предупреждение!</strong>
+        <ul>
+            <li>Объект автоматически уничтожается через 2 минуты после создания</li>
+            <li>Попытка доступа к свойствам после уничтожения вызовет исключение</li>
+            <li>Интерфейс помечен как <code>[Obsolete]</code> - рекомендуется использовать современные альтернативы</li>
+        </ul>
+    </div>
+
+    <h2>Назначение</h2>
+    <p>Контейнер для временной передачи данных о бизнес-процессе (workflow) и его атрибутах.</p>
+
+    <h2>Свойства</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Свойство</th>
+                <th>Тип</th>
+                <th>Описание</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Id</td>
+                <td>Guid</td>
+                <td>Уникальный идентификатор бизнес-процесса</td>
+            </tr>
+            <tr>
+                <td>Title</td>
+                <td>string</td>
+                <td>Название бизнес-процесса</td>
+            </tr>
+            <tr>
+                <td>Description</td>
+                <td>string</td>
+                <td>Описание бизнес-процесса</td>
+            </tr>
+            <tr>
+                <td>InitiatorAttachments</td>
+                <td>IEnumerable<Guid></td>
+                <td>Коллекция идентификаторов вложений, связанных с инициатором процесса</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Пример использования</h2>
+    <pre>
+<code>
+<span class="code-comment">// Получение данных в безопасном временном контексте</span>
+<span class="code-keyword">using</span> (IWorkflowObject workflow = GetWorkflowObject())
+{
+    <span class="code-comment">// Сразу сохраняем нужные данные</span>
+    <span class="code-keyword">var</span> workflowData = <span class="code-keyword">new</span> 
+    {
+        Id = workflow.Id,
+        Title = workflow.Title,
+        Attachments = workflow.InitiatorAttachments?.ToList()
+    };
+
+    <span class="code-comment">// Дальнейшая работа с workflowData</span>
+    ProcessWorkflow(workflowData);
+}
+</code>
+    </pre>
+
+    <h2>Рекомендации</h2>
+    <ul>
+        <li>Сохраняйте необходимые данные в локальные переменные сразу после получения объекта</li>
+        <li>Избегайте хранения ссылок на объект после первоначальной обработки</li>
+        <li>Используйте конструкцию <code>using</code> для гарантированного своевременного освобождения ресурсов</li>
+        <li>Проверяйте наличие <code>null</code> для свойства InitiatorAttachments</li>
+    </ul>
+
+    <div class="warning">
+        <strong>Не используйте этот интерфейс в новых разработках!</strong>
+        <p>Для новых реализаций обратитесь к документации по современным API управления бизнес-процессами.</p>
+    </div>
+</body>
+</html>

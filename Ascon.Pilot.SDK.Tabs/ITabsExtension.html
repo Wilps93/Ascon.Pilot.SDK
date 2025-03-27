@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация ITabsExtension SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс ITabsExtension<TTabsContext></h1>
+        
+        <h2>Описание</h2>
+        <p>Обобщенный интерфейс для динамического управления вкладками в UI. Позволяет добавлять пользовательские вкладки и обрабатывать их жизненный цикл.</p>
+        <p>TTabsContext - тип контекста данных, связанного с коллекцией вкладок (например, <code>DocumentExplorerDetailsTabsContext</code>).</p>
+
+        <h2>Методы</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>BuildTabs</td>
+                    <td>Вызывается при инициализации вкладок для их первоначального построения</td>
+                </tr>
+                <tr>
+                    <td>OnIsActiveChanged</td>
+                    <td>Обрабатывает изменения активности вкладки</td>
+                </tr>
+                <tr>
+                    <td>OnDisposed</td>
+                    <td>Вызывается при уничтожении коллекции вкладок</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Метод BuildTabs</h2>
+        <pre>
+<code>
+<span class="code-keyword">void</span> BuildTabs(ITabsBuilder builder, TTabsContext context)
+</code>
+        </pre>
+        <h3>Параметры</h3>
+        <table>
+            <tr>
+                <td>builder</td>
+                <td>Объект для добавления вкладок (<code>ITabsBuilder</code>)</td>
+            </tr>
+            <tr>
+                <td>context</td>
+                <td>Контекст данных вкладок (тип TTabsContext)</td>
+            </tr>
+        </table>
+
+        <h2>Метод OnIsActiveChanged</h2>
+        <pre>
+<code>
+<span class="code-keyword">void</span> OnIsActiveChanged(Guid tabId, bool isActive)
+</code>
+        </pre>
+        <h3>Параметры</h3>
+        <table>
+            <tr>
+                <td>tabId</td>
+                <td>Уникальный идентификатор вкладки</td>
+            </tr>
+            <tr>
+                <td>isActive</td>
+                <td>True - вкладка активирована, False - деактивирована</td>
+            </tr>
+        </table>
+
+        <h2>Метод OnDisposed</h2>
+        <pre>
+<code>
+<span class="code-keyword">void</span> OnDisposed(Guid tabId)
+</code>
+        </pre>
+        <h3>Параметры</h3>
+        <table>
+            <tr>
+                <td>tabId</td>
+                <td>Идентификатор удаляемой вкладки</td>
+            </tr>
+        </table>
+
+        <h2>Особенности реализации</h2>
+        <ul>
+            <li>Все методы интерфейса должны быть реализованы</li>
+            <li>Используйте <code>Guid.Empty</code> для работы с коллекцией вкладок в целом</li>
+            <li>Для WPF-приложений требуется работа через Dispatcher при обновлении UI</li>
+            <li>Реализация должна корректно обрабатывать многопоточный доступ</li>
+        </ul>
+
+        <h2>Пример реализации</h2>
+        <pre>
+<code>
+<span class="code-keyword">public class</span> CustomTabsExtension : ITabsExtension<DocumentExplorerDetailsTabsContext>
+{
+    <span class="code-keyword">public void</span> BuildTabs(ITabsBuilder builder, DocumentExplorerDetailsTabsContext context)
+    {
+        <span class="code-comment">// Добавление пользовательской вкладки</span>
+        <span class="code-keyword">var</span> userControl = <span class="code-keyword">new</span> CustomTabView();
+        builder.AddTab(Guid.NewGuid(), "Анализ данных", userControl);
+    }
+
+    <span class="code-keyword">public void</span> OnIsActiveChanged(Guid tabId, bool isActive)
+    {
+        <span class="code-comment">// Обновление состояния вкладки</span>
+        <span class="code-keyword">if</span> (isActive)
+        {
+            <span class="code-comment">// Загрузка актуальных данных</span>
+        }
+    }
+
+    <span class="code-keyword">public void</span> OnDisposed(Guid tabId)
+    {
+        <span class="code-comment">// Освобождение ресурсов</span>
+        <span class="code-keyword">if</span> (tabId == <span class="code-keyword">this</span>._customTabId)
+        {
+            <span class="code-comment">// Очистка подписок и данных</span>
+        }
+    }
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Не сохраняйте ссылки на UI-элементы вне метода BuildTabs</li>
+                <li>Для контекстных данных используйте только свойства из переданного context</li>
+                <li>При удалении вкладки обязательно вызывайте Dispose для связанных ресурсов</li>
+                <li>Для обновления UI всегда используйте Dispatcher в WPF-приложениях</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

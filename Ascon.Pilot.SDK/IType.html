@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация IType SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background-color: #f8d7da;
+            border-left: 4px solid #f5c6cb;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IType</h1>
+        
+        <div class="warning">
+            <strong>Важно!</strong>
+            <ul>
+                <li>Объект автоматически уничтожается через 2 минуты</li>
+                <li>Любые обращения к свойствам после уничтожения вызовут исключение</li>
+                <li>Не сохраняйте ссылки на объект в долгоживущих структурах</li>
+            </ul>
+        </div>
+
+        <h2>Описание</h2>
+        <p>Представляет метаданные типа объекта, включая атрибуты, иерархию и настройки отображения. 
+        Используется для передачи информации о типах между компонентами системы.</p>
+
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Свойство</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Id</td>
+                    <td>int</td>
+                    <td>Уникальный идентификатор типа</td>
+                </tr>
+                <tr>
+                    <td>Name</td>
+                    <td>string</td>
+                    <td>Внутреннее системное имя типа</td>
+                </tr>
+                <tr>
+                    <td>Title</td>
+                    <td>string</td>
+                    <td>Отображаемое название типа в интерфейсе</td>
+                </tr>
+                <tr>
+                    <td>Sort</td>
+                    <td>int</td>
+                    <td>Порядок сортировки при отображении</td>
+                </tr>
+                <tr>
+                    <td>HasFiles</td>
+                    <td>bool</td>
+                    <td>Могут ли объекты типа содержать файлы</td>
+                </tr>
+                <tr>
+                    <td>Children</td>
+                    <td>ReadOnlyCollection<int></td>
+                    <td>Идентификаторы дочерних типов</td>
+                </tr>
+                <tr>
+                    <td>Attributes</td>
+                    <td>ReadOnlyCollection<IAttribute></td>
+                    <td>Все атрибуты типа (только для чтения)</td>
+                </tr>
+                <tr>
+                    <td>DisplayAttributes</td>
+                    <td>IEnumerable<IAttribute></td>
+                    <td>Атрибуты для отображения в UI</td>
+                </tr>
+                <tr>
+                    <td>SvgIcon</td>
+                    <td>byte[]</td>
+                    <td>Иконка типа в формате SVG (байтовый массив)</td>
+                </tr>
+                <tr>
+                    <td>IsMountable</td>
+                    <td>bool</td>
+                    <td>Может ли тип быть подключен к Pilot-Storage</td>
+                </tr>
+                <tr>
+                    <td>Kind</td>
+                    <td>TypeKind</td>
+                    <td>Вид типа (перечисление TypeKind)</td>
+                </tr>
+                <tr>
+                    <td>IsDeleted</td>
+                    <td>bool</td>
+                    <td>Помечен ли тип как удаленный</td>
+                </tr>
+                <tr>
+                    <td>IsService</td>
+                    <td>bool</td>
+                    <td>Является ли тип служебным (доступ через специальные методы)</td>
+                </tr>
+                <tr>
+                    <td>IsProject</td>
+                    <td>bool</td>
+                    <td>Включена ли поддержка проектов для типа</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Пример использования</h2>
+        <pre>
+<code>
+<span class="code-keyword">public void</span> ProcessType(IType type)
+{
+    <span class="code-comment">// Создаем DTO для безопасного хранения данных</span>
+    <span class="code-keyword">var</span> typeInfo = <span class="code-keyword">new</span> TypeInfoDto
+    {
+        Id = type.Id,
+        DisplayName = type.Title,
+        Icon = Convert.ToBase64String(type.SvgIcon),
+        CanHaveFiles = type.HasFiles,
+        Attributes = <span class="code-keyword">new</span> List<AttributeDto>()
+    };
+
+    <span class="code-comment">// Копируем атрибуты</span>
+    <span class="code-keyword">foreach</span> (IAttribute attr <span class="code-keyword">in</span> type.Attributes)
+    {
+        typeInfo.Attributes.Add(<span class="code-keyword">new</span> AttributeDto 
+        { 
+            Name = attr.Name, 
+            DataType = attr.Type 
+        });
+    }
+
+    <span class="code-comment">// Проверка проектных возможностей</span>
+    <span class="code-keyword">if</span> (type.IsProject)
+    {
+        Console.WriteLine($"Тип {type.Title} поддерживает проекты");
+    }
+}
+
+<span class="code-keyword">public class</span> TypeInfoDto
+{
+    <span class="code-keyword">public</span> int Id { get; set; }
+    <span class="code-keyword">public</span> string DisplayName { get; set; }
+    <span class="code-keyword">public</span> string Icon { get; set; }
+    <span class="code-keyword">public</span> bool CanHaveFiles { get; set; }
+    <span class="code-keyword">public</span> IList<AttributeDto> Attributes { get; set; }
+}
+
+<span class="code-keyword">public class</span> AttributeDto
+{
+    <span class="code-keyword">public</span> string Name { get; set; }
+    <span class="code-keyword">public</span> string DataType { get; set; }
+}
+</code>
+        </pre>
+
+        <h2>Рекомендации</h2>
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Создавайте копии данных, а не сохраняйте ссылки на IType</li>
+                <li>Для работы с SVG-иконкой используйте конвертацию в Base64</li>
+                <li>Проверяйте <code>IsDeleted</code> перед использованием типа</li>
+                <li>Учитывайте <code>IsService</code> при отображении типов в интерфейсе</li>
+                <li>Для модификации типа используйте специализированные API</li>
+            </ul>
+        </div>
+
+        <div class="note">
+            <strong>Особенности:</strong>
+            <ul>
+                <li><code>DisplayAttributes</code> может возвращать подмножество <code>Attributes</code></li>
+                <li><code>TypeKind</code> определяет категорию типа (документ, задача и т.д.)</li>
+                <li>Дочерние типы в <code>Children</code> доступны только по идентификаторам</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

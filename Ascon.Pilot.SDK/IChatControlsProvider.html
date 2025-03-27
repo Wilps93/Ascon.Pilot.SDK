@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация IChatControlsProvider SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background-color: #f8d7da;
+            border-left: 4px solid #f5c6cb;
+            padding: 10px;
+            margin: 20px 0;
+            color: #721c24;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IChatControlsProvider</h1>
+        
+        <div class="note">
+            <strong>Factory-паттерн:</strong> Обеспечивает создание элементов управления чатом и их настроек.
+        </div>
+
+        <h2>Описание</h2>
+        <p>Провайдер для управления UI-компонентами чатов, связанными с объектами системы. 
+        Позволяет получать элементы управления чатами и создавать конфигурации их отображения.</p>
+
+        <h2>Методы</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Параметры</th>
+                    <th>Возвращает</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>GetObjectChatsControl</td>
+                    <td>
+                        <ul>
+                            <li>objectId (Guid) - ID объекта</li>
+                            <li>options (IChatControlsOptions) - настройки отображения (опционально)</li>
+                        </ul>
+                    </td>
+                    <td>ChatControl</td>
+                    <td>Возвращает элемент управления чатом для заданного объекта</td>
+                </tr>
+                <tr>
+                    <td>NewChatControlOptions</td>
+                    <td>Нет</td>
+                    <td>IChatControlsOptions</td>
+                    <td>Создает новый экземпляр настроек отображения чата</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Пример использования</h2>
+        <pre>
+<code>
+<span class="code-comment">// Создание настроек</span>
+IChatControlsOptions options = provider.NewChatControlOptions()
+    .WithShowChatInfo(<span class="code-keyword">true</span>)
+    .WithShowTabHeaders(<span class="code-keyword">false</span>);
+
+<span class="code-comment">// Получение контрола чата для объекта</span>
+Guid objectId = <span class="code-keyword">new</span> Guid("123e4567-e89b-12d3-a456-426614174000");
+ChatControl chatControl = provider.GetObjectChatsControl(objectId, options);
+
+<span class="code-comment">// Пример визуализации контрола (зависит от реализации)</span>
+panel.Controls.Add(chatControl);
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Проверяйте objectId на валидность перед использованием</li>
+                <li>Храните ссылки на ChatControl только в рамках текущего контекста</li>
+                <li>Для повторного использования настроек сохраняйте экземпляр IChatControlsOptions</li>
+            </ul>
+        </div>
+
+        <div class="warning">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Реализация ChatControl зависит от UI-фреймворка (WinForms/WPF и т.д.)</li>
+                <li>При отсутствии options используются настройки по умолчанию</li>
+                <li>Провайдер не управляет жизненным циклом созданных контролов</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

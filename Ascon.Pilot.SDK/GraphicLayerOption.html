@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация GraphicLayerOption</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .code-type {
+            color: #2b91af;
+        }
+
+        .warning {
+            color: #dc3545;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Перечисление GraphicLayerOption</h1>
+        
+        <h2>Описание</h2>
+        <p>Определяет режимы внедрения графических слоев, текстовых меток и штрих-кодов в файлы. Используется в классе <a href="FileSaverOptions.html"><code>FileSaverOptions</code></a> для настройки сохранения файлов.</p>
+
+        <h2>Значения</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Значение</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>InjectFloatingRelatable</td>
+                    <td>Внедрять элементы с учетом состояния параметра <code>IsFloating</code>. Плавающие элементы сохраняются отдельно</td>
+                </tr>
+                <tr>
+                    <td>ForceInject</td>
+                    <td>Принудительно внедрять все графические элементы, игнорируя настройки</td>
+                </tr>
+                <tr>
+                    <td>KeepAllAsFloating</td>
+                    <td>Сохранять все графические элементы как плавающие, даже если они привязаны к объектам</td>
+                </tr>
+                <tr>
+                    <td>LoseGraphicLayers</td>
+                    <td>Удалять все графические слои и метки из файла</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Настройка сохранения файла</h3>
+        <pre>
+<code>
+<span class="code-type">FileSaverOptions</span> options = <span class="code-keyword">new</span> FileSaverOptions
+{
+    GraphicLayerOption = GraphicLayerOption.ForceInject
+};
+
+fileSaver.Save(document, options);
+</code>
+        </pre>
+
+        <h3>Условная обработка</h3>
+        <pre>
+<code>
+<span class="code-keyword">switch</span> (options.GraphicLayerOption)
+{
+    <span class="code-keyword">case</span> GraphicLayerOption.LoseGraphicLayers:
+        RemoveAllGraphics(document);
+        <span class="code-keyword">break</span>;
+    <span class="code-keyword">case</span> GraphicLayerOption.KeepAllAsFloating:
+        ConvertToFloatLayers(document);
+        <span class="code-keyword">break</span>;
+}
+</code>
+        </pre>
+
+        <div class="note warning">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Значение <code>LoseGraphicLayers</code> необратимо удаляет все графические элементы</li>
+                <li>В описании перечисления присутствует опечатка: "gragraphic" вместо "graphic"</li>
+                <li><code>KeepAllAsFloating</code> может нарушить привязки элементов к объектам</li>
+            </ul>
+        </div>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Используйте <code>InjectFloatingRelatable</code> для сохранения структуры документа</li>
+                <li>Проверяйте поддержку режимов в вашей версии SDK</li>
+                <li>Для архивных копий используйте <code>LoseGraphicLayers</code> для уменьшения размера файла</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

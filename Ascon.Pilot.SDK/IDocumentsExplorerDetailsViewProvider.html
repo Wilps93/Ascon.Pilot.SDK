@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация IDocumentsExplorerDetailsViewProvider SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background-color: #f8d7da;
+            border-left: 4px solid #f5c6cb;
+            padding: 10px;
+            margin: 20px 0;
+            color: #721c24;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IDocumentsExplorerDetailsViewProvider</h1>
+        
+        <div class="note">
+            <strong>Назначение:</strong> Позволяет создавать кастомные представления для выбранных элементов в Documents Explorer.
+        </div>
+
+        <h2>Описание</h2>
+        <p>Используется для отображения пользовательских UI-компонентов в области детализации Documents Explorer при выборе объектов определенных типов.</p>
+
+        <h2>Методы и свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Член</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>GetDetailsView</td>
+                    <td>Метод</td>
+                    <td>
+                        Возвращает WPF-элемент для отображения деталей.<br>
+                        Принимает контекст <code>ObjectsViewContext</code> с информацией о выбранных объектах.
+                    </td>
+                </tr>
+                <tr>
+                    <td>Types</td>
+                    <td>Свойство</td>
+                    <td>
+                        Список типов объектов, для которых применяется это представление.<br>
+                        Определяет, когда будет показан кастомный UI.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Пример реализации</h2>
+        <pre>
+<code>
+<span class="code-keyword">public class</span> CustomDetailViewProvider : IDocumentsExplorerDetailsViewProvider
+{
+    <span class="code-keyword">public List</span><IType> Types => <span class="code-keyword">new List</span><IType> { MyCustomType.Instance };
+
+    <span class="code-keyword">public FrameworkElement</span> GetDetailsView(ObjectsViewContext context)
+    {
+        <span class="code-comment">// Создаем пользовательский элемент управления</span>
+        <span class="code-keyword">var</span> customView = <span class="code-keyword">new</span> CustomDetailView();
+        
+        <span class="code-comment">// Настраиваем контекст данных</span>
+        customView.DataContext = context.SelectedItems;
+        
+        <span class="code-keyword">return</span> customView;
+    }
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Кэшируйте созданные UI-элементы для повышения производительности</li>
+                <li>Проверяйте <code>context.SelectedItems</code> на null и пустые значения</li>
+                <li>Используйте привязку данных (data binding) для синхронизации с моделью</li>
+            </ul>
+        </div>
+
+        <div class="warning">
+            <strong>Важно:</strong>
+            <ul>
+                <li>UI-элемент должен быть потокобезопасным (создаваться в UI-потоке)</li>
+                <li>Реализация должна корректно обрабатывать множественный выбор</li>
+                <li>Не забывайте очищать ресурсы при удалении представления</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

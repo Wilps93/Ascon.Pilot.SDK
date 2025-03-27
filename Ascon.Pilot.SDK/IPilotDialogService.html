@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация интерфейса IPilotDialogService</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background-color: #f8d7da;
+            border-left: 4px solid #f5c6cb;
+            padding: 10px;
+            margin: 20px 0;
+            color: #721c24;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .obsolete {
+            text-decoration: line-through;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IPilotDialogService</h1>
+        
+        <h2>Описание</h2>
+        <p>Сервис для отображения системных диалогов Pilot. Реализует <code>IDisposable</code> - требует явного освобождения ресурсов.</p>
+        
+        <h2>Группы методов</h2>
+        
+        <h3>1. Диалоги настройки доступа</h3>
+        <table>
+            <tbody>
+                <tr>
+                    <td>ShowSharingSettingsDialog</td>
+                    <td>Открывает диалог управления общим доступом для объектов</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>2. Селекторы объектов</h3>
+        <table>
+            <tbody>
+                <tr>
+                    <td>ShowPositionSelectorDialog</td>
+                    <td>Выбор организационных позиций</td>
+                </tr>
+                <tr>
+                    <td>ShowDocumentsSelectorDialog</td>
+                    <td>Выбор документов</td>
+                </tr>
+                <tr>
+                    <td>ShowTasksSelectorDialog2</td>
+                    <td>Выбор задач (актуальная версия)</td>
+                </tr>
+                <tr class="obsolete">
+                    <td>ShowTasksSelectorDialog</td>
+                    <td>Устаревший метод выбора задач</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>3. Специализированные диалоги</h3>
+        <table>
+            <tbody>
+                <tr>
+                    <td>ShowReferenceBookDialog</td>
+                    <td>Выбор элементов из справочника</td>
+                </tr>
+                <tr>
+                    <td>ShowWorkflowDialog</td>
+                    <td>Диалог управления workflow</td>
+                </tr>
+                <tr>
+                    <td>ShowTaskDialog</td>
+                    <td>Диалог создания задач</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>4. Вспомогательные методы</h3>
+        <table>
+            <tbody>
+                <tr>
+                    <td>NewOptions()</td>
+                    <td>Создание базовых опций диалога</td>
+                </tr>
+                <tr>
+                    <td>NewPositionOptions()</td>
+                    <td>Создание опций для селектора позиций</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>5. Уведомления</h3>
+        <table>
+            <tbody>
+                <tr>
+                    <td>ShowBalloon</td>
+                    <td>Отображение всплывающих уведомлений</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Выбор позиций с настройками</h3>
+        <pre>
+<code>
+<span class="code-keyword">using</span> (var dialogService = GetDialogService())
+{
+    var options = dialogService.NewOptions()
+        .WithCaption("Выберите позиции")
+        .WithAllowMultiSelect(true);
+
+    var positions = dialogService.ShowPositionSelectorDialog(options);
+    <span class="code-comment">// Обработка выбранных позиций</span>
+}
+</code>
+        </pre>
+
+        <h3>Отображение уведомления</h3>
+        <pre>
+<code>
+dialogService.ShowBalloon(
+    "Операция завершена", 
+    "Данные успешно сохранены", 
+    PilotBalloonIcon.Information);
+</code>
+        </pre>
+
+        <h3>Диалог workflow с преднастройками</h3>
+        <pre>
+<code>
+<span class="code-keyword">using</span> (var modifier = GetObjectModifier())
+{
+    modifier.Create(parentObject, workflowType)
+        .SetProperty("Priority", "High");
+
+    dialogService.ShowWorkflowDialog(workflowTypeId, modifier);
+}
+</code>
+        </pre>
+
+        <div class="warning">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Всегда используйте <code>using</code> при работе с сервисом</li>
+                <li>Избегайте устаревших методов (помечены как <span class="obsolete">Obsolete</span>)</li>
+                <li>Для кастомизации диалогов используйте <code>IPilotDialogOptions</code></li>
+            </ul>
+        </div>
+
+        <div class="note">
+            <strong>Примечание:</strong>
+            <ul>
+                <li>Свойства <code>AccentColor</code> и <code>Theme</code> позволяют синхронизировать UI с текущей темой приложения</li>
+                <li>Для сложных сценариев используйте комбинацию <code>IObjectModifier</code> с диалогами workflow/задач</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

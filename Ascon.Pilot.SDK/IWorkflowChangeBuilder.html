@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация IWorkflowChangeBuilder SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background-color: #f8d7da;
+            border-left: 4px solid #f5c6cb;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IWorkflowChangeBuilder</h1>
+        
+        <div class="warning">
+            <strong>Внимание!</strong>
+            <ul>
+                <li>Все методы и свойства помечены как устаревшие ([Obsolete])</li>
+                <li>Рекомендуется проверить наличие актуальных альтернатив в новой версии SDK</li>
+            </ul>
+        </div>
+
+        <h2>Описание</h2>
+        <p>Fluent-интерфейс для модификации рабочих процессов. Позволяет конфигурировать параметры задач в цепочке вызовов.</p>
+
+        <h2>Методы</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>SetTitle(string)</td>
+                    <td>Изменяет заголовок задачи</td>
+                </tr>
+                <tr>
+                    <td>SetDescription(string)</td>
+                    <td>Изменяет описание задачи</td>
+                </tr>
+                <tr>
+                    <td>SetInitiatorAttachments(IEnumerable<Guid>)</td>
+                    <td>Обновляет список вложений инициатора</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Свойство</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>WorkflowObject</td>
+                    <td>IWorkflowObject</td>
+                    <td>Связанный объект рабочего процесса</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Пример использования</h2>
+        <pre>
+<code>
+<span class="code-keyword">using</span> (var modifier = GetWorkflowModifier())
+{
+    <span class="code-comment">// Создаем билдер и настраиваем параметры</span>
+    IWorkflowChangeBuilder builder = modifier.EditWorkflow(workflow)
+        .SetTitle("Обновленный заголовок")
+        .SetDescription("Новое описание задачи")
+        .SetInitiatorAttachments(new List<Guid> { Guid.NewGuid() });
+
+    <span class="code-comment">// Применяем изменения</span>
+    modifier.Apply();
+}
+</code>
+        </pre>
+
+        <h2>Рекомендации</h2>
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Используйте цепочки вызовов для конфигурации</li>
+                <li>Проверяйте корректность Guid вложений перед передачей</li>
+                <li>Всегда завершайте изменения вызовом <code>Apply()</code> модификатора</li>
+                <li>Для новых проектов ищите альтернативы в актуальной документации SDK</li>
+            </ul>
+        </div>
+
+        <div class="note">
+            <strong>Известные ограничения:</strong>
+            <ul>
+                <li>Отсутствует метод удаления вложений - передавайте пустой список для очистки</li>
+                <li>Изменения не сохраняются без вызова <code>Apply()</code> родительского модификатора</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

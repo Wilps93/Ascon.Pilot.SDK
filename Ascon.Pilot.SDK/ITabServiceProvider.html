@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация ITabServiceProvider SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background-color: #f8d7da;
+            border-left: 4px solid #f5c6cb;
+            padding: 10px;
+            margin: 20px 0;
+            color: #721c24;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс ITabServiceProvider</h1>
+        
+        <h2>Описание</h2>
+        <p>Предоставляет методы для управления вкладками в интерфейсе приложения. 
+        Позволяет создавать, обновлять, закрывать вкладки и управлять их содержимым 
+        с использованием WPF-компонентов (<code>FrameworkElement</code>).</p>
+
+        <h2>Методы</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Параметры</th>
+                    <th>Возвращает</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>GetTabPageTitles()</td>
+                    <td>-</td>
+                    <td>IEnumerable<string></td>
+                    <td>Список заголовков открытых вкладок</td>
+                </tr>
+                <tr>
+                    <td>GetActiveTabPageTitle()</td>
+                    <td>-</td>
+                    <td>string</td>
+                    <td>Локализованный заголовок активной вкладки</td>
+                </tr>
+                <tr>
+                    <td>GetActiveTabPageId()</td>
+                    <td>-</td>
+                    <td>Guid</td>
+                    <td>Идентификатор активной вкладки</td>
+                </tr>
+                <tr>
+                    <td>ActivateTabPage</td>
+                    <td>string title или Guid tabId</td>
+                    <td>void</td>
+                    <td>Активирует вкладку по заголовку или ID</td>
+                </tr>
+                <tr>
+                    <td>OpenNewTabPage</td>
+                    <td>bool isInOtherPane = false</td>
+                    <td>string</td>
+                    <td>Открывает новую пустую вкладку и возвращает её заголовок</td>
+                </tr>
+                <tr>
+                    <td>OpenTabPage</td>
+                    <td>string title, FrameworkElement view, bool isInOtherPane = false</td>
+                    <td>void</td>
+                    <td>Открывает вкладку с указанным содержимым</td>
+                </tr>
+                <tr>
+                    <td>OpenTabPageAndGetId</td>
+                    <td>string title, FrameworkElement view, bool isInOtherPane = false</td>
+                    <td>Guid</td>
+                    <td>Открывает вкладку и возвращает её уникальный идентификатор</td>
+                </tr>
+                <tr>
+                    <td>CloseTabPage</td>
+                    <td>string title</td>
+                    <td>void</td>
+                    <td>Закрывает первую вкладку с указанным заголовком</td>
+                </tr>
+                <tr>
+                    <td>UpdateTabPageContent</td>
+                    <td>string oldTitle, string newTitle, FrameworkElement view</td>
+                    <td>void</td>
+                    <td>Обновляет содержимое и заголовок существующей вкладки</td>
+                </tr>
+                <tr>
+                    <td>UpdateActiveTabPageContent</td>
+                    <td>FrameworkElement view</td>
+                    <td>void</td>
+                    <td>Заменяет содержимое активной вкладки</td>
+                </tr>
+                <tr>
+                    <td>ShowElement</td>
+                    <td>Guid id, DateTime version, object[] args</td>
+                    <td>void</td>
+                    <td>Открывает элемент в вкладке с возможностью указания версии</td>
+                </tr>
+                <tr>
+                    <td>UpdateActiveTabPageTitle</td>
+                    <td>string title</td>
+                    <td>void</td>
+                    <td>Изменяет заголовок активной вкладки</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Открытие вкладки с пользовательским содержимым</h3>
+        <pre>
+<code>
+<span class="code-keyword">public void</span> OpenCustomTab(ITabServiceProvider tabService)
+{
+    <span class="code-keyword">var</span> customView = new CustomUserControl();
+    tabService.OpenTabPage(
+        "Моя вкладка", 
+        customView, 
+        isInOtherPane: <span class="code-keyword">true</span>
+    );
+}
+</code>
+        </pre>
+
+        <h3>Обновление содержимого активной вкладки</h3>
+        <pre>
+<code>
+<span class="code-keyword">public void</span> RefreshActiveTab(ITabServiceProvider tabService)
+{
+    <span class="code-keyword">var</span> updatedView = new UpdatedUserControl();
+    tabService.UpdateActiveTabPageContent(updatedView);
+}
+</code>
+        </pre>
+
+        <h3>Открытие элемента с определенной версией</h3>
+        <pre>
+<code>
+<span class="code-keyword">public void</span> ShowHistoricalVersion(ITabServiceProvider tabService)
+{
+    Guid elementId = ...; <span class="code-comment">// ID нужного элемента</span>
+    DateTime versionDate = new DateTime(2023, 1, 15);
+    tabService.ShowElement(elementId, versionDate);
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Используйте уникальные заголовки для избежания конфликтов</li>
+                <li>Проверяйте существование вкладки перед активацией/закрытием</li>
+                <li>Для сложных UI-компонентов используйте асинхронную загрузку</li>
+            </ul>
+        </div>
+
+        <div class="warning">
+            <strong>Важно:</strong> Все методы, принимающие заголовок вкладки, 
+            работают с первой найденной вкладкой с таким заголовком. 
+            Для точного управления используйте методы с идентификаторами (Guid).
+        </div>
+    </div>
+</body>
+</html>

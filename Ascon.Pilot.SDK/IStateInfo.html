@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация IStateInfo SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IStateInfo</h1>
+        
+        <h2>Описание</h2>
+        <p>Предоставляет информацию о текущем состоянии объекта и параметрах его последнего изменения. 
+        Используется для отслеживания статуса объектов и аудита изменений.</p>
+
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Свойство</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>State</td>
+                    <td>ObjectState</td>
+                    <td>Текущее состояние объекта (например: активный, удаленный, заблокированный)</td>
+                </tr>
+                <tr>
+                    <td>Date</td>
+                    <td>DateTime</td>
+                    <td>Дата и время последнего изменения состояния (в формате UTC)</td>
+                </tr>
+                <tr>
+                    <td>PersonId</td>
+                    <td>int</td>
+                    <td>Идентификатор пользователя, изменившего состояние последним</td>
+                </tr>
+                <tr>
+                    <td>PositionId</td>
+                    <td>int</td>
+                    <td>Идентификатор должности пользователя, совершившего последнее изменение</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Проверка состояния объекта</h3>
+        <pre>
+<code>
+<span class="code-keyword">IStateInfo</span> stateInfo = object.GetStateInfo();
+
+<span class="code-keyword">if</span> (stateInfo.State == ObjectState.Deleted)
+{
+    <span class="code-comment">// Обработка удаленного объекта</span>
+    Console.WriteLine($"Объект удален: {stateInfo.Date:G}");
+}
+</code>
+        </pre>
+
+        <h3>Логирование изменений</h3>
+        <pre>
+<code>
+<span class="code-keyword">void</span> LogStateChange(<span class="code-keyword">IStateInfo</span> state)
+{
+    Console.WriteLine($"Изменено: {state.Date:u}");
+    Console.WriteLine($"Пользователь: ID {state.PersonId}, Должность ID {state.PositionId}");
+    Console.WriteLine($"Новый статус: {state.State}");
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Для работы с датой используйте методы ToLocalTime() для преобразования в локальный часовой пояс</li>
+                <li>Проверяйте наличие null перед доступом к свойствам</li>
+                <li>Для ObjectState используйте перечисление из SDK для проверки возможных значений</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

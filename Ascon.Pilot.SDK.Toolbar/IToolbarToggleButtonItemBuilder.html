@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация интерфейса IToolbarToggleButtonItemBuilder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .method-signature {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IToolbarToggleButtonItemBuilder</h1>
+        
+        <h2>Описание</h2>
+        <p>Представляет переключаемую кнопку (toggle button) на панели инструментов. Наследует функционал базового билдера кнопок и добавляет поддержку состояния "включено/выключено".</p>
+
+        <h2>Наследование</h2>
+        <div class="method-signature">
+            <code>public interface IToolbarToggleButtonItemBuilder : IToolbarButtonItemBuilder</code>
+        </div>
+        <p>Наследует все методы из <code>IToolbarButtonItemBuilder</code> для базовой конфигурации кнопки.</p>
+
+        <h2>Методы</h2>
+        
+        <div class="method-signature">
+            <code>IToolbarToggleButtonItemBuilder WithIsChecked(bool value)</code>
+            <p>Устанавливает начальное состояние переключателя</p>
+            <ul>
+                <li><strong>value</strong> - true для включенного состояния, false для выключенного</li>
+                <li>Возвращает текущий экземпляр билдера для цепочки вызовов</li>
+            </ul>
+        </div>
+
+        <h2>Пример использования</h2>
+        <pre>
+<code>
+<span class="code-comment">// Создание переключаемой кнопки</span>
+toolbarBuilder.AddToggleButtonItem(<span class="code-string">"filter_toggle"</span>, 0)
+    .WithHeader(<span class="code-string">"Фильтр"</span>)
+    .WithIcon(File.ReadAllBytes(<span class="code-string">"filter.svg"</span>))
+    .WithIsChecked(<span class="code-keyword">true</span>)
+    .WithHint(<span class="code-string">"Включить/выключить фильтрацию"</span>);
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важные замечания:</strong>
+            <ul>
+                <li>Состояние переключателя сохраняется между сессиями только при явной реализации сохранения состояния</li>
+                <li>Для обработки переключений необходимо реализовать соответствующую логику в обработчике команды кнопки</li>
+                <li>Визуальное отображение состояния зависит от реализации UI-фреймворка</li>
+                <li>Метод WithIsChecked() устанавливает только начальное состояние</li>
+            </ul>
+        </div>
+
+        <h2>Связь с IToolbarButtonItemBuilder</h2>
+        <p>Наследует все методы базового билдера:</p>
+        <ul>
+            <li>WithHeader()</li>
+            <li>WithIcon()</li>
+            <li>WithIsEnabled()</li>
+            <li>WithShowHeader()</li>
+            <li>WithHint()</li>
+        </ul>
+
+        <h2>Рекомендации</h2>
+        <ul>
+            <li>Используйте для функций, требующих постоянного включения/выключения (фильтры, режимы отображения)</li>
+            <li>Синхронизируйте состояние с моделью данных приложения</li>
+            <li>Добавляйте визуальные индикаторы состояния через иконки или цвет</li>
+            <li>Для групп переключателей реализуйте логику взаимоисключения</li>
+        </ul>
+    </div>
+</body>
+</html>

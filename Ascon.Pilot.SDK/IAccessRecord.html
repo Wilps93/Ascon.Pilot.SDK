@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация IAccessRecord</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .code-type {
+            color: #2b91af;
+        }
+
+        .warning {
+            color: #dc3545;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IAccessRecord</h1>
+        
+        <h2>Описание</h2>
+        <p>Представляет запись о правах доступа, связывающую организационную единицу с объектом. Используется для управления и отслеживания прав доступа в системе.</p>
+
+        <h2>Связь с другими интерфейсами</h2>
+        <ul>
+            <li>Использует <a href="IAccess.html"><code>IAccess</code></a> для хранения прав доступа</li>
+            <li>Содержит идентификаторы из организационной структуры (OrgUnitId)</li>
+        </ul>
+
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Свойство</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>OrgUnitId</td>
+                    <td><code>int</code></td>
+                    <td>Идентификатор организационной единицы, к которой относится запись</td>
+                </tr>
+                <tr>
+                    <td>Access</td>
+                    <td><a href="IAccess.html"><code>IAccess</code></a></td>
+                    <td>Объект прав доступа, связанный с орг. единицей</td>
+                </tr>
+                <tr>
+                    <td>RecordOwner</td>
+                    <td><code>int</code></td>
+                    <td>Идентификатор позиции сотрудника, создавшего запись</td>
+                </tr>
+                <tr>
+                    <td>InheritanceSource</td>
+                    <td><code>Guid</code></td>
+                    <td>Идентификатор объекта, от которого началось наследование прав (если применимо)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Проверка наследования прав</h3>
+        <pre>
+<code>
+<span class="code-type">IAccessRecord</span> record = GetAccessRecord();
+
+<span class="code-keyword">if</span> (record.InheritanceSource != Guid.Empty)
+{
+    <span class="code-comment">// Права унаследованы от другого объекта</span>
+    TrackInheritance(record.InheritanceSource);
+}
+</code>
+        </pre>
+
+        <h3>Анализ прав орг. единицы</h3>
+        <pre>
+<code>
+<span class="code-keyword">foreach</span> (<span class="code-type">IAccessRecord</span> record in accessRecords)
+{
+    <span class="code-keyword">if</span> (record.Access.AccessLevel.HasFlag(AccessLevel.Edit))
+    {
+        Console.WriteLine($"Подразделение {record.OrgUnitId} имеет право редактирования");
+    }
+}
+</code>
+        </pre>
+
+        <h3>Проверка владельца записи</h3>
+        <pre>
+<code>
+<span class="code-keyword">if</span> (record.RecordOwner == currentUserId)
+{
+    <span class="code-comment">// Разрешить редактирование записи</span>
+    EnableRecordEditing();
+}
+</code>
+        </pre>
+
+        <div class="note warning">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Свойство <code>InheritanceSource</code> может содержать <code>Guid.Empty</code>, если наследование не использовалось</li>
+                <li>Изменение прав через <code>IAccess</code> может повлиять на дочерние объекты при <code>IsInheritable = true</code></li>
+                <li>Запись не хранит историю изменений - для аудита используйте дополнительные механизмы</li>
+            </ul>
+        </div>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Кэшируйте записи доступа для улучшения производительности</li>
+                <li>Проверяйте <code>OrgUnitId</code> на соответствие текущему пользователю</li>
+                <li>Для отладки сохраняйте <code>InheritanceSource</code> в логах</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

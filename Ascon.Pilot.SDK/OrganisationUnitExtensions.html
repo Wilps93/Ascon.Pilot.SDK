@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация класса OrganisationUnitExtensions</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 2rem;
+            color: #2d3436;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        pre {
+            background-color: #2d3436;
+            color: #ffffff;
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .code-keyword {
+            color: #55efc4;
+        }
+
+        .code-comment {
+            color: #81ecec;
+        }
+
+        .note {
+            background-color: #fff1e6;
+            border-left: 4px solid #ff9900;
+            padding: 1rem;
+            margin: 2rem 0;
+            border-radius: 3px;
+        }
+
+        .note strong {
+            color: #ff6b6b;
+        }
+
+        .method-signature {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс OrganisationUnitExtensions</h1>
+        
+        <h2>Описание</h2>
+        <p>Статический класс с методами расширения для работы с организационными единицами (<code>IOrganisationUnit</code>). 
+           Предоставляет удобные методы для получения информации о состоянии и свойствах организационных единиц.</p>
+
+        <h2>Методы расширения</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Описание</th>
+                    <th>Возвращаемое значение</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>IsCanceled()</code></td>
+                    <td>Проверяет, отменена ли организационная единица</td>
+                    <td><code>bool</code> - <code>true</code> если отменена</td>
+                </tr>
+                <tr>
+                    <td><code>Kind()</code></td>
+                    <td>Возвращает тип организационной единицы</td>
+                    <td><code>OrganizationUnitKind</code></td>
+                </tr>
+                <tr>
+                    <td><code>Person()</code></td>
+                    <td>Получает идентификатор назначенного лица</td>
+                    <td><code>int</code> (значение -1 - нет назначенца)</td>
+                </tr>
+                <tr>
+                    <td><code>VicePersons()</code></td>
+                    <td>Получает список заместителей</td>
+                    <td><code>ReadOnlyCollection<int></code> идентификаторов</td>
+                </tr>
+                <tr>
+                    <td><code>GroupPersons()</code></td>
+                    <td>Получает список участников группы</td>
+                    <td><code>ReadOnlyCollection<int></code> идентификаторов</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Проверка статуса отмены</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> isCanceled = orgUnit.IsCanceled();
+<span class="code-keyword">if</span> (isCanceled) 
+{
+    <span class="code-comment">// Обработка отмененной единицы</span>
+}
+</code>
+        </pre>
+
+        <h3>Получение типа организации</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> unitType = orgUnit.Kind();
+<span class="code-keyword">switch</span> (unitType)
+{
+    <span class="code-keyword">case</span> OrganizationUnitKind.Department:
+        <span class="code-comment">// Логика для департамента</span>
+        <span class="code-keyword">break</span>;
+}
+</code>
+        </pre>
+
+        <h3>Работа с назначенцами</h3>
+        <pre>
+<code>
+<span class="code-keyword">int</span> mainPerson = orgUnit.Person();
+<span class="code-keyword">if</span> (mainPerson != -1)
+{
+    <span class="code-comment">// Работа с основным назначенцем</span>
+}
+
+<span class="code-keyword">foreach</span> (<span class="code-keyword">var</span> viceId <span class="code-keyword">in</span> orgUnit.VicePersons())
+{
+    <span class="code-comment">// Обработка заместителей</span>
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong> Все методы являются обертками над вызовами 
+            <code>Extensions.GetProperty()</code>. Убедитесь, что объект <code>IOrganisationUnit</code> 
+            корректно инициализирован перед использованием.
+        </div>
+
+        <div class="note">
+            <strong>Особенности:</strong>
+            <ul>
+                <li>Метод <code>Person()</code> возвращает -1, если назначенец не задан</li>
+                <li>Коллекции <code>VicePersons</code> и <code>GroupPersons</code> доступны только для чтения</li>
+                <li>Тип <code>OrganizationUnitKind</code> должен быть импортирован из соответствующего пространства имен</li>
+            </ul>
+        </div>
+
+        <h2>Методы расширения в деталях</h2>
+        <div class="method-signature">
+            <code>public static bool IsCanceled(this IOrganisationUnit orgUnit)</code>
+            <p>Проверяет флаг "IsCanceled" в свойствах организационной единицы.</p>
+        </div>
+
+        <div class="method-signature">
+            <code>public static OrganizationUnitKind Kind(this IOrganisationUnit orgUnit)</code>
+            <p>Возвращает тип организационной единицы, преобразуя числовое значение свойства "Kind".</p>
+        </div>
+
+        <div class="method-signature">
+            <code>public static int Person(this IOrganisationUnit orgUnit)</code>
+            <p>Возвращает идентификатор основного назначенца. Значение -1 указывает на отсутствие назначенца.</p>
+        </div>
+
+        <div class="method-signature">
+            <code>public static ReadOnlyCollection<int> VicePersons(this IOrganisationUnit orgUnit)</code>
+            <p>Возвращает коллекцию идентификаторов заместителей организационной единицы.</p>
+        </div>
+
+        <div class="method-signature">
+            <code>public static ReadOnlyCollection<int> GroupPersons(this IOrganisationUnit orgUnit)</code>
+            <p>Возвращает коллекцию идентификаторов участников группы.</p>
+        </div>
+    </div>
+</body>
+</html>

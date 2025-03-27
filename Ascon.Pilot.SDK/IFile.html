@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация IFile SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .warning {
+            background-color: #f8d7da;
+            border-left: 4px solid #f5c6cb;
+            padding: 10px;
+            margin: 20px 0;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IFile</h1>
+        
+        <div class="warning">
+            <strong>Внимание!</strong> Объект автоматически уничтожается через 2 минуты. 
+            Попытки обращения к его методам после этого вызовут исключение.
+        </div>
+
+        <h2>Описание</h2>
+        <p>Временный контейнер для передачи файловых данных. Предоставляет метаданные и доступ к подписям файла.</p>
+        
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Свойство</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Id</td>
+                    <td>Guid</td>
+                    <td>Уникальный идентификатор файла</td>
+                </tr>
+                <tr>
+                    <td>Size</td>
+                    <td>long</td>
+                    <td>Размер файла в байтах</td>
+                </tr>
+                <tr>
+                    <td>Md5</td>
+                    <td>string</td>
+                    <td>Хэш-сумма MD5 для проверки целостности</td>
+                </tr>
+                <tr>
+                    <td>Name</td>
+                    <td>string</td>
+                    <td>Имя файла с расширением</td>
+                </tr>
+                <tr>
+                    <td>Modified</td>
+                    <td>DateTime</td>
+                    <td>Дата последнего изменения файла</td>
+                </tr>
+                <tr>
+                    <td>Created</td>
+                    <td>DateTime</td>
+                    <td>Дата создания файла</td>
+                </tr>
+                <tr>
+                    <td>Accessed</td>
+                    <td>DateTime</td>
+                    <td>Дата последнего доступа к файлу</td>
+                </tr>
+                <tr>
+                    <td>Signatures</td>
+                    <td>ReadOnlyCollection<ISignature></td>
+                    <td>Коллекция цифровых подписей файла</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Получение метаданных</h3>
+        <pre>
+<code>
+<span class="code-keyword">void</span> ProcessFile(IFile file)
+{
+    <span class="code-comment">// Скопируйте данные до истечения времени жизни объекта</span>
+    <span class="code-keyword">var</span> fileInfo = <span class="code-keyword">new</span> 
+    {
+        Id = file.Id,
+        Name = file.Name,
+        Size = file.Size,
+        Md5 = file.Md5
+    };
+
+    <span class="code-comment">// Обработка метаданных</span>
+    Console.WriteLine($"Файл {fileInfo.Name} ({fileInfo.Size} байт)");
+}
+</code>
+        </pre>
+
+        <h3>Проверка подписей</h3>
+        <pre>
+<code>
+<span class="code-keyword">bool</span> VerifySignatures(IFile file)
+{
+    <span class="code-keyword">if</span> (file.Signatures.Count == 0)
+        <span class="code-keyword">return</span> <span class="code-keyword">false</span>;
+
+    <span class="code-keyword">foreach</span> (var signature <span class="code-keyword">in</span> file.Signatures)
+    {
+        <span class="code-keyword">if</span> (!signature.IsValid())
+            <span class="code-keyword">return</span> <span class="code-keyword">false</span>;
+    }
+    <span class="code-keyword">return</span> <span class="code-keyword">true</span>;
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Не сохраняйте ссылки на IFile дольше необходимого</li>
+                <li>Скопируйте нужные данные в локальные переменные сразу после получения</li>
+                <li>Для длительного хранения метаданных создайте собственную DTO-модель</li>
+                <li>Проверяйте наличие подписей перед их использованием</li>
+            </ul>
+        </div>
+
+        <h2>Особенности реализации</h2>
+        <ul>
+            <li>Все свойства доступны только для чтения</li>
+            <li>Реализация ISignature зависит от конкретного провайдера подписей</li>
+            <li>Время жизни объекта контролируется системой</li>
+            <li>Для работы с файловым потоком используйте специализированные методы API</li>
+        </ul>
+    </div>
+</body>
+</html>

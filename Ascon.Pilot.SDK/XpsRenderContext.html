@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация XpsRenderContext SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .class-name {
+            color: #2b91af;
+            font-weight: bold;
+        }
+
+        .property-name {
+            color: #c7254e;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс XpsRenderContext</h1>
+        
+        <h2>Описание</h2>
+        <p>Базовый контекст для работы с XPS-рендером. Содержит основные данные о документе и его состоянии. Наследуется от <span class="class-name">MarshalByRefObject</span> для поддержки распределенных операций.</p>
+        
+        <h2>Наследование</h2>
+        <ul>
+            <li><span class="class-name">System.MarshalByRefObject</span></li>
+            <li>→ <span class="class-name">XpsRenderContext</span></li>
+        </ul>
+
+        <h2>Конструктор</h2>
+        <pre>
+<code>
+<span class="code-keyword">public</span> XpsRenderContext(
+    IDataObject dataObject,
+    DateTime selectedVersion,
+    bool isDocumentLoaded
+)
+</code>
+        </pre>
+        <table>
+            <thead>
+                <tr>
+                    <th>Параметр</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>dataObject</td>
+                    <td>Целевой объект данных, связанный с документом</td>
+                </tr>
+                <tr>
+                    <td>selectedVersion</td>
+                    <td>Временная метка выбранной версии документа</td>
+                </tr>
+                <tr>
+                    <td>isDocumentLoaded</td>
+                    <td>Флаг готовности документа в просмотрщике</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Свойство</th>
+                    <th>Тип</th>
+                    <th>Доступ</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="property-name">DataObject</td>
+                    <td>IDataObject</td>
+                    <td>Только чтение</td>
+                    <td>Объект данных, связанный с рендером</td>
+                </tr>
+                <tr>
+                    <td class="property-name">SelectedVersion</td>
+                    <td>DateTime</td>
+                    <td>Только чтение</td>
+                    <td>Временная метка текущей версии документа</td>
+                </tr>
+                <tr>
+                    <td class="property-name">IsDocumentLoaded</td>
+                    <td>bool</td>
+                    <td>Только чтение</td>
+                    <td>Статус загрузки документа в просмотрщике</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Инициализация контекста</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> document = GetDocument();
+<span class="code-keyword">var</span> context = <span class="code-keyword">new</span> <span class="class-name">XpsRenderContext</span>(
+    dataObject: document,
+    selectedVersion: DateTime.Now,
+    isDocumentLoaded: true
+);
+</code>
+        </pre>
+
+        <h3>Проверка состояния документа</h3>
+        <pre>
+<code>
+<span class="code-keyword">void</span> ProcessDocument(XpsRenderContext context)
+{
+    <span class="code-keyword">if</span> (!context.IsDocumentLoaded)
+    {
+        <span class="code-comment">// Документ не готов к обработке</span>
+        <span class="code-keyword">return</span>;
+    }
+    
+    <span class="code-comment">// Работа с загруженным документом</span>
+    Console.WriteLine($"Версия: {context.SelectedVersion.ToShortTimeString()}");
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Все свойства доступны только для чтения после создания объекта</li>
+                <li>Для работы с координатами кликов используйте <span class="class-name">XpsRenderClickPointContext</span></li>
+                <li>Всегда проверяйте <span class="property-name">IsDocumentLoaded</span> перед выполнением операций</li>
+            </ul>
+        </div>
+
+        <h2>Рекомендации</h2>
+        <ul>
+            <li>Используйте как базовый класс для кастомных контекстов рендера</li>
+            <li>Храните временные метки версий в UTC-формате</li>
+            <li>Для сложных сценариев расширяйте функционал через наследование</li>
+        </ul>
+    </div>
+</body>
+</html>

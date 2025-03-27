@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация State SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .obsolete {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Перечисление State <span class="obsolete">[Устаревшее]</span></h1>
+        
+        <div class="note">
+            <strong>Важно:</strong> Этот тип помечен как устаревший. 
+            Рекомендуется использовать актуальные версии API и проверять обновления документации.
+        </div>
+
+        <h2>Описание</h2>
+        <p>Определяет возможные состояния рабочего процесса (Workflow) в системе.</p>
+        
+        <h2>Значения</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Состояние</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>None</td>
+                    <td>Черновик - начальное состояние</td>
+                </tr>
+                <tr>
+                    <td>Assigned</td>
+                    <td>Выдано - задача назначена исполнителю</td>
+                </tr>
+                <tr>
+                    <td>InProgress</td>
+                    <td>В работе - задача выполняется</td>
+                </tr>
+                <tr>
+                    <td>Revoked</td>
+                    <td>Отозвано - задача отменена</td>
+                </tr>
+                <tr>
+                    <td>OnValidation</td>
+                    <td>На проверке - ожидает подтверждения</td>
+                </tr>
+                <tr>
+                    <td>Completed</td>
+                    <td>Выполнено - задача завершена</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Жизненный цикл</h2>
+        <p>Типичная цепочка переходов:</p>
+        <pre>
+None → Assigned → InProgress → OnValidation → Completed
+        </pre>
+
+        <h2>Пример использования</h2>
+        <pre>
+<code>
+<span class="code-keyword">State</span> currentState = GetWorkflowState();
+<span class="code-keyword">switch</span> (currentState)
+{
+    <span class="code-keyword">case</span> State.None:
+        <span class="code-comment">// Инициализация</span>
+        break;
+    <span class="code-keyword">case</span> State.Assigned:
+        StartProcessing();
+        break;
+    <span class="code-keyword">case</span> State.Completed:
+        ArchiveDocument();
+        break;
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Избегайте использования в новых проектах</li>
+                <li>Проверяйте документацию на наличие обновленных аналогов</li>
+                <li>Не используйте для хранения состояний - перечисление не поддерживает флаги</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

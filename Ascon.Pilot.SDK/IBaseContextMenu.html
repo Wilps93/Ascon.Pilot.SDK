@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация IBaseContextMenu SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background-color: #f8d7da;
+            border-left: 4px solid #f5c6cb;
+            padding: 10px;
+            margin: 20px 0;
+            color: #721c24;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IBaseContextMenu</h1>
+        
+        <h2>Описание</h2>
+        <p>Базовый интерфейс для реализации обработчиков контекстных меню. Позволяет реагировать на действия пользователя при выборе пунктов меню.</p>
+
+        <h2>Методы</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Параметры</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>OnMenuItemClick</td>
+                    <td>
+                        <ul>
+                            <li>itemName (string) - идентификатор или название выбранного пункта меню</li>
+                        </ul>
+                    </td>
+                    <td>Вызывается при клике пользователя на пункт контекстного меню</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Пример реализации</h2>
+        <pre>
+<code>
+<span class="code-keyword">public class</span> CustomContextMenu : IBaseContextMenu
+{
+    <span class="code-keyword">public void</span> OnMenuItemClick(string itemName)
+    {
+        <span class="code-keyword">switch</span> (itemName)
+        {
+            <span class="code-keyword">case</span> "copy":
+                ClipboardService.Copy();
+                <span class="code-keyword">break</span>;
+            <span class="code-keyword">case</span> "delete":
+                DeleteSelectedItem();
+                <span class="code-keyword">break</span>;
+            <span class="code-keyword">default</span>:
+                Logger.Warn($"Неизвестный пункт меню: {itemName}");
+                <span class="code-keyword">break</span>;
+        }
+    }
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Всегда обрабатывайте неизвестные itemName для избежания ошибок</li>
+                <li>Используйте осмысленные имена пунктов меню (например, "edit_copy", "view_zoom")</li>
+                <li>Для сложной логики используйте паттерн Command или делегаты</li>
+            </ul>
+        </div>
+
+        <div class="warning">
+            <strong>Важно:</strong> Реализация должна быть потокобезопасной, если обработка выполняется асинхронно.
+        </div>
+    </div>
+</body>
+</html>

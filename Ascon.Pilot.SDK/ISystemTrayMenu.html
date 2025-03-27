@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация ISystemTrayMenu SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background-color: #f8d7da;
+            border-left: 4px solid #f5c6cb;
+            padding: 10px;
+            margin: 20px 0;
+            color: #721c24;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс ISystemTrayMenu</h1>
+        
+        <h2>Описание</h2>
+        <p>Расширение для добавления пользовательских пунктов в меню системного трея. 
+        Наследует базовый функционал из <code>IBaseContextMenu</code> и позволяет динамически формировать меню.</p>
+
+        <h2>Методы</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Параметры</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>BuildMenu</td>
+                    <td>IMenuHost menuHost</td>
+                    <td>
+                        Вызывается перед отображением меню. Позволяет добавлять/изменять пункты системного трея.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Пример реализации</h2>
+        <pre>
+<code>
+<span class="code-keyword">public class</span> CustomTrayMenu : ISystemTrayMenu 
+{
+    <span class="code-keyword">public void</span> BuildMenu(IMenuHost menuHost)
+    {
+        <span class="code-comment">// Добавление пользовательского пункта</span>
+        menuHost.AddItem(
+            "custom_tray_action",
+            "Обновить данные",
+            <span class="code-keyword">async</span> (cancellationToken) => 
+            {
+                <span class="code-keyword">await</span> DataUpdater.RefreshData(cancellationToken);
+                NotificationService.Show("Данные обновлены");
+            },
+            icon: "refresh-icon"
+        );
+
+        <span class="code-comment">// Условное добавление пункта</span>
+        <span class="code-keyword">if</span> (UserSettings.ShowAdvancedOptions)
+        {
+            menuHost.AddItem(
+                "advanced_settings",
+                "Настройки",
+                () => SettingsWindow.Show()
+            );
+        }
+    }
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Используйте иконки из стандартного набора Pilot</li>
+                <li>Для длительных операций применяйте асинхронные методы</li>
+                <li>Проверяйте права пользователя перед добавлением административных пунктов</li>
+            </ul>
+        </div>
+
+        <div class="warning">
+            <strong>Важно:</strong> Не сохраняйте ссылки на IMenuHost вне метода BuildMenu - 
+            это временны объект, действительный только во время построения меню.
+        </div>
+    </div>
+</body>
+</html>

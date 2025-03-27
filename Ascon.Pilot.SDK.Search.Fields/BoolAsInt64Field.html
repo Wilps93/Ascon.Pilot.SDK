@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация BoolAsInt64Field</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс BoolAsInt64Field</h1>
+        
+        <h2>Описание</h2>
+        <p>Класс для работы с булевыми полями, хранящимися в виде 64-битных целых чисел (0L и 1L) в поисковых запросах. Наследуется от <code>BoolField</code>.</p>
+
+        <h2>Наследование</h2>
+        <ul>
+            <li>System.Object</li>
+            <li>BoolField</li>
+            <li>BoolAsInt64Field</li>
+        </ul>
+
+        <h2>Конструктор</h2>
+        <pre>
+<code>
+<span class="code-keyword">internal</span> BoolAsInt64Field(string fieldName)
+</code>
+        </pre>
+        <p>Инициализирует новый экземпляр класса с указанием имени поля.</p>
+
+        <h2>Методы</h2>
+        
+        <h3>Be(bool value)</h3>
+        <pre>
+<code>
+<span class="code-keyword">public override</span> ISearchTerm Be(bool value)
+</code>
+        </pre>
+        <p>Создает поисковый термин для булева значения, преобразованного в 64-битное целое число (0L или 1L).</p>
+
+        <h3>WithPrefix(long value)</h3>
+        <pre>
+<code>
+<span class="code-keyword">private</span> string WithPrefix(long value)
+</code>
+        </pre>
+        <p>Добавляет специальный префикс для форматирования 64-битных числовых значений в поисковом запросе.</p>
+
+        <h2>Особенности реализации</h2>
+        <ul>
+            <li>Булевы значения преобразуются: false → 0L, true → 1L</li>
+            <li>Префикс "&#64;" (символ @) указывает на 64-битный числовой формат</li>
+            <li>Используется для полей, требующих хранения логических значений в расширенном числовом формате</li>
+        </ul>
+
+        <h2>Пример использования</h2>
+        <pre>
+<code>
+<span class="code-comment">// Создание условия поиска для 64-битного булева поля</span>
+<span class="code-keyword">var</span> field = <span class="code-keyword">new</span> BoolAsInt64Field("IsArchived");
+ISearchTerm term = field.Be(true);
+
+<span class="code-comment">// Результат: условие "IsArchived: @1"</span>
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong> Класс имеет внутренний модификатор доступа 
+            (internal) и предназначен исключительно для внутреннего использования 
+            в инфраструктуре SDK. Рекомендуется использовать фабричные методы 
+            поисковой системы для создания условий.
+        </div>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Проверяйте требования поисковой системы к формату числовых данных</li>
+                <li>Для 32-битных значений используйте <code>BoolAsInt32Field</code></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

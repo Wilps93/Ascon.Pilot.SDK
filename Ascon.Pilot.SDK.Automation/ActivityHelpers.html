@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация ActivityHelpers SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .class-name {
+            color: #2b91af;
+            font-weight: bold;
+        }
+
+        .method-name {
+            color: #795E26;
+            font-weight: bold;
+        }
+
+        .param-name {
+            color: #c7254e;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс ActivityHelpers</h1>
+        
+        <h2>Описание</h2>
+        <p>Статический класс с методами расширения для работы с параметрами автоматизации. Обеспечивает безопасное извлечение и преобразование параметров активностей с обработкой типов и коллекций.</p>
+        
+        <h2>Методы</h2>
+        
+        <h3 class="method-name">GetValue<T></h3>
+        <p>Извлекает и преобразует параметр активности</p>
+        <pre>
+<code>
+<span class="code-keyword">public static</span> T GetValue<T>(
+    <span class="code-keyword">this</span> <span class="class-name">IAutomationActivity</span> activity,
+    <span class="param-name">string</span> name
+)
+</code>
+        </pre>
+        <ul>
+            <li>Обрабатывает перечисления и nullable-типы</li>
+            <li>Возвращает default(T) при отсутствии параметра</li>
+            <li>Добавляет ошибку в <code>activity.Errors</code> при неудаче</li>
+        </ul>
+
+        <h3 class="method-name">GetCollectionOf<T></h3>
+        <p>Извлекает коллекцию параметров</p>
+        <pre>
+<code>
+<span class="code-keyword">public static</span> List<T> GetCollectionOf<T>(
+    <span class="code-keyword">this</span> <span class="class-name">IAutomationActivity</span> activity,
+    <span class="param-name">string</span> name
+)
+</code>
+        </pre>
+        <ul>
+            <li>Проверяет тип параметра на IEnumerable<T></li>
+            <li>Парсит строки в enum-значения</li>
+            <li>Возвращает пустой список при ошибках</li>
+        </ul>
+
+        <h3 class="method-name">GetSetOf<V></h3>
+        <p>Извлекает словарь параметров</p>
+        <pre>
+<code>
+<span class="code-keyword">public static</span> Dictionary<<span class="param-name">string</span>, List<V>> GetSetOf<V>(
+    <span class="code-keyword">this</span> <span class="class-name">IAutomationActivity</span> activity,
+    <span class="param-name">string</span> name
+)
+</code>
+        </pre>
+        <ul>
+            <li>Обрабатывает вложенные коллекции в Dictionary</li>
+            <li>Конвертирует ключи в строки</li>
+            <li>Поддерживает enum-значения во вложенных списках</li>
+        </ul>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Получение простого значения</h3>
+        <pre>
+<code>
+<span class="code-comment">// Получение числового параметра</span>
+<span class="code-keyword">int</span> timeout = activity.GetValue<<span class="code-keyword">int</span>>("timeout");
+
+<span class="code-comment">// Получение enum-параметра</span>
+<span class="class-name">ProcessingMode</span> mode = activity.GetValue<<span class="class-name">ProcessingMode</span>>("mode");
+</code>
+        </pre>
+
+        <h3>Работа с коллекциями</h3>
+        <pre>
+<code>
+<span class="code-comment">// Получение списка идентификаторов</span>
+List<Guid> ids = activity.GetCollectionOf<Guid>("object_ids");
+
+<span class="code-comment">// Получение списка enum-значений</span>
+List<<span class="class-name">AccessLevel</span>> levels = activity.GetCollectionOf<<span class="class-name">AccessLevel</span>>("access_levels");
+</code>
+        </pre>
+
+        <h3>Обработка словарей</h3>
+        <pre>
+<code>
+<span class="code-comment">// Получение словаря настроек</span>
+<span class="code-keyword">var</span> config = activity.GetSetOf<<span class="code-keyword">string</span>>("config_params");
+
+<span class="code-comment">// Работа со вложенными списками</span>
+<span class="code-keyword">foreach</span> (<span class="code-keyword">var</span> entry <span class="code-keyword">in</span> config)
+{
+    Console.WriteLine($"Ключ: {entry.Key}, Значения: {string.Join(", ", entry.Value)}");
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Методы автоматически обрабатывают регистр строк для enum'ов</li>
+                <li>При парсинге enum'ов null-значения преобразуются в default(T)</li>
+                <li>Всегда проверяйте <code>activity.Errors</code> после извлечения параметров</li>
+            </ul>
+        </div>
+
+        <h2>Рекомендации</h2>
+        <ul>
+            <li>Используйте nameof() для имен параметров чтобы избежать опечаток</li>
+            <li>Для сложных структур данных валидируйте типы перед извлечением</li>
+            <li>При работе с числовыми типами проверяйте допустимые диапазоны значений</li>
+        </ul>
+    </div>
+</body>
+</html>

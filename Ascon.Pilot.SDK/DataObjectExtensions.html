@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация DataObjectExtensions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .code-type {
+            color: #2b91af;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс DataObjectExtensions</h1>
+        
+        <h2>Описание</h2>
+        <p>Статический класс с методами расширения для интерфейса <span class="code-type">IDataObject</span>. 
+        Предоставляет доступ к метаданным и служебной информации объектов через обертки над внутренними свойствами.</p>
+
+        <h2>Методы расширения</h2>
+
+        <h3>LastChange</h3>
+        <pre>
+<code>
+<span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-type">long</span> LastChange(<span class="code-keyword">this</span> IDataObject dataObject)
+</code>
+        </pre>
+        <p>Возвращает идентификатор последнего набора изменений (changeset), модифицировавшего объект.</p>
+        <p>Возвращаемое значение: Числовой идентификатор версии изменений</p>
+
+        <h3>Context</h3>
+        <pre>
+<code>
+<span class="code-keyword">public</span> <span class="code-keyword">static</span> ReadOnlyCollection<<span class="code-type">Guid</span>> Context(<span class="code-keyword">this</span> IDataObject dataObject)
+</code>
+        </pre>
+        <p>Возвращает коллекцию идентификаторов, связанных с контекстом объекта (например, поисковые контексты).</p>
+        <p>Возвращаемое значение: Коллекция <span class="code-type">Guid</span> только для чтения</p>
+
+        <h3>HistoryItems</h3>
+        <pre>
+<code>
+<span class="code-keyword">public</span> <span class="code-keyword">static</span> ReadOnlyCollection<<span class="code-type">Guid</span>> HistoryItems(<span class="code-keyword">this</span> IDataObject dataObject)
+</code>
+        </pre>
+        <p>Возвращает коллекцию идентификаторов исторических версий объекта.</p>
+        <p>Возвращаемое значение: Коллекция <span class="code-type">Guid</span> версий только для чтения</p>
+
+        <h3>SecretInfo</h3>
+        <pre>
+<code>
+<span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-type">ISecretInfo</span> SecretInfo(<span class="code-keyword">this</span> IDataObject dataObject)
+</code>
+        </pre>
+        <p>Возвращает информацию о секретности/конфиденциальности объекта.</p>
+        <p>Возвращаемое значение: Объект <span class="code-type">ISecretInfo</span> или null</p>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Получение информации о последнем изменении</h3>
+        <pre>
+<code>
+<span class="code-type">IDataObject</span> obj = repository.GetObject(id);
+<span class="code-type">long</span> lastChangeId = obj.LastChange();
+Console.WriteLine($"Последнее изменение: {lastChangeId}");
+</code>
+        </pre>
+
+        <h3>Работа с контекстом объекта</h3>
+        <pre>
+<code>
+<span class="code-keyword">foreach</span> (<span class="code-type">Guid</span> contextId <span class="code-keyword">in</span> obj.Context())
+{
+    Console.WriteLine($"Контекст: {contextId}");
+}
+</code>
+        </pre>
+
+        <h3>Проверка секретности</h3>
+        <pre>
+<code>
+<span class="code-type">ISecretInfo</span> secretInfo = obj.SecretInfo();
+<span class="code-keyword">if</span> (secretInfo != <span class="code-keyword">null</span> && secretInfo.IsSecret)
+{
+    Console.WriteLine("Объект содержит конфиденциальную информацию");
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Методы используют внутренний механизм <span class="code-type">Extensions.GetProperty</span> для доступа к свойствам</li>
+                <li>Возвращаемые коллекции <span class="code-type">ReadOnlyCollection<T></span> нельзя модифицировать</li>
+                <li>Рекомендуется проверять возвращаемые значения на null перед использованием</li>
+                <li>Метод SecretInfo() может вернуть null для несекретных объектов</li>
+            </ul>
+        </div>
+
+        <h2>Связь с системой</h2>
+        <p>Интегрирован с:</p>
+        <ul>
+            <li>Системой версионирования и отслеживания изменений</li>
+            <li>Механизмами безопасности и секретности</li>
+            <li>Поисковым функционалом через контексты (Context)</li>
+            <li>Историей изменений объектов (HistoryItems)</li>
+        </ul>
+    </div>
+</body>
+</html>

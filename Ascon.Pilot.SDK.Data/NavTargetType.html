@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация перечисления NavTargetType</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Перечисление NavTargetType</h1>
+        
+        <h2>Описание</h2>
+        <p>Определяет типы навигационных целей в системе. Используется в связке с интерфейсом <code>INavigationTarget</code> для указания типа объекта, к которому осуществляется переход.</p>
+        
+        <h2>Значения</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Значение</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>None</td>
+                    <td>Неопределенный тип (используется как значение по умолчанию)</td>
+                </tr>
+                <tr>
+                    <td>Object</td>
+                    <td>Базовый объект системы</td>
+                </tr>
+                <tr>
+                    <td>Task</td>
+                    <td>Задача или элемент рабочего процесса</td>
+                </tr>
+                <tr>
+                    <td>ProjectFile</td>
+                    <td>Файл проекта</td>
+                </tr>
+                <tr>
+                    <td>Report</td>
+                    <td>Отчетная форма</td>
+                </tr>
+                <tr>
+                    <td>Chat</td>
+                    <td>Чат или обсуждение</td>
+                </tr>
+                <tr>
+                    <td>DraftSearchTab</td>
+                    <td>Вкладка поиска черновиков</td>
+                </tr>
+                <tr>
+                    <td>XpsMergerTab</td>
+                    <td>Вкладка объединения XPS-документов</td>
+                </tr>
+                <tr>
+                    <td>DocumentComparison</td>
+                    <td>Сравнение документов</td>
+                </tr>
+                <tr>
+                    <td>ObjectRelatedChat</td>
+                    <td>Чат, связанный с конкретным объектом</td>
+                </tr>
+                <tr>
+                    <td>TaskRelatedChat</td>
+                    <td>Чат, связанный с конкретной задачей</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Пример использования</h2>
+        <pre>
+<code>
+<span class="code-keyword">void</span> NavigateToTarget(INavigationTarget target)
+{
+    <span class="code-keyword">switch</span> (target.Type)
+    {
+        <span class="code-keyword">case</span> NavTargetType.Object:
+            OpenObject(target.ObjectId);
+            <span class="code-keyword">break</span>;
+            
+        <span class="code-keyword">case</span> NavTargetType.Task:
+            ShowTaskDetails(target.ObjectId);
+            <span class="code-keyword">break</span>;
+            
+        <span class="code-keyword">case</span> NavTargetType.Report:
+            GenerateReport(target.ObjectId);
+            <span class="code-keyword">break</span>;
+            
+        <span class="code-keyword">default</span>:
+            <span class="code-comment">// Обработка неизвестного типа</span>
+            <span class="code-keyword">throw new</span> NotSupportedException($"Тип {target.Type} не поддерживается");
+    }
+}
+</code>
+        </pre>
+
+        <h2>Особенности</h2>
+        <ul>
+            <li>Значение <code>None</code> используется для инициализации и обозначения отсутствия типа</li>
+            <li>Типы <code>ObjectRelatedChat</code> и <code>TaskRelatedChat</code> требуют обязательного указания <code>ObjectId</code></li>
+            <li>Специфичные типы вроде <code>XpsMergerTab</code> могут требовать дополнительных аргументов в <code>INavigationTarget.Args</code></li>
+        </ul>
+
+        <div class="note">
+            <strong>Важно:</strong> При обработке навигации всегда проверяйте поддержку типа через <code>Enum.IsDefined(typeof(NavTargetType), value)</code>
+        </div>
+    </div>
+</body>
+</html>

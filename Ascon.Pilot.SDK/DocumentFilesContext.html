@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация DocumentFilesContext</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .code-type {
+            color: #2b91af;
+        }
+
+        .important {
+            color: #dc3545;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс DocumentFilesContext</h1>
+        
+        <h2>Описание</h2>
+        <p>Контекст для работы с файлами документов в системе. Наследуется от <code>MarshalByRefObject</code>, что позволяет использовать объект в распределенных сценариях (например, при работе через границы доменов приложений).</p>
+
+        <h2>Конструктор</h2>
+        <pre>
+<code>
+<span class="code-keyword">public</span> DocumentFilesContext(
+    <span class="code-type">IDataObject</span> ecmDocument,
+    <span class="code-type">IEnumerable</span><<span class="code-type">IStorageDataObject</span>> selectedObjects,
+    <span class="code-keyword">bool</span> isContext,
+    <span class="code-keyword">bool</span> isMounted,
+    <span class="code-type">DocumentFilesUsage</span> usage
+)
+</code>
+        </pre>
+        <p>Инициализирует новый экземпляр контекста.</p>
+
+        <h3>Параметры конструктора</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Параметр</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>ecmDocument</td>
+                    <td>IDataObject</td>
+                    <td>Основной документ ECM (Enterprise Content Management)</td>
+                </tr>
+                <tr>
+                    <td>selectedObjects</td>
+                    <td>IEnumerable<IStorageDataObject></td>
+                    <td>Список выбранных объектов хранилища, связанных с документом</td>
+                </tr>
+                <tr>
+                    <td>isContext</td>
+                    <td>bool</td>
+                    <td>Флаг, указывающий, вызван ли контекст в рамках определенной операции</td>
+                </tr>
+                <tr>
+                    <td>isMounted</td>
+                    <td>bool</td>
+                    <td>Состояние монтирования объекта в Pilot Storage</td>
+                </tr>
+                <tr>
+                    <td>usage</td>
+                    <td>DocumentFilesUsage</td>
+                    <td>Цель использования контекста (значения из перечисления)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Свойство</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>EcmDocument</td>
+                    <td>IDataObject</td>
+                    <td>Документ ECM, к которому относится контекст</td>
+                </tr>
+                <tr>
+                    <td>SelectedObjects</td>
+                    <td>IEnumerable<IStorageDataObject></td>
+                    <td>Список выбранных объектов хранилища</td>
+                </tr>
+                <tr>
+                    <td>IsContext</td>
+                    <td>bool</td>
+                    <td>True, если контекст используется в рамках операции</td>
+                </tr>
+                <tr>
+                    <td>IsMounted</td>
+                    <td>bool</td>
+                    <td>True, если объект смонтирован в Pilot Storage</td>
+                </tr>
+                <tr>
+                    <td>Usage</td>
+                    <td>DocumentFilesUsage</td>
+                    <td>Режим использования контекста (из перечисления)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+
+        <h3>Создание контекста</h3>
+        <pre>
+<code>
+<span class="code-type">IDataObject</span> document = GetEcmDocument();
+<span class="code-type">List</span><<span class="code-type">IStorageDataObject</span>> selected = GetSelectedObjects();
+
+<span class="code-type">DocumentFilesContext</span> context = <span class="code-keyword">new</span> DocumentFilesContext(
+    document,
+    selected,
+    isContext: <span class="code-keyword">true</span>,
+    isMounted: CheckMountStatus(),
+    usage: DocumentFilesUsage.View
+);
+</code>
+        </pre>
+
+        <h3>Проверка состояния контекста</h3>
+        <pre>
+<code>
+<span class="code-keyword">if</span> (context.IsMounted)
+{
+    <span class="code-comment">// Выполняем операции с смонтированным объектом</span>
+}
+
+<span class="code-keyword">switch</span> (context.Usage)
+{
+    <span class="code-keyword">case</span> DocumentFilesUsage.Edit:
+        <span class="code-comment">// Логика для режима редактирования</span>
+        <span class="code-keyword">break</span>;
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Класс реализует <code>MarshalByRefObject</code> для поддержки удаленного взаимодействия</li>
+                <li>Свойства доступны только для чтения (read-only)</li>
+                <li>Для работы с <code>SelectedObjects</code> требуется реализация интерфейса <code>IStorageDataObject</code></li>
+            </ul>
+        </div>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Используйте <code>IsMounted</code> перед выполнением операций с файловой системой</li>
+                <li>Проверяйте <code>Usage</code> для определения допустимых операций в текущем контексте</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

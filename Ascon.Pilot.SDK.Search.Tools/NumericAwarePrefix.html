@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация NumericAwarePrefix SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс NumericAwarePrefix</h1>
+        
+        <h2>Описание</h2>
+        <p>Внутренний класс, содержащий префиксы для обозначения числовых типов данных в строковых представлениях. Используется для корректной обработки числовых значений в механизмах сериализации/десериализации или парсинга данных.</p>
+        
+        <h2>Константы</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Константа</th>
+                    <th>Значение</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>NUMERIC_PREFIX_INT_32</td>
+                    <td>"&#32;"</td>
+                    <td>Префикс для 32-битных целых чисел (соответствует символу пробела в HTML-сущностях)</td>
+                </tr>
+                <tr>
+                    <td>NUMERIC_PREFIX_INT_64</td>
+                    <td>"&#64;"</td>
+                    <td>Префикс для 64-битных целых чисел (соответствует символу "@" в HTML-сущностях)</td>
+                </tr>
+                <tr>
+                    <td>NUMERIC_PREFIX_DOUBLE</td>
+                    <td>"&#d;"</td>
+                    <td>Префикс для чисел с плавающей точкой двойной точности (нестандартная HTML-сущность)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Особенности</h2>
+        <ul>
+            <li>Класс имеет модификатор <code>internal</code> - доступен только внутри текущей сборки SDK</li>
+            <li>Префиксы используются для внутренней маршрутизации числовых типов при обработке данных</li>
+            <li>Значения представлены в виде HTML-сущностей для обеспечения безопасной передачи в различных контекстах</li>
+        </ul>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Формирование строкового представления числа</h3>
+        <pre>
+<code>
+<span class="code-comment">// Внутреннее использование внутри SDK</span>
+string FormatNumber(int value) 
+{
+    return $"{NumericAwarePrefix.NUMERIC_PREFIX_INT_32}{value}";
+}
+</code>
+        </pre>
+
+        <h3>Парсинг числового значения</h3>
+        <pre>
+<code>
+<span class="code-keyword">if</span> (input.StartsWith(NumericAwarePrefix.NUMERIC_PREFIX_DOUBLE)) 
+{
+    double result = ParseDouble(input.Substring(3));
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong> 
+            <ul>
+                <li>Префикс NUMERIC_PREFIX_DOUBLE содержит нестандартную HTML-сущность "&#d;" - требует внимания при парсинге</li>
+                <li>Класс предназначен для внутреннего использования - не рекомендуется ссылаться на него напрямую в клиентском коде</li>
+                <li>При сериализации/десериализации используйте стандартные методы SDK для работы с числовыми типами</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация класса XpsMergerSaveListener</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .method-signature {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Абстрактный класс XpsMergerSaveListener</h1>
+        
+        <h2>Описание</h2>
+        <p>Базовый класс для реализации обработчиков события завершения сохранения XPS-документов. Позволяет получать уведомления после слияния и сохранения файлов.</p>
+
+        <h2>Наследование</h2>
+        <div class="method-signature">
+            <code>public abstract class XpsMergerSaveListener : MarshalByRefObject, IXpsMergerSaveListener</code>
+        </div>
+        <p>Наследует <code>MarshalByRefObject</code> для поддержки кросс-доменного взаимодействия.</p>
+
+        <h2>Методы</h2>
+        
+        <div class="method-signature">
+            <code>public abstract void OnSaveCompleted(string filepath)</code>
+            <p>Вызывается после завершения сохранения объединенного XPS-документа</p>
+            <ul>
+                <li><strong>filepath</strong> - Полный путь к сохраненному файлу</li>
+            </ul>
+        </div>
+
+        <h2>Пример реализации</h2>
+        <pre>
+<code>
+<span class="code-keyword">public class</span> CustomXpsListener : XpsMergerSaveListener
+{
+    <span class="code-keyword">public override void</span> OnSaveCompleted(string filepath)
+    {
+        <span class="code-comment">// Логика после сохранения файла</span>
+        Console.WriteLine($<span class="code-string">"Файл сохранен: {filepath}"</span>);
+        Process.Start(filepath); <span class="code-comment">// Открыть файл</span>
+    }
+}
+
+<span class="code-comment">// Использование</span>
+<span class="code-keyword">var</span> merger = <span class="code-keyword">new</span> XpsMerger();
+merger.SaveCompleted += <span class="code-keyword">new</span> CustomXpsListener();
+merger.MergeFiles(files);
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важные замечания:</strong>
+            <ul>
+                <li>Метод вызывается в контексте потока, выполняющего сохранение</li>
+                <li>Для длительных операций используйте асинхронную обработку</li>
+                <li>Путь к файлу гарантированно существует на момент вызова</li>
+                <li>Необходимо реализовать обработку исключений внутри метода</li>
+            </ul>
+        </div>
+
+        <h2>Связь с IXpsMergerSaveListener</h2>
+        <p>Реализует интерфейс:</p>
+        <div class="method-signature">
+            <code>public interface IXpsMergerSaveListener</code>
+        </div>
+        <p>Содержащий определение метода <code>OnSaveCompleted</code>.</p>
+
+        <h2>Рекомендации</h2>
+        <ul>
+            <li>Используйте для логирования результатов операций</li>
+            <li>Реализуйте уведомления пользователей о завершении процесса</li>
+            <li>Проверяйте доступность файла перед выполнением операций</li>
+            <li>Для многопоточных сценариев используйте синхронизацию</li>
+        </ul>
+    </div>
+</body>
+</html>

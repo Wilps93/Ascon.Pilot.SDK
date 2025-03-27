@@ -1,0 +1,77 @@
+using System;
+using System.Linq;
+using Ascon.Pilot.SDK.Search.SearchTerms;
+
+namespace Ascon.Pilot.SDK.Search.Fields
+{
+	/// <summary>
+	/// Integer (Int32) field
+	/// </summary>
+	// Token: 0x020000E3 RID: 227
+	public class Int32Field : FieldBase, IField<int>, INamedField, IRangeField<int>, IAnyOfField<int>
+	{
+		// Token: 0x0600039A RID: 922 RVA: 0x00003C5A File Offset: 0x00001E5A
+		internal Int32Field(string fieldName)
+			: base(fieldName)
+		{
+		}
+
+		/// <summary>
+		/// Field name
+		/// </summary>
+		// Token: 0x17000168 RID: 360
+		// (get) Token: 0x0600039B RID: 923 RVA: 0x00003C52 File Offset: 0x00001E52
+		public string FieldName
+		{
+			get
+			{
+				return this._fieldName;
+			}
+		}
+
+		/// <summary>
+		/// Exact match
+		/// </summary>
+		// Token: 0x0600039C RID: 924 RVA: 0x00003E68 File Offset: 0x00002068
+		public ISearchTerm Be(int value)
+		{
+			return new SimpleSearchTerm(this._fieldName, this.WithPrefix(value));
+		}
+
+		/// <summary>
+		/// Field exists
+		/// </summary>
+		// Token: 0x0600039D RID: 925 RVA: 0x00003C63 File Offset: 0x00001E63
+		public ISearchTerm Exists()
+		{
+			return new ExistsTerm(this._fieldName);
+		}
+
+		/// <summary>
+		/// Declares that the value should be in range between two values: from and to
+		/// </summary>
+		// Token: 0x0600039E RID: 926 RVA: 0x00003E7C File Offset: 0x0000207C
+		public ISearchTerm BeInRange(int from, int to)
+		{
+			return new RangeSearchTerm(this._fieldName, this.WithPrefix(from), this.WithPrefix(to));
+		}
+
+		/// <summary>
+		/// Declares that the value should be equal to one of specified values 
+		/// </summary>
+		// Token: 0x0600039F RID: 927 RVA: 0x00003E97 File Offset: 0x00002097
+		public ISearchTerm BeAnyOf(params int[] values)
+		{
+			return new AnyOfSearchTerm(this._fieldName, values.Select<int, string>((int x) => this.WithPrefix(x)));
+		}
+
+		/// <summary>
+		/// For internal use
+		/// </summary>
+		// Token: 0x060003A0 RID: 928 RVA: 0x00003CA6 File Offset: 0x00001EA6
+		protected internal virtual string WithPrefix(int value)
+		{
+			return "&#32;" + value;
+		}
+	}
+}

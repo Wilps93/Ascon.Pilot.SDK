@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация AutomationActivity SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .class-name {
+            color: #2b91af;
+            font-weight: bold;
+        }
+
+        .method-name {
+            color: #795E26;
+            font-weight: bold;
+        }
+
+        .property-name {
+            color: #c7254e;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс AutomationActivity</h1>
+        
+        <h2>Описание</h2>
+        <p>Базовый абстрактный класс для реализации пользовательских активностей автоматизации. Наследуется от <span class="class-name">MarshalByRefObject</span> и реализует интерфейс <span class="class-name">IAutomationActivity</span>.</p>
+        
+        <h2>Наследование</h2>
+        <ul>
+            <li><span class="class-name">System.MarshalByRefObject</span></li>
+            <li>→ <span class="class-name">AutomationActivity</span></li>
+        </ul>
+
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Свойство</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="property-name">Name</td>
+                    <td>string</td>
+                    <td>Название активности (виртуальное, требует реализации)</td>
+                </tr>
+                <tr>
+                    <td class="property-name">Params</td>
+                    <td>Dictionary<string, object></td>
+                    <td>Параметры активности для настройки поведения</td>
+                </tr>
+                <tr>
+                    <td class="property-name">SourceTypes</td>
+                    <td>List<string></td>
+                    <td>Список допустимых типов исходных объектов</td>
+                </tr>
+                <tr>
+                    <td class="property-name">Target</td>
+                    <td>TargetType?</td>
+                    <td>Цель выполнения активности (использует <span class="class-name">ActivityHelpers.GetValue</span>)</td>
+                </tr>
+                <tr>
+                    <td class="property-name">RelationType</td>
+                    <td>ObjectRelationType?</td>
+                    <td>Тип связи для фильтрации объектов</td>
+                </tr>
+                <tr>
+                    <td class="property-name">Errors</td>
+                    <td>Dictionary<string, string></td>
+                    <td>Контейнер для ошибок валидации параметров</td>
+                </tr>
+                <tr>
+                    <td class="property-name">RelationFilterByChangeKind</td>
+                    <td>RelationFilterByChangeKind?</td>
+                    <td>Фильтр по типу изменения связей</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Методы</h2>
+        
+        <h3 class="method-name">RunAsync</h3>
+        <pre>
+<code>
+<span class="code-keyword">public virtual</span> Task RunAsync(
+    IObjectModifier modifier,
+    IAutomationBackend backend,
+    IAutomationEventContext context,
+    TriggerType triggerType
+)
+</code>
+        </pre>
+        <p>Основной метод выполнения активности. <strong>Должен быть переопределен в потомках</strong>.</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Параметр</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>modifier</td>
+                    <td>Объект для модификации данных</td>
+                </tr>
+                <tr>
+                    <td>backend</td>
+                    <td>Доступ к данным системы</td>
+                </tr>
+                <tr>
+                    <td>context</td>
+                    <td>Контекст события автоматизации</td>
+                </tr>
+                <tr>
+                    <td>triggerType</td>
+                    <td>Тип триггера, активировавшего выполнение</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Создание пользовательской активности</h3>
+        <pre>
+<code>
+<span class="code-keyword">public class</span> CustomActivity : <span class="class-name">AutomationActivity</span>
+{
+    <span class="code-keyword">public override string</span> Name => "CustomProcessing";
+
+    <span class="code-keyword">public override async Task</span> RunAsync(
+        IObjectModifier modifier,
+        IAutomationBackend backend,
+        IAutomationEventContext context,
+        TriggerType triggerType)
+    {
+        <span class="code-comment">// Получение параметров</span>
+        <span class="code-keyword">var</span> threshold = this.GetValue<<span class="code-keyword">int</span>>("Threshold");
+        
+        <span class="code-comment">// Обработка объектов</span>
+        <span class="code-keyword">foreach</span> (<span class="code-keyword">var</span> obj <span class="code-keyword">in</span> context.Objects)
+        {
+            <span class="code-keyword">if</span> (obj.Attributes["Value"] > threshold)
+            {
+                modifier.Update(obj);
+            }
+        }
+        
+        <span class="code-keyword">await</span> modifier.CommitAsync();
+    }
+}
+</code>
+        </pre>
+
+        <h3>Настройка параметров</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> activity = <span class="code-keyword">new</span> CustomActivity();
+activity.Params["Threshold"] = 100;
+activity.Params["Target"] = TargetType.Children;
+
+<span class="code-comment">// Запуск выполнения</span>
+<span class="code-keyword">await</span> activity.RunAsync(modifier, backend, context, TriggerType.Manual);
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Всегда проверяйте параметры через <span class="class-name">ActivityHelpers</span> методы</li>
+                <li>Обрабатывайте ошибки через свойство <span class="property-name">Errors</span></li>
+                <li>Используйте <code>modifier.CommitAsync()</code> для сохранения изменений</li>
+                <li>Не забывайте учитывать <code>triggerType</code> при реализации логики</li>
+            </ul>
+        </div>
+
+        <h2>Рекомендации</h2>
+        <ul>
+            <li>Для сложных сценариев реализуйте валидацию параметров в конструкторе</li>
+            <li>Используйте <code>nameof()</code> для ссылок на имена параметров</li>
+            <li>При работе с асинхронными операциями всегда используйте <code>await</code></li>
+            <li>Для массовых операций используйте пакетную обработку через <code>IObjectModifier</code></li>
+        </ul>
+    </div>
+</body>
+</html>

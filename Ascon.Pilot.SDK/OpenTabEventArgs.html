@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация OpenTabEventArgs SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .property-type {
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .inheritance {
+            font-weight: bold;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс OpenTabEventArgs</h1>
+        
+        <h2>Описание</h2>
+        <p>
+            Класс аргументов события, уведомляющий об открытии вкладки с определенным заголовком. 
+            Наследует <code>MarshalByRefObject</code> для поддержки работы в распределенных средах.
+        </p>
+
+        <h2>Наследование</h2>
+        <table>
+            <tr>
+                <td class="inheritance">MarshalByRefObject</td>
+                <td>Базовый класс для поддержки маршалинга объектов по ссылке</td>
+            </tr>
+            <tr>
+                <td class="inheritance">→ OpenTabEventArgs</td>
+                <td>Специализированный класс для событий открытия вкладок</td>
+            </tr>
+        </table>
+
+        <h2>Конструктор</h2>
+        <pre>
+<code>
+<span class="code-keyword">public</span> OpenTabEventArgs(<span class="code-keyword">string</span> tabTitle)
+</code>
+        </pre>
+        <table>
+            <thead>
+                <tr>
+                    <th>Параметр</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>tabTitle</td>
+                    <td>string</td>
+                    <td>Заголовок открытой вкладки</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Свойство</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>TabTitle</td>
+                    <td class="property-type">string</td>
+                    <td>Заголовок вкладки (только для чтения)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Особенности</h2>
+        <div class="note">
+            <ul>
+                <li>Свойство <code>TabTitle</code> доступно только для чтения после создания объекта</li>
+                <li>Используется для передачи информации об открытых вкладках между компонентами</li>
+                <li>Наследование от <code>MarshalByRefObject</code> позволяет использовать объект в Remoting</li>
+            </ul>
+        </div>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Создание экземпляра</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> eventArgs = <span class="code-keyword">new</span> OpenTabEventArgs("Детали заказа");
+Console.WriteLine($"Открыта вкладка: {eventArgs.TabTitle}");
+</code>
+        </pre>
+
+        <h3>Подписка на событие</h3>
+        <pre>
+<code>
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> TabManager
+{
+    <span class="code-keyword">public</span> event EventHandler<OpenTabEventArgs> TabOpened;
+
+    <span class="code-keyword">protected</span> <span class="code-keyword">virtual</span> <span class="code-keyword">void</span> OnTabOpened(<span class="code-keyword">string</span> title)
+    {
+        TabOpened?.Invoke(<span class="code-keyword">this</span>, <span class="code-keyword">new</span> OpenTabEventArgs(title));
+    }
+}
+</code>
+        </pre>
+
+        <h3>Обработка события</h3>
+        <pre>
+<code>
+<span class="code-keyword">var</span> manager = <span class="code-keyword">new</span> TabManager();
+manager.TabOpened += (sender, args) =>
+{
+    Console.WriteLine($"Обнаружено открытие вкладки: {args.TabTitle}");
+    UpdateNavigationHistory(args.TabTitle);
+};
+</code>
+        </pre>
+
+        <h2>Важные замечания</h2>
+        <div class="note">
+            <ul>
+                <li>Заголовок вкладки не может быть изменен после создания объекта</li>
+                <li>Для корректной работы в распределенных системах требуется сериализация</li>
+                <li>Рекомендуется проверять допустимость заголовков перед обработкой</li>
+            </ul>
+        </div>
+
+        <h2>Рекомендации</h2>
+        <ul>
+            <li>Используйте для трекинга активности пользователей в интерфейсе</li>
+            <li>Добавьте логирование при обработке события открытия вкладок</li>
+            <li>Интегрируйте с системой аналитики для сбора статистики использования</li>
+        </ul>
+    </div>
+</body>
+</html>

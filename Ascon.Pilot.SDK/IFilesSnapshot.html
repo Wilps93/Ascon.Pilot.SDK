@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация IFilesSnapshot SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background-color: #f8d7da;
+            border-left: 4px solid #f5c6cb;
+            padding: 10px;
+            margin: 20px 0;
+            color: #721c24;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IFilesSnapshot</h1>
+        
+        <div class="warning">
+            <strong>Внимание!</strong> Объект автоматически уничтожается через 2 минуты. 
+            Попытки обращения к его методам после этого вызовут исключение.
+        </div>
+
+        <h2>Описание</h2>
+        <p>Временный контейнер для работы со снимком файлов. Содержит метаданные снимка и коллекцию связанных файлов.</p>
+
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Свойство</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Created</td>
+                    <td>DateTime</td>
+                    <td>Дата и время создания снимка</td>
+                </tr>
+                <tr>
+                    <td>CreatorId</td>
+                    <td>int</td>
+                    <td>Идентификатор создателя снимка (пользователь/система)</td>
+                </tr>
+                <tr>
+                    <td>Reason</td>
+                    <td>string</td>
+                    <td>Причина создания снимка (например, "Версия 2.0", "Резервное копирование")</td>
+                </tr>
+                <tr>
+                    <td>Files</td>
+                    <td>ReadOnlyCollection<IFile></td>
+                    <td>Коллекция файлов в снимке (только для чтения)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Обработка файлов из снимка</h3>
+        <pre>
+<code>
+<span class="code-keyword">void</span> ProcessSnapshot(IFilesSnapshot snapshot)
+{
+    <span class="code-comment">// Копируем данные до истечения времени жизни объекта</span>
+    <span class="code-keyword">var</span> files = <span class="code-keyword">new</span> List<IFile>(snapshot.Files);
+    <span class="code-keyword">var</span> creationTime = snapshot.Created;
+    <span class="code-keyword">var</span> reason = snapshot.Reason;
+
+    <span class="code-comment">// Асинхронная обработка файлов</span>
+    <span class="code-keyword">foreach</span> (var file <span class="code-keyword">in</span> files)
+    {
+        ProcessFile(file);
+    }
+}
+</code>
+        </pre>
+
+        <h3>Проверка принадлежности снимка</h3>
+        <pre>
+<code>
+<span class="code-keyword">bool</span> IsUserSnapshot(IFilesSnapshot snapshot, int userId)
+{
+    <span class="code-keyword">return</span> snapshot.CreatorId == userId 
+        && snapshot.Reason.Contains("user_backup");
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Не сохраняйте ссылки на IFilesSnapshot дольше необходимого</li>
+                <li>Скопируйте коллекцию Files в локальный список сразу после получения</li>
+                <li>Для длительной обработки используйте асинхронные методы</li>
+                <li>Проверяйте наличие файлов в коллекции перед использованием</li>
+            </ul>
+        </div>
+
+        <div class="warning">
+            <strong>Ограничения:</strong>
+            <ul>
+                <li>Невозможно модифицировать коллекцию Files</li>
+                <li>Объект нельзя сериализовать для долгосрочного хранения</li>
+                <li>Работа с файлами после уничтожения снимка может привести к сбоям</li>
+            </ul>
+        </div>
+
+        <h2>Связь с другими компонентами</h2>
+        <ul>
+            <li>Использует <code>IFile</code> для представления файлов в снимке</li>
+            <li>Может интегрироваться с <code>IEventAggregator</code> для уведомлений о новых снимках</li>
+            <li>Связан с <code>IFileProvider</code> для доступа к содержимому файлов</li>
+        </ul>
+    </div>
+</body>
+</html>

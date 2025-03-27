@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация IField SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IField<T></h1>
+        
+        <h2>Описание</h2>
+        <p>Поле с поддержкой оператора <strong>Be</strong> для построения условий поиска. Наследует интерфейс <code>INamedField</code>, расширяя его функционал для точного сопоставления значений.</p>
+        
+        <h2>Методы</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>Be(T value)</code></td>
+                    <td>Создает условие точного совпадения значения поля</td>
+                </tr>
+                <tr>
+                    <td><code>Exists()</code></td>
+                    <td>Проверяет наличие поля в данных</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Точное совпадение</h3>
+        <pre>
+<code>
+<span class="code-comment">// Поиск объектов с полем "Status" равным "Active"</span>
+IField<<span class="code-keyword">string</span>> statusField = ...;
+ISearchTerm condition = statusField.Be("Active");
+</code>
+        </pre>
+
+        <h3>Проверка существования поля</h3>
+        <pre>
+<code>
+<span class="code-comment">// Фильтрация объектов, у которых есть поле "ExpirationDate"</span>
+IField<DateTime> dateField = ...;
+ISearchTerm existsCondition = dateField.Exists();
+</code>
+        </pre>
+
+        <h3>Комбинирование условий</h3>
+        <pre>
+<code>
+<span class="code-comment">// Поиск активных пользователей с датой регистрации</span>
+var activeCondition = userStatusField.Be("Active");
+var registeredCondition = registrationDateField.Exists();
+ISearchTerm combined = activeCondition.And(registeredCondition);
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Метод <code>Be()</code> выполняет строгое сравнение значений</li>
+                <li>Для nullable-типов <code>Be(null)</code> проверяет отсутствие значения</li>
+                <li>Результаты методов можно комбинировать с помощью <code>ISearchTerm</code></li>
+                <li>Реализация зависит от контекста (БД, API и т.д.)</li>
+            </ul>
+        </div>
+
+        <h2>Связь с другими интерфейсами</h2>
+        <ul>
+            <li>Наследует <code>INamedField</code> - содержит базовые свойства поля</li>
+            <li>Возвращает <code>ISearchTerm</code> для построения сложных условий</li>
+        </ul>
+    </div>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация FileExtensions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .code-type {
+            color: #2b91af;
+        }
+
+        .warning {
+            color: #dc3545;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс FileExtensions</h1>
+        
+        <h2>Описание</h2>
+        <p>Статический класс с методами расширения для интерфейса <code>IFile</code>. Добавляет вспомогательные функции для работы с файлами через рефлексию.</p>
+
+        <h2>Методы расширения</h2>
+
+        <h3>CreatorId</h3>
+        <pre>
+<code>
+<span class="code-keyword">public</span> <span class="code-keyword">static</span> <span class="code-type">int</span> CreatorId(<span class="code-keyword">this</span> <span class="code-type">IFile</span> file)
+</code>
+        </pre>
+        <p>Возвращает идентификатор создателя файла.</p>
+        
+        <h4>Параметры</h4>
+        <table>
+            <tr>
+                <td>file</td>
+                <td>IFile</td>
+                <td>Файл, для которого получаем идентификатор создателя</td>
+            </tr>
+        </table>
+
+        <h4>Возвращаемое значение</h4>
+        <p>Целочисленный идентификатор пользователя-создателя файла.</p>
+
+        <h4>Особенности реализации</h4>
+        <ul>
+            <li>Использует рефлексию через <code>Extensions.GetProperty()</code></li>
+            <li>Приводит результат к типу <code>int</code></li>
+            <li>Потенциально может вызвать <code>InvalidCastException</code>, если свойство имеет другой тип</li>
+        </ul>
+
+        <h2>Пример использования</h2>
+        <pre>
+<code>
+<span class="code-type">IFile</span> file = GetFileFromStorage();
+<span class="code-type">int</span> creatorId = file.CreatorId();
+
+<span class="code-comment">// Использование идентификатора создателя</span>
+ShowCreatorInfo(creatorId);
+</code>
+        </pre>
+
+        <div class="note warning">
+            <strong>Важные замечания:</strong>
+            <ul>
+                <li>Метод предполагает наличие свойства <code>CreatorId</code> в объекте <code>IFile</code></li>
+                <li>Использование рефлексии может снизить производительность в циклах</li>
+                <li>Не проверяет наличие свойства перед вызовом - возможна <code>InvalidOperationException</code></li>
+            </ul>
+        </div>
+
+        <div class="note">
+            <strong>Рекомендации:</strong>
+            <ul>
+                <li>Кэшируйте результат, если требуется многократный доступ</li>
+                <li>Оборачивайте вызов в try-catch при работе с внешними объектами</li>
+                <li>Для новых реализаций предпочитайте прямой доступ к свойствам вместо рефлексии</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

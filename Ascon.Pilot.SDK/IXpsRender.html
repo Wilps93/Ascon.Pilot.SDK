@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация интерфейса IXpsRender</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7;
+            margin: 2rem auto;
+            max-width: 1000px;
+            padding: 0 20px;
+            color: #2d3436;
+        }
+
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 0.5rem;
+        }
+
+        h2 {
+            color: #34495e;
+            margin-top: 2rem;
+        }
+
+        .method-box {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1.5rem 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin: 1.5rem 0;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        pre {
+            background-color: #282a36;
+            color: #f8f8f2;
+            padding: 1rem;
+            border-radius: 6px;
+            overflow-x: auto;
+        }
+
+        .code-comment { color: #6272a4; }
+        .code-keyword { color: #ff79c6; }
+        .code-string { color: #50fa7b; }
+
+        .note {
+            background-color: #fff5b3;
+            border-left: 4px solid #ffee33;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background-color: #f5b7b1;
+            border-left: 4px solid #c0392b;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Интерфейс IXpsRender</h1>
+    
+    <h2>Назначение</h2>
+    <p>Предоставляет функционал для рендеринга XPS-документов в набор растровых изображений (Bitmap).</p>
+
+    <div class="note">
+        <strong>Важно:</strong> 
+        <ul>
+            <li>Поддерживает масштабирование изображений</li>
+            <li>Обрабатывает документы в формате XPS (XML Paper Specification)</li>
+        </ul>
+    </div>
+
+    <h2>Методы</h2>
+
+    <div class="method-box">
+        <h3>RenderXpsToBitmap</h3>
+        <p>Преобразует XPS-документ в набор изображений</p>
+        
+        <h4>Параметры</h4>
+        <table>
+            <tr>
+                <td>xpsStream</td>
+                <td>Stream</td>
+                <td>Поток с XPS-документом для рендеринга</td>
+            </tr>
+            <tr>
+                <td>scale</td>
+                <td>double</td>
+                <td>
+                    Коэффициент масштабирования (0-6). 
+                    <br>1.0 = 100% размера страницы
+                    <br>Значение по умолчанию: 1.0
+                </td>
+            </tr>
+        </table>
+
+        <h4>Возвращает</h4>
+        <p>IEnumerable<Stream> - коллекция потоков с растровыми изображениями страниц</p>
+    </div>
+
+    <h2>Пример использования</h2>
+    <pre>
+<code>
+<span class="code-keyword">public void</span> ConvertXpsToImages()
+{
+    <span class="code-comment">// Получаем поток XPS-документа</span>
+    <span class="code-keyword">using</span> (var xpsStream = File.OpenRead(@"C:\Documents\document.xps"))
+    {
+        <span class="code-keyword">var</span> renderer = <span class="code-comment">// Получение экземпляра IXpsRender</span>
+        <span class="code-keyword">var</span> imageStreams = renderer.RenderXpsToBitmap(xpsStream, scale: 2.0);
+
+        <span class="code-keyword">int</span> pageIndex = 0;
+        <span class="code-keyword">foreach</span> (var imageStream in imageStreams)
+        {
+            <span class="code-keyword">string</span> outputPath = $@"C:\Output\page_{pageIndex++}.png";
+            <span class="code-keyword">using</span> (var fileStream = File.Create(outputPath))
+            {
+                imageStream.CopyTo(fileStream);
+            }
+        }
+    }
+}
+</code>
+    </pre>
+
+    <h2>Особенности</h2>
+    <ul>
+        <li>Каждый элемент коллекции соответствует одной странице документа</li>
+        <li>Изображения сохраняются в формате PNG</li>
+        <li>Масштаб 0.5 уменьшит размер изображения в 2 раза</li>
+        <li>Максимальный масштаб (6.0) увеличивает изображение в 6 раз</li>
+    </ul>
+
+    <div class="warning">
+        <strong>Внимание:</strong>
+        <ul>
+            <li>Поток xpsStream должен быть доступен для чтения</li>
+            <li>Все возвращаемые потоки должны быть корректно закрыты после использования</li>
+            <li>Значения scale за пределами 0-6 вызовут ArgumentException</li>
+        </ul>
+    </div>
+
+    <div class="note">
+        <strong>Рекомендации:</strong>
+        <ul>
+            <li>Для оптимального качества используйте масштаб 3.0</li>
+            <li>При обработке больших документов учитывайте потребление памяти</li>
+            <li>Для веб-приложений рекомендуется ограничивать максимальный масштаб</li>
+        </ul>
+    </div>
+</body>
+</html>

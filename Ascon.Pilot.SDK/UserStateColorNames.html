@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация UserStateColorNames SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .enum-value {
+            font-weight: bold;
+            color: #c7254e;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Перечисление UserStateColorNames</h1>
+        
+        <h2>Описание</h2>
+        <p>Определяет набор предустановленных цветов для визуального отображения состояний пользователей в интерфейсе системы.</p>
+        
+        <h2>Значения</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Значение</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="enum-value">None</td>
+                    <td>Отсутствие цветового выделения</td>
+                </tr>
+                <tr>
+                    <td class="enum-value">Color1</td>
+                    <td>Первый системный цвет (конкретный оттенок определяется темой)</td>
+                </tr>
+                <tr>
+                    <td class="enum-value">Color2</td>
+                    <td>Второй системный цвет</td>
+                </tr>
+                <tr>
+                    <td class="enum-value">Color3</td>
+                    <td>Третий системный цвет</td>
+                </tr>
+                <tr>
+                    <td class="enum-value">Color4</td>
+                    <td>Четвертый системный цвет</td>
+                </tr>
+                <tr>
+                    <td class="enum-value">Color5</td>
+                    <td>Пятый системный цвет</td>
+                </tr>
+                <tr>
+                    <td class="enum-value">Color6</td>
+                    <td>Шестой системный цвет</td>
+                </tr>
+                <tr>
+                    <td class="enum-value">Color7</td>
+                    <td>Седьмой системный цвет</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Установка цвета состояния</h3>
+        <pre>
+<code>
+<span class="code-keyword">public void</span> SetUserColor(<span class="enum-value">UserStateColorNames</span> color)
+{
+    <span class="code-comment">// Применяем цвет к интерфейсу</span>
+    currentColor = color;
+    UpdateUserInterface();
+}
+</code>
+        </pre>
+
+        <h3>Проверка текущего цвета</h3>
+        <pre>
+<code>
+<span class="code-keyword">if</span> (user.Color == <span class="enum-value">UserStateColorNames.Color3</span>)
+{
+    <span class="code-comment">// Логика для третьего цвета</span>
+    ApplySpecialFormatting();
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Конкретные цветовые оттенки зависят от текущей темы оформления</li>
+                <li>Рекомендуется использовать <code>None</code> для сброса выделения</li>
+                <li>Цвета могут иметь специальное назначение в разных модулях системы</li>
+            </ul>
+        </div>
+
+        <h2>Рекомендации</h2>
+        <ul>
+            <li>Используйте цвета для визуальной группировки пользователей</li>
+            <li>Проверяйте поддержку цветов в текущей версии темы</li>
+            <li>Для кастомизации цветов обратитесь к документации по стилям</li>
+        </ul>
+    </div>
+</body>
+</html>

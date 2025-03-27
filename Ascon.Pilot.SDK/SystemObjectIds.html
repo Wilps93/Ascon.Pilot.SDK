@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация SystemObjectIds SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Класс SystemObjectIds</h1>
+        
+        <h2>Описание</h2>
+        <p>Содержит предопределенные идентификаторы системных объектов Pilot.SDK. 
+        Используется для ссылок на корневые объекты различных типов в хранилище данных.</p>
+        
+        <h2>Поля</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Имя</th>
+                    <th>Значение (GUID)</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>RootObjectId</td>
+                    <td>00000001-0001-0001-0001-000000000001</td>
+                    <td>Корневой объект всей системы</td>
+                </tr>
+                <tr>
+                    <td>TaskRootObjectId</td>
+                    <td>ADB79734-723C-4FF8-8DA8-8F52E140FBF4</td>
+                    <td>Корневой объект для задач</td>
+                </tr>
+                <tr>
+                    <td>ExtensionRootObjectId</td>
+                    <td>E6519D37-1984-407E-96A0-1CD371F68F16</td>
+                    <td>Корневой объект для расширений</td>
+                </tr>
+                <tr>
+                    <td>ReportRootObjectId</td>
+                    <td>7DAB217D-6E06-4C2C-AB77-B5EC9361415D</td>
+                    <td>Корневой объект для отчетов</td>
+                </tr>
+                <tr>
+                    <td>TaskTemplateRootObjectId</td>
+                    <td>DB4AB44C-B3D1-4F5A-B049-13CDF0C2EFE7</td>
+                    <td>Корневой объект для шаблонов задач</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Особенности</h2>
+        <ul>
+            <li>Идентификаторы являются константами и не должны изменяться</li>
+            <li>Используются как точки входа для навигации по хранилищу</li>
+            <li>Предоставляют унифицированный доступ к системным объектам</li>
+        </ul>
+
+        <h2>Примеры использования</h2>
+        
+        <h3>Проверка корневого объекта</h3>
+        <pre>
+<code>
+<span class="code-keyword">Guid</span> objectId = GetObjectId();
+<span class="code-keyword">if</span> (objectId == SystemObjectIds.RootObjectId)
+{
+    Console.WriteLine("Это корневой объект системы");
+}
+</code>
+        </pre>
+
+        <h3>Работа с шаблонами задач</h3>
+        <pre>
+<code>
+<span class="code-comment">// Получение корневого объекта шаблонов</span>
+<span class="code-keyword">var</span> templateRoot = storage.GetObject(SystemObjectIds.TaskTemplateRootObjectId);
+
+<span class="code-comment">// Поиск дочерних шаблонов</span>
+<span class="code-keyword">foreach</span> (var template <span class="code-keyword">in</span> templateRoot.Children)
+{
+    ProcessTemplate(template);
+}
+</code>
+        </pre>
+
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Не используйте эти идентификаторы для создания новых объектов</li>
+                <li>Для проверки типа объекта используйте <code>IsRoot()</code> из соответствующих API</li>
+                <li>Избегайте прямого сравнения GUID - используйте метод <code>Equals()</code></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

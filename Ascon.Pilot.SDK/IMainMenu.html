@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация интерфейса IMainMenu</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс IMainMenu</h1>
+        
+        <h2>Назначение</h2>
+        <p>Позволяет расширять главное меню приложения, добавляя пользовательские пункты меню. 
+        Наследует базовый функционал контекстных меню из <code>IBaseContextMenu</code>.</p>
+        
+        <h2>Методы интерфейса</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Параметры</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>BuildMenu</td>
+                    <td>menuHost: IMenuHost</td>
+                    <td>Вызывается перед отображением меню. Используется для динамического формирования элементов меню</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Пример реализации</h2>
+        <pre>
+<code>
+<span class="code-keyword">public class</span> CustomMainMenu : IMainMenu 
+{
+    <span class="code-keyword">public void</span> BuildMenu(IMenuHost menuHost)
+    {
+        <span class="code-comment">// Создаем новый пункт меню</span>
+        <span class="code-keyword">var</span> menuItem = <span class="code-keyword">new</span> MenuItem("Custom Action", <span class="code-keyword">delegate</span> 
+        {
+            <span class="code-comment">// Логика обработки нажатия</span>
+        });
+        
+        <span class="code-comment">// Добавляем пункт в главное меню</span>
+        menuHost.AddMenuItem(menuItem);
+    }
+}
+</code>
+        </pre>
+
+        <h2>Ключевые особенности</h2>
+        <ul>
+            <li>Метод <code>BuildMenu</code> вызывается каждый раз перед отображением меню</li>
+            <li>Позволяет динамически изменять содержимое меню в зависимости от контекста</li>
+            <li>Используйте <code>IMenuHost</code> для управления элементами меню</li>
+        </ul>
+
+        <div class="note">
+            <strong>Важно:</strong> Для корректной работы необходимо зарегистрировать 
+            реализацию интерфейса в системе через механизм расширений SDK
+        </div>
+    </div>
+</body>
+</html>

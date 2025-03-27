@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Документация ITaskMessage SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background-color: #f8d7da;
+            border-left: 4px solid #f5c6cb;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Интерфейс ITaskMessage</h1>
+        
+        <div class="warning">
+            <strong>Важное предупреждение!</strong>
+            Объект автоматически уничтожается через 2 минуты после создания. 
+            Любые обращения к его членам после этого момента вызовут исключение.
+        </div>
+
+        <h2>Описание</h2>
+        <p>Контейнер для временного хранения данных сообщения задачи с метаданными. 
+        Предназначен для безопасной передачи информации между компонентами системы.</p>
+
+        <h2>Свойства</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Свойство</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Id</td>
+                    <td>Guid</td>
+                    <td>Уникальный идентификатор сообщения</td>
+                </tr>
+                <tr>
+                    <td>Author</td>
+                    <td>IPerson</td>
+                    <td>Автор сообщения (содержит данные о пользователе)</td>
+                </tr>
+                <tr>
+                    <td>Text</td>
+                    <td>string</td>
+                    <td>Текст сообщения</td>
+                </tr>
+                <tr>
+                    <td>Created</td>
+                    <td>DateTime</td>
+                    <td>Дата и время создания сообщения</td>
+                </tr>
+                <tr>
+                    <td>Attachments</td>
+                    <td>IEnumerable<Guid></td>
+                    <td>Коллекция идентификаторов вложений</td>
+                </tr>
+                <tr>
+                    <td>DataState</td>
+                    <td>DataState</td>
+                    <td>Состояние данных сообщения</td>
+                </tr>
+                <tr>
+                    <td>SynchronizationState</td>
+                    <td>SynchronizationState</td>
+                    <td>Состояние синхронизации</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Пример использования</h2>
+        <pre>
+<code>
+<span class="code-keyword">public void</span> ProcessMessage(ITaskMessage message)
+{
+    <span class="code-comment">// Проверка актуальности объекта</span>
+    <span class="code-keyword">if</span>(message.DataState != DataState.Valid)
+    {
+        <span class="code-keyword">throw new</span> InvalidOperationException("Сообщение устарело");
+    }
+
+    <span class="code-comment">// Работа с данными</span>
+    Console.WriteLine($"Сообщение от {message.Author.Name}:");
+    Console.WriteLine($"Дата: {message.Created.ToShortDateString()}");
+    Console.WriteLine($"Текст: {message.Text}");
+
+    <span class="code-comment">// Обработка вложений</span>
+    <span class="code-keyword">foreach</span> (Guid attachmentId <span class="code-keyword">in</span> message.Attachments)
+    {
+        <span class="code-comment">// Загрузка вложений по идентификаторам</span>
+        ProcessAttachment(attachmentId);
+    }
+}
+</code>
+        </pre>
+
+        <h2>Рекомендации</h2>
+        <div class="note">
+            <strong>Важно:</strong>
+            <ul>
+                <li>Всегда проверяйте свойство <code>DataState</code> перед использованием объекта</li>
+                <li>Не сохраняйте ссылки на объект дольше 2 минут</li>
+                <li>Для долгосрочного хранения данных создавайте копии нужных полей</li>
+                <li>Используйте <code>SynchronizationState</code> для проверки статуса синхронизации</li>
+            </ul>
+        </div>
+
+        <div class="note">
+            <strong>Опечатка в документации:</strong>
+            В описании свойства Attachments в оригинальном коде допущена опечатка: 
+            "Mesage" вместо "Message". Убедитесь, что в вашем коде используется 
+            правильное написание.
+        </div>
+    </div>
+</body>
+</html>
